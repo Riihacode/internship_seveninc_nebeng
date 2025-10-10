@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.example.nebeng.ui.home.HomeFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        android:name="com.example.nebeng.app.ui.history_order.HistoryOrderFragment"
+        android:label="@string/title_homepage"
+        tools:layout="@layout/fragment_history_order" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.example.nebeng.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:name="com.example.nebeng.app.ui.homepage.HomepageFragment"
+        android:label="@string/title_history_order"
+        tools:layout="@layout/fragment_homepage" />
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.example.nebeng.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:name="com.example.nebeng.app.ui.chat.ChatFragment"
+        android:label="@string/title_chat"
+        tools:layout="@layout/fragment_chat" />
 </navigation>

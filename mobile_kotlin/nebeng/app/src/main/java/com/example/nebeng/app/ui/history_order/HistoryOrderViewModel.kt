@@ -1,13 +1,13 @@
-package com.example.nebeng.ui.dashboard
+package com.example.nebeng.app.ui.history_order
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class DashboardViewModel : ViewModel() {
+class HistoryOrderViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is dashboard Fragment"
+        value = "This is home Fragment"
     }
     val text: LiveData<String> = _text
 }

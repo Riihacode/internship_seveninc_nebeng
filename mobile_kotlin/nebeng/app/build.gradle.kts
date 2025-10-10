@@ -1,6 +1,9 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("com.google.devtools.ksp")
+    id("com.google.dagger.hilt.android")
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -35,10 +38,18 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.15"
     }
 }
 
 dependencies {
+    val room_version = "2.8.1"
+    val composeBom = platform("androidx.compose:compose-bom:2025.09.01")
+//    val nav_version = "2.9.5"
+    val nav_version = "2.9.5"
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -51,4 +62,23 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    // [NEBENG]
+    //noinspection GradleDependency,UseTomlInstead
+    implementation("androidx.room:room-runtime:${room_version}")
+    ksp(libs.androidx.room.compiler)
+    //dependency injection kotlin android native non multiplatform
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+    // Compose
+    implementation(composeBom)
+    androidTestImplementation(composeBom)
+    implementation(libs.androidx.material3)  // material 3 design
+    implementation(libs.androidx.material.icons.extended)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.hilt.navigation.compose)
+    // Preferences DataStore
+    implementation(libs.androidx.datastore.preferences)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
 }

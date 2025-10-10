@@ -1,4 +1,4 @@
-package com.example.nebeng.ui.dashboard
+package com.example.nebeng.app.ui.homepage
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.nebeng.databinding.FragmentDashboardBinding
 
-class DashboardFragment : Fragment() {
+class HomepageFragment : Fragment() {
 
     private var _binding: FragmentDashboardBinding? = null
 
@@ -22,14 +22,14 @@ class DashboardFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val dashboardViewModel =
-            ViewModelProvider(this).get(DashboardViewModel::class.java)
+        val homepageViewModel =
+            ViewModelProvider(this).get(HomepageViewModel::class.java)
 
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         val textView: TextView = binding.textDashboard
-        dashboardViewModel.text.observe(viewLifecycleOwner) {
+        homepageViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
         return root
