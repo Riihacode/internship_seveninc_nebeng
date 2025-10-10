@@ -1,0 +1,16 @@
+# Android
+.gradle/
+.idea/
+build/
+local.properties
+*.iml
+
+# Node/Web
+node_modules/
+dist/
+.env
+
+# Laravel
+/vendor/
+storage/
+.env
