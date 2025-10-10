@@ -46,6 +46,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.activity)
     val room_version = "2.8.1"
     val composeBom = platform("androidx.compose:compose-bom:2025.09.01")
 //    val nav_version = "2.9.5"

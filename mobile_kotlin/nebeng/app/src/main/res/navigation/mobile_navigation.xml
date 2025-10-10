@@ -3,23 +3,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/navigation_homepage">
 
     <fragment
-        android:id="@+id/navigation_home"
-        android:name="com.example.nebeng.app.ui.history_order.HistoryOrderFragment"
+        android:id="@+id/navigation_homepage"
+        android:name="com.example.nebeng.app.ui.homepage.HomepageFragment"
         android:label="@string/title_homepage"
         tools:layout="@layout/fragment_history_order" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.example.nebeng.app.ui.homepage.HomepageFragment"
+        android:id="@+id/navigation_history_order"
+        android:name="com.example.nebeng.app.ui.history_order.HistoryOrderFragment"
         android:label="@string/title_history_order"
         tools:layout="@layout/fragment_homepage" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_chat"
         android:name="com.example.nebeng.app.ui.chat.ChatFragment"
         android:label="@string/title_chat"
         tools:layout="@layout/fragment_chat" />
+
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.example.nebeng.app.ui.profile.ProfileFragment"
+        android:label="@string/title_chat"
+        tools:layout="@layout/fragment_profile" />
 </navigation>
