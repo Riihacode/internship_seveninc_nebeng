@@ -1,0 +1,13 @@
+package com.example.nebeng.feature_auth.domain.usecase
+
+import com.example.nebeng.feature_auth.data.repository.AuthRepository
+import com.example.nebeng.core.model.Result
+import javax.inject.Inject
+
+class DeleteAuthUseCase @Inject constructor(
+    val repository: AuthRepository
+) {
+    suspend operator fun invoke(id: Int): Result<Unit> {
+        return repository.deleteUser(id)
+    }
+}
