@@ -36,7 +36,7 @@ class Notification extends Model
     /**
      * Relasi ke User penerima notifikasi.
      */
-    public function userId()
+    public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
     }

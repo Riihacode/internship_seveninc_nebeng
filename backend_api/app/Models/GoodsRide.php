@@ -30,19 +30,19 @@ class GoodsRide extends Model
      */
 
     // Satu perjalanan dimiliki oleh satu driver
-    public function driverId()
+    public function driver()
     {
         return $this->belongsTo(Driver::class, 'driver_id');
     }
 
     // Terminal keberangkatan
-    public function departureTerminalId()
+    public function departureTerminal()
     {
         return $this->belongsTo(Terminal::class, 'departure_terminal_id');
     }
 
     // Terminal tujuan
-    public function arrivalTerminalId()
+    public function arrivalTerminal()
     {
         return $this->belongsTo(Terminal::class, 'arrival_terminal_id');
     }

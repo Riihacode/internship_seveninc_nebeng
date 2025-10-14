@@ -18,7 +18,7 @@ class District extends Model
     ];
 
     // Relationship Manyt To One
-    public function regencyId() : BelongsTo{
+    public function regency() : BelongsTo{
         return $this->belongsTo(Regency::class, 'regency_id');
     }
 

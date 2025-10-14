@@ -39,7 +39,7 @@ class Customer extends Model
      */
 
     // Relasi ke tabel users
-    public function userId()
+    public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
@@ -51,7 +51,7 @@ class Customer extends Model
     }
 
     // Relasi ke goods bookings
-    public function goodsBookings()
+    public function goodsRidBookings()
     {
         return $this->hasMany(GoodsRideBooking::class, 'customer_id');
     }

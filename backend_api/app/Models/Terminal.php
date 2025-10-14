@@ -37,7 +37,7 @@ class Terminal extends Model
      * Relasi ke Province
      * One Terminal belongs to one Province
      */
-    public function provinceId()
+    public function province()
     {
         return $this->belongsTo(Province::class, 'province_id');
     }
@@ -46,7 +46,7 @@ class Terminal extends Model
      * Relasi ke Regency (Kabupaten/Kota)
      * One Terminal belongs to one Regency
      */
-    public function regencyId()
+    public function regency()
     {
         return $this->belongsTo(Regency::class, 'regency_id');
     }
@@ -55,42 +55,42 @@ class Terminal extends Model
      * Relasi ke District (Kecamatan)
      * One Terminal belongs to one District
      */
-    public function districtId()
+    public function district()
     {
         return $this->belongsTo(District::class, 'district_id');
     }
 
 
     // Relationship One To Many
-    public function passengerRidesAsDeparture() {
+    public function departurePassengerRides() {
         return $this->hasMany(PassengerRide::class, 'departure_terminal_id');
     }
 
-    public function passengerRidesAsArrival() {
+    public function arrivalPassengerRides() {
         return $this->hasMany(PassengerRide::class, 'arrival_terminal_id');
     }
 
-    public function goodsRidesAsDeparture() {
+    public function departureGoodsRides() {
         return $this->hasMany(GoodsRide::class, 'departure_terminal_id');
     }
 
-    public function goodsRidesAsArrival() {
+    public function arrivalGoodsRides() {
         return $this->hasMany(GoodsRide::class, 'arrival_terminal_id');
     }
 
-    public function passengerPricingAsDeparture() {
+    public function departurePassengerPricings() {
         return $this->hasMany(PassengerPricing::class, 'departure_terminal_id');
     }
 
-    public function passengerPricingAsArrival() {
+    public function arrivalPassengerPricings() {
         return $this->hasMany(PassengerPricing::class, 'arrival_terminal_id');
     }
 
-    public function goodsPricingAsDeparture() {
+    public function departureGoodsPricings() {
         return $this->hasMany(GoodsPricing::class, 'departure_terminal_id');
     }
 
-    public function goodsPricingAsArrival() {
+    public function arrivalGoodsPricings() {
         return $this->hasMany(GoodsPricing::class, 'arrival_terminal_id');
     }
 

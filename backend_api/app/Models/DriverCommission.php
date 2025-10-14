@@ -31,7 +31,7 @@ class DriverCommission extends Model
      * Relasi ke Driver.
      * Satu komisi milik satu driver.
      */
-    public function driverId()
+    public function driver()
     {
         return $this->belongsTo(Driver::class, 'driver_id');
     }

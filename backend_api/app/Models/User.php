@@ -81,11 +81,11 @@ class User extends Authenticatable
 
     // Relationship
     // Relationship One To One
-    public function administrators() {
+    public function administrator() {
         return $this->hasOne(Administrator::class, 'user_id');
     }
 
-    public function customers() {
+    public function customer() {
         return $this->hasOne(Customer::class, 'user_id');
     }
 

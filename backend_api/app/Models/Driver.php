@@ -61,7 +61,7 @@ class Driver extends Model
      * Relasi ke User
      * Satu driver dimiliki oleh satu user.
      */
-    public function userId()
+    public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
     }

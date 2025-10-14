@@ -18,7 +18,7 @@ class Regency extends Model
     ];
 
     // Relationship Many To One
-    public function provinceId(): BelongsTo {
+    public function province(): BelongsTo {
         return $this->belongsTo(Province::class, 'province_id');
     }
 
