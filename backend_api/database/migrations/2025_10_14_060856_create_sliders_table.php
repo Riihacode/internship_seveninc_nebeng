@@ -11,9 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('provinces', function (Blueprint $table) {
+        Schema::create('sliders', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
+
+            // Path atau URL gambar slider
+            $table->string('slider_img');
+
+            // Status aktif / tidak aktif
+            $table->boolean('is_active')->default(true);
+
             $table->timestamps();
         });
     }
@@ -23,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('provinces');
+        Schema::dropIfExists('sliders');
     }
 };

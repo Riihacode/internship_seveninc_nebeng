@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('province_id')->constrained(
                 table: 'provinces',
-                indexName: 'regency_province_id',
+                indexName: 'regency_province_id_fk',
             );
             $table->string('name');
             $table->timestamps();

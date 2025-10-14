@@ -11,9 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('provinces', function (Blueprint $table) {
+        Schema::create('popular_destinations', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
+
+            // Judul atau nama destinasi populer
+            $table->string('title');
+
+            // Gambar destinasi (URL / path file)
+            $table->string('destination_img');
+
             $table->timestamps();
         });
     }
@@ -23,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('provinces');
+        Schema::dropIfExists('popular_destinations');
     }
 };
