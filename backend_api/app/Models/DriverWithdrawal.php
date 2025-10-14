@@ -35,7 +35,7 @@ class DriverWithdrawal extends Model
      * Relasi ke Driver.
      * Satu withdrawal dimiliki oleh satu driver.
      */
-    public function driver()
+    public function driverId()
     {
         return $this->belongsTo(Driver::class, 'driver_id');
     }

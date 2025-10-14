@@ -38,7 +38,7 @@ class CreditScoreLog extends Model
      * Relasi ke Driver.
      * Satu log milik satu driver.
      */
-    public function driver()
+    public function driverId()
     {
         return $this->belongsTo(Driver::class, 'driver_id');
     }

@@ -36,7 +36,7 @@ class GoodsTransaction extends Model
      * Relasi ke GoodsRideBooking.
      * Satu transaksi milik satu booking barang.
      */
-    public function goodsRideBooking()
+    public function goodsRideBookingId()
     {
         return $this->belongsTo(GoodsRideBooking::class, 'goods_ride_booking_id');
     }
@@ -44,7 +44,7 @@ class GoodsTransaction extends Model
     /**
      * Relasi ke Customer.
      */
-    public function customer()
+    public function customerId()
     {
         return $this->belongsTo(Customer::class, 'customer_id');
     }
@@ -52,7 +52,7 @@ class GoodsTransaction extends Model
     /**
      * Relasi ke PaymentMethod.
      */
-    public function paymentMethod()
+    public function paymentMethodId()
     {
         return $this->belongsTo(PaymentMethod::class, 'payment_method_id');
     }

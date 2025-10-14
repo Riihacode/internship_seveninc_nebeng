@@ -81,20 +81,20 @@ class User extends Authenticatable
 
     // Relationship
     // Relationship One To One
-    public function administrator() {
+    public function administrators() {
         return $this->hasOne(Administrator::class, 'user_id');
     }
 
-    public function customer() {
+    public function customers() {
         return $this->hasOne(Customer::class, 'user_id');
     }
 
-    public function driver() {
+    public function drivers() {
         return $this->hasOne(Driver::class, 'user_id');
     }
 
     // Relationship One To Many
-    public function notification() {
+    public function notifications() {
         return $this->hasMany(Notification::class, 'user_id');
     }
 

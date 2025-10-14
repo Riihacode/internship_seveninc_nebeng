@@ -39,13 +39,13 @@ class Customer extends Model
      */
 
     // Relasi ke tabel users
-    public function user()
+    public function userId()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
     // Relasi ke passenger bookings
-    public function passengerBookings()
+    public function passengerRideBookings()
     {
         return $this->hasMany(PassengerRideBooking::class, 'customer_id');
     }

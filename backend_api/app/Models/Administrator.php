@@ -24,20 +24,20 @@ class Administrator extends Model
     ];
 
     // Relationship Many To One
-    public function user() {
+    public function userId() {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function province() {
+    public function provinceId() {
         return $this->belongsTo(Province::class, 'province_id');
     }
 
-    public function regency() {
+    public function regencyId() {
         return $this->belongsTo(Regency::class, 'regency_id');
     }
 
-    public function district() {
-        return $this->belongsTo(District::class, 'distrinct_id');
+    public function districtId() {
+        return $this->belongsTo(District::class, 'district_id');
     }
 
     // HELPER

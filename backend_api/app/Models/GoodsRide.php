@@ -30,25 +30,25 @@ class GoodsRide extends Model
      */
 
     // Satu perjalanan dimiliki oleh satu driver
-    public function driver()
+    public function driverId()
     {
         return $this->belongsTo(Driver::class, 'driver_id');
     }
 
     // Terminal keberangkatan
-    public function departureTerminal()
+    public function departureTerminalId()
     {
         return $this->belongsTo(Terminal::class, 'departure_terminal_id');
     }
 
     // Terminal tujuan
-    public function arrivalTerminal()
+    public function arrivalTerminalId()
     {
         return $this->belongsTo(Terminal::class, 'arrival_terminal_id');
     }
 
     // Satu perjalanan memiliki banyak booking barang
-    public function goodsRideBooking()
+    public function goodsRideBookings()
     {
         return $this->hasMany(GoodsRideBooking::class, 'goods_ride_id');
     }

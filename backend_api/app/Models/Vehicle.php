@@ -38,7 +38,7 @@ class Vehicle extends Model
     /**
      * Satu kendaraan dimiliki oleh satu driver.
      */
-    public function driver()
+    public function driverId()
     {
         return $this->belongsTo(Driver::class, 'driver_id');
     }

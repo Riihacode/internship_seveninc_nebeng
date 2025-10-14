@@ -19,6 +19,7 @@ class PassengerTransaction extends Model
         'passenger_ride_booking_id',
         'customer_id',
         'total_amount',
+        // diubah dari payment_method ke payment_method_id
         'payment_method_id',
         'payment_proof_img',
         'payment_status',
@@ -36,7 +37,7 @@ class PassengerTransaction extends Model
      * Relasi ke tabel PassengerRideBooking
      * One Transaction belongs to one PassengerRideBooking
      */
-    public function passengerRideBooking()
+    public function passengerRideBookingId()
     {
         return $this->belongsTo(PassengerRideBooking::class, 'passenger_ride_booking_id');
     }
@@ -45,7 +46,7 @@ class PassengerTransaction extends Model
      * Relasi ke tabel Customer
      * One Transaction belongs to one Customer
      */
-    public function customer()
+    public function customerId()
     {
         return $this->belongsTo(Customer::class, 'customer_id');
     }
@@ -54,7 +55,7 @@ class PassengerTransaction extends Model
      * Relasi ke tabel PaymentMethod
      * One Transaction uses one PaymentMethod
      */
-    public function paymentMethod()
+    public function paymentMethodId()
     {
         return $this->belongsTo(PaymentMethod::class, 'payment_method_id');
     }

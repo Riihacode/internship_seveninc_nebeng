@@ -31,7 +31,7 @@ class Province extends Model
     }
 
     // format nama province menjadi kaapital setiap kata.
-    public function getFormattedNameAttribute(): String {
+    public function getFormattedNameAttribute(): string {
         return ucwords(strtolower($this->name));
     }
 }

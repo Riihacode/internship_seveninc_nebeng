@@ -33,7 +33,7 @@ class PassengerRideBooking extends Model
      * Relasi ke PassengerRide.
      * Satu booking milik satu ride.
      */
-    public function passengerRide()
+    public function passengerRideId()
     {
         return $this->belongsTo(PassengerRide::class, 'passenger_ride_id');
     }
@@ -42,7 +42,7 @@ class PassengerRideBooking extends Model
      * Relasi ke Customer.
      * Satu booking milik satu customer.
      */
-    public function customer()
+    public function customerId()
     {
         return $this->belongsTo(Customer::class, 'customer_id');
     }
@@ -51,7 +51,7 @@ class PassengerRideBooking extends Model
      * Relasi ke transaksi (PassengerTransaction)
      * Satu booking bisa punya satu transaksi.
      */
-    public function transaction()
+    public function passengerTransactions()
     {
         return $this->hasOne(PassengerTransaction::class, 'passenger_ride_booking_id');
     }

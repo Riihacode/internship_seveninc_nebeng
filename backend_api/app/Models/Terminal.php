@@ -37,7 +37,7 @@ class Terminal extends Model
      * Relasi ke Province
      * One Terminal belongs to one Province
      */
-    public function province()
+    public function provinceId()
     {
         return $this->belongsTo(Province::class, 'province_id');
     }
@@ -46,7 +46,7 @@ class Terminal extends Model
      * Relasi ke Regency (Kabupaten/Kota)
      * One Terminal belongs to one Regency
      */
-    public function regency()
+    public function regencyId()
     {
         return $this->belongsTo(Regency::class, 'regency_id');
     }
@@ -55,7 +55,7 @@ class Terminal extends Model
      * Relasi ke District (Kecamatan)
      * One Terminal belongs to one District
      */
-    public function district()
+    public function districtId()
     {
         return $this->belongsTo(District::class, 'district_id');
     }
@@ -66,7 +66,7 @@ class Terminal extends Model
         return $this->hasMany(PassengerRide::class, 'departure_terminal_id');
     }
 
-    public function arrvialRidesAsArrival() {
+    public function passengerRidesAsArrival() {
         return $this->hasMany(PassengerRide::class, 'arrival_terminal_id');
     }
 

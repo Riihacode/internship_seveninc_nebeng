@@ -37,7 +37,7 @@ class Rating extends Model
     /**
      * Relasi ke Driver (yang diberi rating)
      */
-    public function driver()
+    public function driverId()
     {
         return $this->belongsTo(Driver::class, 'driver_id');
     }
@@ -45,7 +45,7 @@ class Rating extends Model
     /**
      * Relasi ke Customer (yang memberi rating)
      */
-    public function customer()
+    public function customerId()
     {
         return $this->belongsTo(Customer::class, 'customer_id');
     }

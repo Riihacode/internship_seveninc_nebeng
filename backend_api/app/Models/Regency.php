@@ -18,8 +18,8 @@ class Regency extends Model
     ];
 
     // Relationship Many To One
-    public function province(): BelongsTo {
-        return $this->belongsTo(Province::class);
+    public function provinceId(): BelongsTo {
+        return $this->belongsTo(Province::class, 'province_id');
     }
 
     // Relationship One To Many
@@ -35,7 +35,7 @@ class Regency extends Model
         return $this->hasMany(Administrator::class, 'regency_id');
     }
 
-    public function getFormattedNameAttribute(): String {
+    public function getFormattedNameAttribute(): string {
         return ucwords(strtolower($this->name));
     }
 }

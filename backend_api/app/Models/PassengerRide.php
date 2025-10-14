@@ -38,7 +38,7 @@ class PassengerRide extends Model
      * Relasi ke Driver
      * Satu ride dimiliki oleh satu driver
      */
-    public function driver()
+    public function driverId()
     {
         return $this->belongsTo(Driver::class, 'driver_id');
     }
@@ -46,7 +46,7 @@ class PassengerRide extends Model
     /**
      * Relasi ke Terminal Keberangkatan
      */
-    public function departureTerminal()
+    public function departureTerminalId()
     {
         return $this->belongsTo(Terminal::class, 'departure_terminal_id');
     }
@@ -54,7 +54,7 @@ class PassengerRide extends Model
     /**
      * Relasi ke Terminal Tujuan
      */
-    public function arrivalTerminal()
+    public function arrivalTerminalId()
     {
         return $this->belongsTo(Terminal::class, 'arrival_terminal_id');
     }
@@ -63,7 +63,7 @@ class PassengerRide extends Model
      * Relasi ke PassengerRideBooking
      * Satu ride bisa memiliki banyak booking
      */
-    public function bookings()
+    public function passengerRideBookings()
     {
         return $this->hasMany(PassengerRideBooking::class, 'passenger_ride_id');
     }

@@ -21,11 +21,11 @@ class PassengerPricing extends Model
     ];
 
     // Relationship Many To One
-    public function departureTerminal() {
+    public function departureTerminalId() {
         return $this->belongsTo(Terminal::class, 'departure_terminal_id');
     }
 
-    public function arrivalTerminal() {
+    public function arrivalTerminalId() {
         return $this->belongsTo(Terminal::class, 'arrival_terminal_id');
     }
 
