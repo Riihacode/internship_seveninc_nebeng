@@ -32,6 +32,10 @@ class Administrator extends Model
         return $this->belongsTo(Province::class, 'province_id');
     }
 
+    public function regency() {
+        return $this->belongsTo(Regency::class, 'regency_id');
+    }
+
     public function district() {
         return $this->belongsTo(District::class, 'distrinct_id');
     }

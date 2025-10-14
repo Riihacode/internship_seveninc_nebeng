@@ -7,22 +7,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class GoodsRide extends Model
 {
-    //
-    use HasFactory;
+    protected $table = 'goods_rides';
 
-    protected $table = 'goods_ride_bookings';
-
-    /**
-     * Kolom yang dapat diisi mass-assignment.
-     */
     protected $fillable = [
-        'goods_ride_id',
-        'customer_id',
-        'item_weight',
-        'item_description',
-        'item_img',
-        'total_price',
-        'status',
+        'driver_id',
+        'transport_type',
+        'public_terminal_subtype',
+        'departure_terminal_id',
+        'arrival_terminal_id',
+        'departure_time',
+        'max_weight',
+        'weight_reserved',
+        'price_per_kg',
+        'commission_percentage',
+        'ride_status',
     ];
 
     /**
@@ -31,80 +29,44 @@ class GoodsRide extends Model
      * ========================
      */
 
-    /**
-     * Relasi ke GoodsRide
-     * Satu booking milik satu perjalanan barang.
-     */
-    public function goodsRide()
+    // Satu perjalanan dimiliki oleh satu driver
+    public function driver()
     {
-        return $this->belongsTo(GoodsRide::class, 'goods_ride_id');
+        return $this->belongsTo(Driver::class, 'driver_id');
     }
 
-    /**
-     * Relasi ke Customer
-     * Satu booking milik satu pelanggan.
-     */
-    public function customer()
+    // Terminal keberangkatan
+    public function departureTerminal()
     {
-        return $this->belongsTo(Customer::class, 'customer_id');
+        return $this->belongsTo(Terminal::class, 'departure_terminal_id');
     }
 
-    /**
-     * Relasi ke transaksi (GoodsTransaction)
-     * Satu booking bisa punya satu transaksi pembayaran.
-     */
-    public function transaction()
+    // Terminal tujuan
+    public function arrivalTerminal()
     {
-        return $this->hasOne(GoodsTransaction::class, 'goods_ride_booking_id');
+        return $this->belongsTo(Terminal::class, 'arrival_terminal_id');
+    }
+
+    // Satu perjalanan memiliki banyak booking barang
+    public function goodsRideBooking()
+    {
+        return $this->hasMany(GoodsRideBooking::class, 'goods_ride_id');
     }
 
     /**
      * ========================
-     * CASTS & CONSTANTS
+     * ACCESSORS & HELPERS
      * ========================
      */
 
-    public const STATUS_PENDING = 'Pending';
-    public const STATUS_ACCEPTED = 'Diterima';
-    public const STATUS_REJECTED = 'Ditolak';
-
-    /**
-     * ========================
-     * HELPERS
-     * ========================
-     */
-
-    /**
-     * Apakah booking sudah diterima?
-     */
-    public function isAccepted(): bool
+    // Hitung total berat tersisa
+    public function getRemainingWeightAttribute(): int
     {
-        return $this->status === self::STATUS_ACCEPTED;
+        return max(0, $this->max_weight - $this->weight_reserved);
     }
 
-    /**
-     * Apakah booking ditolak?
-     */
-    public function isRejected(): bool
-    {
-        return $this->status === self::STATUS_REJECTED;
-    }
-
-    /**
-     * Hitung harga per kilogram barang.
-     */
-    public function getPricePerKgAttribute(): int
-    {
-        return $this->item_weight > 0
-            ? intdiv($this->total_price, $this->item_weight)
-            : 0;
-    }
-
-    /**
-     * Deskripsi singkat untuk tampilan.
-     */
-    public function getSummaryAttribute(): string
-    {
-        return "Booking #{$this->id} - {$this->status} ({$this->item_weight}kg)";
-    }
+    // Format waktu keberangkatan
+    protected $casts = [
+        'departure_time' => 'datetime',
+    ];
 }
