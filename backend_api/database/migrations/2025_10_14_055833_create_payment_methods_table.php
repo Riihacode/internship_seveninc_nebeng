@@ -11,9 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('provinces', function (Blueprint $table) {
+        Schema::create('payment_methods', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
+
+            // Nama bank, contoh: BCA, BNI, Mandiri, dll
+            $table->string('bank_name');
+
+            // Nama pemilik rekening
+            $table->string('account_name');
+
+            // Nomor rekening / virtual account
+            $table->string('account_number');
+
             $table->timestamps();
         });
     }
@@ -23,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('provinces');
+        Schema::dropIfExists('payment_methods');
     }
 };

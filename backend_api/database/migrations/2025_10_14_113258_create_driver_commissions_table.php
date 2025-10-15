@@ -11,17 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('districts', function (Blueprint $table) {
+        Schema::create('driver_commissions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('regency_id')
+
+            // Relasi ke tabel drivers
+            $table->foreignId('driver_id')
                 ->constrained(
-                    table: 'regencies',
-                    indexName: 'distric_regency_id_fk',
+                    table: 'drivers',
+                    indexName: 'driver_commissions_driver_id_fk'
                 )
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-                
-            $table->string('name');
+
+            // Total pendapatan (dalam satuan rupiah)
+            $table->integer('income')->default(0);
+
             $table->timestamps();
         });
     }
@@ -31,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('districts');
+        Schema::dropIfExists('driver_commissions');
     }
 };
