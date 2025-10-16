@@ -1,6 +1,5 @@
 package com.example.nebeng.feature_auth.presentation.profile
 
-import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -26,13 +25,15 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 @Composable
 fun EditProfileScreen(
     userId: Int,
+    nameInit: String,
     usernameInit: String,
     passwordInit: String,
-    role: String,
+    userTypeInit: String,
     modifier: Modifier = Modifier,
     viewModel: ProfileViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
+    var name by remember { mutableStateOf(nameInit) }
     var username by remember { mutableStateOf(usernameInit) }
     var password by remember { mutableStateOf(passwordInit) }
 
@@ -66,9 +67,10 @@ fun EditProfileScreen(
             onClick = {
                 viewModel.updateProfile(
                     id = userId,
+                    name = name,
                     username = username,
                     password = password,
-                    role = role,
+                    user_type = userTypeInit,
                     onSuccess = {
                         Toast.makeText(context, "Profil diperbarui", Toast.LENGTH_SHORT).show()
                     },

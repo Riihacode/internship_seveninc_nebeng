@@ -47,7 +47,7 @@ fun ProfileDetailScreen(
                 Spacer(Modifier.height(16.dp))
                 Text("Username: ${currentUser!!.username}", fontWeight = FontWeight.Medium)
                 Text("Password: ${currentUser!!.password}")
-                Text("Role: ${currentUser!!.role}")
+                Text("User Type: ${currentUser!!.user_type}")
             }
         }
     }

@@ -60,7 +60,7 @@ fun UserListScreen(
                         Column(Modifier.padding(16.dp)) {
                             Text("Username: ${user.username}", style = MaterialTheme.typography.titleMedium)
                             Text("Password: ${user.password}")
-                            Text("Role: ${user.role}")
+                            Text("User Type: ${user.user_type}")
                         }
                     }
                 }

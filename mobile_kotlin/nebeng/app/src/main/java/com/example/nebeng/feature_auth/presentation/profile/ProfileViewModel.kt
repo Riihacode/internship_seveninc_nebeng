@@ -1,8 +1,6 @@
 package com.example.nebeng.feature_auth.presentation.profile
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nebeng.core.session.UserPreferencesRepository
@@ -48,11 +46,19 @@ class ProfileViewModel @Inject constructor(
         viewModelScope.launch {
             combine(
                 userPrefsRepo.userIdFlow,
+                userPrefsRepo.nameFlow,
                 userPrefsRepo.usernameFlow,
-                userPrefsRepo.roleFlow,
+                userPrefsRepo.userTypeFlow,
                 userPrefsRepo.isLoggedInFlow
-            ) { id, username, role, isLoggedIn ->
-                if (isLoggedIn) Auth(id = id, username = username, password = "", role = role)
+            ) { id, name, username, user_type, isLoggedIn ->
+                if (isLoggedIn) Auth(
+                    id = id,
+                    name = name,
+                    username = username,
+                    password = "",
+                    email = "",
+                    user_type = user_type
+                )
                 else null
             }.collectLatest { sessionUser ->
                 if (sessionUser != null) {
@@ -84,14 +90,21 @@ class ProfileViewModel @Inject constructor(
     // ===============================
     fun updateProfile(
         id: Int,
+        name: String,
         username: String,
         password: String,
-        role: String,
+        user_type: String,
         onSuccess: () -> Unit,
         onError: (String) -> Unit
     ) {
         viewModelScope.launch {
-            val updatedUser = Auth(id = id, username = username, password = password, role = role)
+            val updatedUser = Auth(
+                id = id,
+                name = name,
+                username = username,
+                password = password,
+                email = "",
+                user_type = user_type)
             when (val result = useCases.updateAuth(updatedUser)) {
                 is Result.Success -> {
                     onSuccess()
