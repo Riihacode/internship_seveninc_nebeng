@@ -2,10 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\RegencyController;
 use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\ProvinceController;
-use App\Http\Controllers\RegencyController;
 use App\Http\Controllers\TerminalController;
+use App\Http\Controllers\GoodsRideController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -45,4 +46,13 @@ Route::prefix('regencies')->group(function(){
 Route::prefix('districts')->group(function () {
     Route::get('/', [DistrictController::class, 'index']);
     Route::get('/{id}', [DistrictController::class, 'show']);
+});
+
+// [GOODS RIDE]
+Route::prefix('goods-rides')->group(function () {
+    Route::get('/', [GoodsRideController::class, 'index']);
+    Route::get('/{id}', [GoodsRideController::class, 'show']);
+    Route::post('/', [GoodsRideController::class, 'store']);
+    Route::put('/{id}', [GoodsRideController::class, 'update']);
+    Route::delete('/{id}', [GoodsRideController::class, 'destroy']);
 });
