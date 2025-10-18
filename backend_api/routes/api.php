@@ -9,6 +9,7 @@ use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\TerminalController;
 use App\Http\Controllers\GoodsRideController;
+use App\Http\Controllers\PassengerRideController;
 use App\Http\Controllers\GoodsRideBookingController;
 
 Route::post('/register', [AuthController::class, 'register']);
@@ -88,4 +89,15 @@ Route::prefix('goods-ride-bookings')->group(function () {
     Route::post('/', [GoodsRideBookingController::class, 'store']);
     Route::put('/{id}', [GoodsRideBookingController::class, 'update']);
     Route::delete('/{id}', [GoodsRideBookingController::class, 'destroy']);
+});
+
+// [ PASSENGER RIDE ]
+Route::prefix('passenger-rides')->group(function () {
+    Route::get('/', [PassengerRideController::class, 'index']);
+    Route::get('/{id}', [PassengerRideController::class, 'show']);
+    Route::get('/driver/{driver_id}', [PassengerRideController::class, 'byDriver']);
+    Route::get('/status/{status}', [PassengerRideController::class, 'byStatus']);
+    Route::post('/', [PassengerRideController::class, 'store']);
+    Route::put('/{id}', [PassengerRideController::class, 'update']);
+    Route::delete('/{id}', [PassengerRideController::class, 'destroy']);
 });
