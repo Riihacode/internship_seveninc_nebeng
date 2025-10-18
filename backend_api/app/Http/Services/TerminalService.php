@@ -55,7 +55,7 @@ class TerminalService {
             'name'                      => 'sometimes|required|string|max:255',
             'terminal_type'             => 'required|string',
             'public_terminal_subtype'   => 'nullable|string',
-            'povince_id'                => 'required|exists:provinces,id',
+            'province_id'               => 'required|exists:provinces,id',
             'regency_id'                => 'required|exists:regencies,id',
             'district_id'               => 'required|exists:districts,id',
             'full_address'              => 'required|string',
