@@ -11,6 +11,7 @@ use App\Http\Controllers\TerminalController;
 use App\Http\Controllers\GoodsRideController;
 use App\Http\Controllers\PassengerRideController;
 use App\Http\Controllers\CreditScoreLogController;
+use App\Http\Controllers\DriverCommissionController;
 use App\Http\Controllers\DriverWithdrawalController;
 use App\Http\Controllers\GoodsRideBookingController;
 
@@ -122,4 +123,14 @@ Route::prefix('driver-withdrawals')->group(function () {
     Route::post('/', [DriverWithdrawalController::class, 'store']);
     Route::put('/{id}', [DriverWithdrawalController::class, 'update']);
     Route::delete('/{id}', [DriverWithdrawalController::class, 'destroy']);
+});
+
+// [ DRIVER COMMISSIONS ]
+Route::prefix('driver-commissions')->group(function () {
+    Route::get('/', [DriverCommissionController::class, 'index']);
+    Route::get('/{id}', [DriverCommissionController::class, 'show']);
+    Route::get('/driver/{driver_id}', [DriverCommissionController::class, 'byDriver']);
+    Route::post('/', [DriverCommissionController::class, 'store']);
+    Route::put('/{id}', [DriverCommissionController::class, 'update']);
+    Route::delete('/{id}', [DriverCommissionController::class, 'destroy']);
 });
