@@ -17,6 +17,7 @@ use App\Http\Controllers\CreditScoreLogController;
 use App\Http\Controllers\DriverCommissionController;
 use App\Http\Controllers\DriverWithdrawalController;
 use App\Http\Controllers\GoodsRideBookingController;
+use App\Http\Controllers\PassengerRideBookingController;
 use App\Http\Controllers\PassengerTransactionController;
 
 Route::post('/register', [AuthController::class, 'register']);
@@ -183,4 +184,16 @@ Route::prefix('payment-methods')->group(function () {
     Route::post('/', [PaymentMethodController::class, 'store']);
     Route::put('/{id}', [PaymentMethodController::class, 'update']);
     Route::delete('/{id}', [PaymentMethodController::class, 'destroy']);
+});
+
+// [ PASSENGER RIDE BOOKINGS ]
+Route::prefix('passenger-ride-bookings')->group(function () {
+    Route::get('/', [PassengerRideBookingController::class, 'index']);
+    Route::get('/{id}', [PassengerRideBookingController::class, 'show']);
+    Route::get('/ride/{ride_id}', [PassengerRideBookingController::class, 'byRide']);
+    Route::get('/customer/{customer_id}', [PassengerRideBookingController::class, 'byCustomer']);
+    Route::post('/', [PassengerRideBookingController::class, 'store']);
+    Route::put('/{id}', [PassengerRideBookingController::class, 'update']);
+    Route::patch('/{id}/status', [PassengerRideBookingController::class, 'updateStatus']);
+    Route::delete('/{id}', [PassengerRideBookingController::class, 'destroy']);
 });
