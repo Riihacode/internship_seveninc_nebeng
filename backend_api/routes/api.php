@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\RegencyController;
+use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\TerminalController;
@@ -133,4 +134,16 @@ Route::prefix('driver-commissions')->group(function () {
     Route::post('/', [DriverCommissionController::class, 'store']);
     Route::put('/{id}', [DriverCommissionController::class, 'update']);
     Route::delete('/{id}', [DriverCommissionController::class, 'destroy']);
+});
+
+// [ VEHICLES ]
+Route::prefix('vehicles')->group(function () {
+    Route::get('/', [VehicleController::class, 'index']);
+    Route::get('/{id}', [VehicleController::class, 'show']);
+    Route::get('/driver/{driver_id}', [VehicleController::class, 'byDriver']);
+    Route::post('/', [VehicleController::class, 'store']);
+    Route::put('/{id}', [VehicleController::class, 'update']);
+    Route::patch('/{id}/verify', [VehicleController::class, 'verify']);
+    Route::patch('/{id}/reject', [VehicleController::class, 'reject']);
+    Route::delete('/{id}', [VehicleController::class, 'destroy']);
 });
