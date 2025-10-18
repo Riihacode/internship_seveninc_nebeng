@@ -11,6 +11,7 @@ use App\Http\Controllers\TerminalController;
 use App\Http\Controllers\GoodsRideController;
 use App\Http\Controllers\PassengerRideController;
 use App\Http\Controllers\CreditScoreLogController;
+use App\Http\Controllers\DriverWithdrawalController;
 use App\Http\Controllers\GoodsRideBookingController;
 
 Route::post('/register', [AuthController::class, 'register']);
@@ -110,4 +111,15 @@ Route::prefix('credit-score-logs')->group(function () {
     Route::get('/driver/{driver_id}', [CreditScoreLogController::class, 'byDriver']);
     Route::post('/', [CreditScoreLogController::class, 'store']);
     Route::delete('/{id}', [CreditScoreLogController::class, 'destroy']);
+});
+
+// [ DRIVER WITHDRAWALS ]
+Route::prefix('driver-withdrawals')->group(function () {
+    Route::get('/', [DriverWithdrawalController::class, 'index']);
+    Route::get('/{id}', [DriverWithdrawalController::class, 'show']);
+    Route::get('/driver/{driver_id}', [DriverWithdrawalController::class, 'byDriver']);
+    Route::get('/status/{status}', [DriverWithdrawalController::class, 'byStatus']);
+    Route::post('/', [DriverWithdrawalController::class, 'store']);
+    Route::put('/{id}', [DriverWithdrawalController::class, 'update']);
+    Route::delete('/{id}', [DriverWithdrawalController::class, 'destroy']);
 });
