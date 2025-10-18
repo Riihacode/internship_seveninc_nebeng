@@ -6,6 +6,7 @@ use App\Http\Controllers\DriverController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\RegencyController;
 use App\Http\Controllers\VehicleController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\TerminalController;
@@ -146,4 +147,17 @@ Route::prefix('vehicles')->group(function () {
     Route::patch('/{id}/verify', [VehicleController::class, 'verify']);
     Route::patch('/{id}/reject', [VehicleController::class, 'reject']);
     Route::delete('/{id}', [VehicleController::class, 'destroy']);
+});
+
+// [ CUSTOMERS ]
+Route::prefix('customers')->group(function () {
+    Route::get('/', [CustomerController::class, 'index']);
+    Route::get('/{id}', [CustomerController::class, 'show']);
+    Route::get('/user/{user_id}', [CustomerController::class, 'byUser']);
+    Route::post('/', [CustomerController::class, 'store']);
+    Route::put('/{id}', [CustomerController::class, 'update']);
+    Route::patch('/{id}/verify', [CustomerController::class, 'verify']);
+    Route::patch('/{id}/add-credit', [CustomerController::class, 'addCredit']);
+    Route::patch('/{id}/deduct-credit', [CustomerController::class, 'deductCredit']);
+    Route::delete('/{id}', [CustomerController::class, 'destroy']);
 });
