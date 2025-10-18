@@ -12,6 +12,7 @@ use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\TerminalController;
 use App\Http\Controllers\GoodsRideController;
 use App\Http\Controllers\PassengerRideController;
+use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\CreditScoreLogController;
 use App\Http\Controllers\DriverCommissionController;
 use App\Http\Controllers\DriverWithdrawalController;
@@ -173,4 +174,13 @@ Route::prefix('passenger-transactions')->group(function () {
     Route::put('/{id}', [PassengerTransactionController::class, 'update']);
     Route::patch('/{id}/status', [PassengerTransactionController::class, 'updateStatus']);
     Route::delete('/{id}', [PassengerTransactionController::class, 'destroy']);
+});
+
+// [ PAYMENT METHODS ]
+Route::prefix('payment-methods')->group(function () {
+    Route::get('/', [PaymentMethodController::class, 'index']);
+    Route::get('/{id}', [PaymentMethodController::class, 'show']);
+    Route::post('/', [PaymentMethodController::class, 'store']);
+    Route::put('/{id}', [PaymentMethodController::class, 'update']);
+    Route::delete('/{id}', [PaymentMethodController::class, 'destroy']);
 });
