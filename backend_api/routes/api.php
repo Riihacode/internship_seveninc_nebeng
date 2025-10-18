@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DriverController;
+use App\Http\Controllers\RatingController;
 use App\Http\Controllers\RegencyController;
 use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\ProvinceController;
@@ -56,3 +58,23 @@ Route::prefix('goods-rides')->group(function () {
     Route::put('/{id}', [GoodsRideController::class, 'update']);
     Route::delete('/{id}', [GoodsRideController::class, 'destroy']);
 });
+
+// [ DRIVER ]
+Route::prefix('drivers')->group(function () {
+    Route::get('/', [DriverController::class, 'index']);
+    Route::get('/{id}', [DriverController::class, 'show']);
+    Route::post('/', [DriverController::class, 'store']);
+    Route::put('/{id}', [DriverController::class, 'update']);
+    Route::delete('/{id}', [DriverController::class, 'destroy']);
+});
+
+// [ RATING ]
+Route::prefix('ratings')->group(function () {
+    Route::get('/', [RatingController::class, 'index']);
+    Route::get('/{id}', [RatingController::class, 'show']);
+    Route::get('/driver/{driver_id}', [RatingController::class, 'showByDriver']);
+    Route::post('/', [RatingController::class, 'store']);
+    Route::put('/{id}', [RatingController::class, 'update']);
+    Route::delete('/{id}', [RatingController::class, 'destroy']);
+});
+
