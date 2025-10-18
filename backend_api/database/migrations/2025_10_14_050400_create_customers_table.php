@@ -27,7 +27,7 @@ return new class extends Migration
             $table->string('full_name');
             $table->string('telephone');
             $table->string('full_address');
-            $table->string('profile_img');
+            $table->string('profile_img')->nullable();      // Ini wajib dignatik karena tidak boleh null
 
             // Status verifikasi
             $table->boolean('verified')->default(false);

@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('full_name');
             $table->string('telephone');
             $table->string('full_address');
-            $table->string('profile_img');
+            $table->string('profile_img')->nullable();      // ini wajib diganti karena tidak boleh null
             $table->integer('balance')->default(0);
             $table->integer('credit_score')->default(0);
 
