@@ -24,6 +24,12 @@ class DatabaseSeeder extends Seeder
             ProvinceSeeder::class,
             RegencySeeder::class,
             DistrictSeeder::class,
+            RatingSeeder::class,
+            GoodsRideSeeder::class,
+            PassengerRideSeeder::class,
+            PassengerRideBookingSeeder::class,
+            GoodsRideBookingSeeder::class,
+            GoodsTransactionSeeder::class,
         ]);
     }
 }
