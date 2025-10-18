@@ -29,7 +29,7 @@ class UserRepository{
             'username'  => $data ['username'],
             'email'     => $data['email'],
             'password'  => $data['password'],
-            'user_type' => $data['uset_type'],
+            'user_type' => $data['user_type'],
         ]);
     }
 
