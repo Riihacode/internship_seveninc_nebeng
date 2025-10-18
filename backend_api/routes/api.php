@@ -10,6 +10,7 @@ use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\TerminalController;
 use App\Http\Controllers\GoodsRideController;
 use App\Http\Controllers\PassengerRideController;
+use App\Http\Controllers\CreditScoreLogController;
 use App\Http\Controllers\GoodsRideBookingController;
 
 Route::post('/register', [AuthController::class, 'register']);
@@ -100,4 +101,13 @@ Route::prefix('passenger-rides')->group(function () {
     Route::post('/', [PassengerRideController::class, 'store']);
     Route::put('/{id}', [PassengerRideController::class, 'update']);
     Route::delete('/{id}', [PassengerRideController::class, 'destroy']);
+});
+
+// [ CREDIT SCORE LOG ]
+Route::prefix('credit-score-logs')->group(function () {
+    Route::get('/', [CreditScoreLogController::class, 'index']);
+    Route::get('/{id}', [CreditScoreLogController::class, 'show']);
+    Route::get('/driver/{driver_id}', [CreditScoreLogController::class, 'byDriver']);
+    Route::post('/', [CreditScoreLogController::class, 'store']);
+    Route::delete('/{id}', [CreditScoreLogController::class, 'destroy']);
 });
