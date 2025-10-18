@@ -15,11 +15,13 @@ class RegencyController extends Controller
         $this->regencyService = $regencyService;
     }
 
+    // GET /api/regencies
     public function index() {
         $data = $this->regencyService->listRegencies();
         return response()->json(['data' => $data], 200);
     }
 
+    // GET /api/regencies/{id}
     public function show($id) {
         try {
             $data = $this->regencyService->getRegency($id);
@@ -29,6 +31,7 @@ class RegencyController extends Controller
         }
     }
 
+    // GET /api/provinces/{province_id}/regencies
     public function getByProvince($provinceId) {
         $data = $this->regencyService->getRegency($provinceId);
         return response()->json(['data' => $data], 200);

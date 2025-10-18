@@ -13,7 +13,8 @@ class TerminalRepository {
 
     public function getAll() {
         return $this->model
-            ->with(['provinces', 'regencies', 'districts'])
+            // ->with(['provinces', 'regencies', 'districts'])
+            ->with(['province', 'regency', 'district'])
             ->orderBy('name', 'ASC')
             ->get();
     }
@@ -21,12 +22,15 @@ class TerminalRepository {
     public function findById($id) {
         return $this->model
             ->with([
-                'provinces',
-                'regencies',
-                'districts',
+                // 'provinces',
+                // 'regencies',
+                // 'districts',
+                'province',
+                'regency',
+                'district',
                 'departurePassengerRides',
                 'arrivalPassengerRides',
-                'departurGoodsRides',
+                'departureGoodsRides',
                 'arrivalPassengerRides',
                 'departurePassengerPricings',
                 'arrivalPassengerPricings',

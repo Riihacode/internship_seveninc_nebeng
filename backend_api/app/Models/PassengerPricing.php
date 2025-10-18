@@ -10,7 +10,7 @@ class PassengerPricing extends Model
     //
     use HasFactory;
 
-    protected $table = 'passenger_pricing';
+    protected $table = 'passenger_pricings';
 
     protected $fillable = [
         'vehicle_type',
@@ -34,7 +34,7 @@ class PassengerPricing extends Model
         return 'Rp'.number_format($this->price_per_seat, 0, '.', '.');
     }
 
-    // Label kendaraaan 
+    // Label kendaraaan
     public function getVehicleAttribute():string {
         return $this->vehicle_type === 'Mobil' ? 'Mobil' : 'Motor';
     }

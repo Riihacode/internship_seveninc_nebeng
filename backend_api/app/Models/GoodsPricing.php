@@ -10,7 +10,7 @@ class GoodsPricing extends Model
     //
     use HasFactory;
 
-    protected $table = 'goods_pricing';
+    protected $table = 'goods_pricings';
 
     protected $fillable = [
         'transport_type',
