@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Repositories;
+namespace App\Http\Services;
 
 // use Dotenv\Exception\ValidationException;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Repositories\GoodsRideRepository;
 use Illuminate\Validation\ValidationException;
 
 class GoodsRideService {

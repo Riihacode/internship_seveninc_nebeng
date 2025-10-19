@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Repositories\GoodsRideService;
+// use App\Http\Repositories\GoodsRideService;
+use App\Http\Services\GoodsRideService;
 use Illuminate\Validation\ValidationException;
 
 class GoodsRideController extends Controller
