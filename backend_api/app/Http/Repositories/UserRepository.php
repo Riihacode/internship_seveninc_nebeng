@@ -7,18 +7,41 @@ use Illuminate\Support\Facades\Hash;
 
 class UserRepository{
 
-    public function createUser(array $data){
-        return User::create([
-            'name' => $data['name'],
-            'username' => $data['username'],
-            'email' => $data['email'],
-            'role' => $data['role'],
-            'password' => Hash::make($data['password']),
+    protected $model;
+
+    public function __construct(User $user) {
+        $this->model = $user;
+    }
+
+    // public function createUser(array $data){
+    //     return User::create([
+    //         'name' => $data['name'],
+    //         'username' => $data['username'],
+    //         'email' => $data['email'],
+    //         // 'role' => $data['role'],
+    //         'password' => Hash::make($data['password']),
+    //         'user_type' => $data['user_type'],
+    //     ]);
+    // }
+    public function createUser(array $data) {
+        return $this->model->create([
+            'name'      => $data['name'],
+            'username'  => $data ['username'],
+            'email'     => $data['email'],
+            'password'  => $data['password'],
+            'user_type' => $data['user_type'],
         ]);
     }
 
-    public function findByEmailOrUsername(string $userIdentifier){
-        return User::where('email', $userIdentifier)
+    // public function findByEmailOrUsername(string $login){
+    //     return User::where('email', $login)
+    //         ->orWhere('username', $login)
+    //         ->first();
+    // }
+
+    public function findByEmailOrUsername(string $userIdentifier) {
+        return $this->model
+            ->where('email', $userIdentifier)
             ->orWhere('username', $userIdentifier)
             ->first();
     }
