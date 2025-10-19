@@ -25,7 +25,7 @@ class AuthService{
 
     public function login(array $data){
 
-        $user = $this->userRepo->findByEmailOrUsername($data['login']);
+        $user = $this->userRepo->findByEmailOrUsername($data['userIdentifier']);
 
         if (! $user || ! Hash::check($data['password'], $user->password)) {
             throw ValidationException::withMessages([

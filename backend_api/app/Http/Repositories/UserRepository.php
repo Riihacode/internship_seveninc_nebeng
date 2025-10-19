@@ -17,9 +17,9 @@ class UserRepository{
         ]);
     }
 
-    public function findByEmailOrUsername(string $login){
-        return User::where('email', $login)
-            ->orWhere('username', $login)
+    public function findByEmailOrUsername(string $userIdentifier){
+        return User::where('email', $userIdentifier)
+            ->orWhere('username', $userIdentifier)
             ->first();
     }
     public function updateUser(User $user, array $data){
