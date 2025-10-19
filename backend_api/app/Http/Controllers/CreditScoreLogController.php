@@ -3,59 +3,61 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use App\Http\Services\CreditScoreLogService;
 use Illuminate\Validation\ValidationException;
-use App\Http\Repositories\CreditScoreLogRepository;
 
 class CreditScoreLogController extends Controller
 {
     //
-    protected $creditScoreLogRepository;
+    protected $creditScoreLogService;
 
-    public function __construct(CreditScoreLogRepository $repo)
+    public function __construct(CreditScoreLogService $service)
     {
-        $this->creditScoreLogRepository = $repo;
+        $this->creditScoreLogService = $service;
     }
 
-    // Ambil semua log
-    public function listLogs()
+    // GET /api/credit-score-logs
+    public function index()
     {
-        return $this->creditScoreLogRepository->getAll();
+        $logs = $this->creditScoreLogService->listLogs();
+        return response()->json(['data' => $logs], 200);
     }
 
-    // Ambil log berdasarkan ID
-    public function getLog($id)
+    // GET /api/credit-score-logs/{id}
+    public function show($id)
     {
-        return $this->creditScoreLogRepository->findById($id);
-    }
-
-    // Ambil log berdasarkan driver
-    public function listByDriver($driverId)
-    {
-        return $this->creditScoreLogRepository->getByDriverId($driverId);
-    }
-
-    // Tambah log baru
-    public function createLog(array $data)
-    {
-        $validator = Validator::make($data, [
-            'driver_id' => 'required|exists:drivers,id',
-            'action_type' => 'required|string|max:255',
-            'score_change' => 'required|integer',
-            'notes' => 'nullable|string|max:500',
-            'created_at' => 'nullable|date',
-        ]);
-
-        if ($validator->fails()) {
-            throw new ValidationException($validator);
+        $log = $this->creditScoreLogService->getLog($id);
+        if (!$log) {
+            return response()->json(['message' => 'Credit score log not found'], 404);
         }
-
-        return $this->creditScoreLogRepository->create($data);
+        return response()->json(['data' => $log], 200);
     }
 
-    // Hapus log
-    public function deleteLog($id)
+    // GET /api/credit-score-logs/driver/{driver_id}
+    public function byDriver($driverId)
     {
-        return $this->creditScoreLogRepository->delete($id);
+        $logs = $this->creditScoreLogService->listByDriver($driverId);
+        return response()->json(['data' => $logs], 200);
+    }
+
+    // POST /api/credit-score-logs
+    public function store(Request $request)
+    {
+        try {
+            $log = $this->creditScoreLogService->createLog($request->all());
+            return response()->json(['data' => $log], 201);
+        } catch (ValidationException $e) {
+            return response()->json(['errors' => $e->errors()], 422);
+        }
+    }
+
+    // DELETE /api/credit-score-logs/{id}
+    public function destroy($id)
+    {
+        $deleted = $this->creditScoreLogService->deleteLog($id);
+        if ($deleted) {
+            return response()->json(['message' => 'Credit score log deleted successfully'], 200);
+        }
+        return response()->json(['message' => 'Credit score log not found'], 404);
     }
 }
