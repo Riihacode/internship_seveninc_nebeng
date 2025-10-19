@@ -2,6 +2,7 @@ package com.example.nebeng.feature_auth.di
 
 import com.example.nebeng.core.session.UserPreferencesRepository
 import com.example.nebeng.feature_auth.data.local.dao.AuthDao
+import com.example.nebeng.feature_auth.data.remote.api.AuthApi
 import com.example.nebeng.feature_auth.data.repository.AuthRepository
 import com.example.nebeng.feature_auth.data.repository.AuthRepositoryImpl
 import com.example.nebeng.feature_auth.domain.usecase.CreateAuthUseCase
@@ -20,13 +21,22 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AuthModule {
+//    @Provides
+//    @Singleton
+//    fun provideAuthRepository(
+//        dao: AuthDao
+//    ): AuthRepository {
+//        // Contoh palai versi lokal dulu, nanti bisa ditambah / diganti api kalau udah siap
+//        return AuthRepositoryImpl(dao)
+//    }
+
     @Provides
     @Singleton
     fun provideAuthRepository(
-        dao: AuthDao
+        api: AuthApi
     ): AuthRepository {
         // Contoh palai versi lokal dulu, nanti bisa ditambah / diganti api kalau udah siap
-        return AuthRepositoryImpl(dao)
+        return AuthRepositoryImpl(api)
     }
 
     @Provides

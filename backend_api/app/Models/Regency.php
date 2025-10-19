@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Regency extends Model
 {
     use HasFactory;
-    
+
     protected $table = 'regencies';
 
     protected $fillable = [
@@ -40,7 +40,7 @@ class Regency extends Model
         return ucwords(strtolower($this->name));
     }
 
-    public function distric(): HasMany{
-        return $this->hasMany(District::class);
-    }
+    // public function distric(): HasMany{
+    //     return $this->hasMany(District::class);
+    // }
 }

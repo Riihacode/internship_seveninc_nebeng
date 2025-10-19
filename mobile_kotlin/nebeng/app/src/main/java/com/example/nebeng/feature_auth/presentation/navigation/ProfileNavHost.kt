@@ -55,9 +55,10 @@ fun ProfileNavHost(
             ) { padding ->
                 EditProfileScreen(
                     userId = 1, // nanti ambil dari DataStore
+                    nameInit = "adm",
                     usernameInit = "admin",
                     passwordInit = "1234",
-                    role = "admin",
+                    userTypeInit = "admin",
                     modifier = Modifier.padding(padding)
                 )
             }

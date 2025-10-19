@@ -9,25 +9,63 @@ import javax.inject.Inject
 import com.example.nebeng.core.model.Result
 import com.example.nebeng.feature_auth.di.AuthUseCases
 
+// [SEBELUM ADA API]
+//@HiltViewModel
+//class SignupViewModel @Inject constructor(
+//    private val useCases: AuthUseCases
+//): ViewModel() {
+//    fun signup(
+//        username: String,
+//        password: String,
+//        role: String = "user",
+//        onSuccess: () -> Unit,
+//        onError: (String) -> Unit
+//    ) {
+//        viewModelScope.launch {
+//            when (
+//                val result = useCases.createAuth(
+//                    Auth(
+//                        id = 0,
+//                        username = username,
+//                        password = password,
+//                        role = role
+//                    )
+//                )
+//            ) {
+//                is Result.Success -> onSuccess()
+//                is Result.Error -> onError(result.message ?: "Gagal membuat user baru")
+//                else -> {}
+//            }
+//        }
+//    }
+//}
+
+
 @HiltViewModel
 class SignupViewModel @Inject constructor(
     private val useCases: AuthUseCases
 ): ViewModel() {
     fun signup(
+        name: String,
         username: String,
+        email: String,
         password: String,
-        role: String = "user",
+        user_type: String?,
         onSuccess: () -> Unit,
         onError: (String) -> Unit
     ) {
+//        val safeRole = user_type ?: "customer"
+        val safeUserType = user_type ?: "customer"
         viewModelScope.launch {
             when (
                 val result = useCases.createAuth(
                     Auth(
                         id = 0,
+                        name = name,
                         username = username,
+                        email = email,
                         password = password,
-                        role = role
+                        user_type = safeUserType
                     )
                 )
             ) {

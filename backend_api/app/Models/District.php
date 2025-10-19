@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class District extends Model
 {
     use HasFactory;
-    
+
     protected $table = 'districts';
 
     protected $fillable = [
@@ -28,7 +28,7 @@ class District extends Model
     }
 
     public function administrators() {
-        return $this->hasMnay(Administrator::class, 'district_id');
+        return $this->hasMany(Administrator::class, 'district_id');
     }
 
     // Formatted district name to capital letters

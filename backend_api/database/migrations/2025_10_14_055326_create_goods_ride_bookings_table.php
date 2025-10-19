@@ -35,7 +35,7 @@ return new class extends Migration
             // Detail barang
             $table->integer('item_weight'); // dalam kg
             $table->string('item_description');
-            $table->string('item_img');
+            $table->string('item_img')->nullable(); // wajib diganti karena tidak boleh null
 
             // Harga total untuk semua barang
             $table->integer('total_price');

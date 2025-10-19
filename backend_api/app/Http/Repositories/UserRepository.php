@@ -22,6 +22,7 @@ class UserRepository{
             ->orWhere('username', $userIdentifier)
             ->first();
     }
+
     public function updateUser(User $user, array $data){
         return $user->update($data);
     }
@@ -30,11 +31,19 @@ class UserRepository{
         return $user->delete();
     }
 
-    public function getAllUser(){
-        return User::all();
+    // public function getAllUser(){
+    //     return User::all();
+    // }
+
+    public function getAllUser() {
+        return $this->model->all();
     }
 
-    public function findByIdUser($id){
-        return User::findOrFail($id);
+    // public function findByIdUser($id){
+    //     return User::findOrFail($id);
+    // }
+
+    public function findByIdUser($id) {
+        return $this->model->findOrFail($id);
     }
 }

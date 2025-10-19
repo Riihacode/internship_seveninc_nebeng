@@ -10,39 +10,80 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 // Extension DataStore di Context
+//val Context.dataStore by preferencesDataStore(name = "user_prefs")
+//
+//class UserPreferences(private val context: Context) {
+//    companion object {
+//        private val USER_ID = intPreferencesKey("user_id")
+//        private val USERNAME = stringPreferencesKey("username")
+//        private val ROLE = stringPreferencesKey("role")
+//        private val IS_LOGGED_IN = booleanPreferencesKey("is_logged_in")
+//    }
+//
+//    // Simpan data user setelah login
+//    suspend fun saveUserSession(
+//        userId: Int,
+//        username: String,
+//        role: String,
+//        isLoggedIn: Boolean
+//    ) {
+//        context.dataStore.edit { prefs ->
+//            prefs[USER_ID] = userId
+//            prefs[USERNAME] = username
+//            prefs[ROLE] = role
+//            prefs[IS_LOGGED_IN] = isLoggedIn
+//        }
+//    }
+//
+//    // Ambil data user (Flow)
+//    val userIdFlow: Flow<Int>           = context.dataStore.data.map { it[USER_ID] ?: 0}
+//    val usernameFlow: Flow<String>      = context.dataStore.data.map { it[USERNAME] ?: ""}
+//    val roleFlow: Flow<String>          = context.dataStore.data.map { it[ROLE] ?: ""}
+//    val isLoggedInFlow: Flow<Boolean>   = context.dataStore.data.map { it[IS_LOGGED_IN] ?: false}
+//
+//    // Hapus session saat logout
+//    suspend fun clearSeassion() {
+//        context.dataStore.edit { it.clear() }
+//    }
+//}
+
 val Context.dataStore by preferencesDataStore(name = "user_prefs")
 
 class UserPreferences(private val context: Context) {
     companion object {
         private val USER_ID = intPreferencesKey("user_id")
+        private val NAME = stringPreferencesKey("name")
         private val USERNAME = stringPreferencesKey("username")
-        private val ROLE = stringPreferencesKey("role")
+        private val USER_TYPE = stringPreferencesKey("role")
         private val IS_LOGGED_IN = booleanPreferencesKey("is_logged_in")
     }
 
     // Simpan data user setelah login
     suspend fun saveUserSession(
         userId: Int,
+        name: String,
         username: String,
-        role: String,
+        user_type: String,
         isLoggedIn: Boolean
     ) {
         context.dataStore.edit { prefs ->
             prefs[USER_ID] = userId
+            prefs[NAME] = name
             prefs[USERNAME] = username
-            prefs[ROLE] = role
+            prefs[USER_TYPE] = user_type
             prefs[IS_LOGGED_IN] = isLoggedIn
         }
     }
 
     // Ambil data user (Flow)
     val userIdFlow: Flow<Int>           = context.dataStore.data.map { it[USER_ID] ?: 0}
+    val nameFlow: Flow<String>          = context.dataStore.data.map { it[NAME] ?: ""}
     val usernameFlow: Flow<String>      = context.dataStore.data.map { it[USERNAME] ?: ""}
-    val roleFlow: Flow<String>          = context.dataStore.data.map { it[ROLE] ?: ""}
+    val userTypeFlow: Flow<String>      = context.dataStore.data.map { it[USER_TYPE] ?: ""}
     val isLoggedInFlow: Flow<Boolean>   = context.dataStore.data.map { it[IS_LOGGED_IN] ?: false}
 
     // Hapus session saat logout
-    suspend fun clearSeassion() {
+    suspend fun clearSession() {
         context.dataStore.edit { it.clear() }
     }
 }

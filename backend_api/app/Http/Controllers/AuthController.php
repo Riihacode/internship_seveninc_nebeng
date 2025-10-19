@@ -22,20 +22,20 @@ class AuthController extends Controller
     public function register(Request $request){
         try {
             $valiated = $request->validate([
-            'name' => 'required|string|max:255',
-            'username' => 'required|string|max:255|unique:users',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-            'role' => 'required|in:admin,superadmin,customer,driver,terminal',
-        ]);
+                'name' => 'required|string|max:255',
+                'username' => 'required|string|max:255|unique:users',
+                'email' => 'required|string|email|max:255|unique:users',
+                'password' => 'required|string|min:8|confirmed',
+                // 'role' => 'required|in:admin,superadmin,customer,driver,terminal',
+                'user_type' => 'required|in:admin,superadmin,customer,driver,terminal',
+            ]);
 
-        $data = $this->authService->register($valiated);
-        return response()->json([
-            'success' => true,
-            'message' => "User registered successfully",
-            'data' => $data
-        ], 201);
-
+            $data = $this->authService->register($valiated);
+            return response()->json([
+                'success' => true,
+                'message' => "User registered successfully",
+                'data' => $data
+            ], 201);
         } catch (ValidationException $e) {
             return response()->json([
                 'success' => false,

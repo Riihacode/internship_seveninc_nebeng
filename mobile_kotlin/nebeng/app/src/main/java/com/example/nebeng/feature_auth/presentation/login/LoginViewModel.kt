@@ -31,8 +31,9 @@ class LoginViewModel @Inject constructor(
                     result.data?.let { user ->
                         userPrefsRepo.saveSession(
                             userId = user.id,
+                            name = user.name,
                             username = user.username,
-                            role = user.role,
+                            user_type = user.user_type,
                             isLoggedIn = true
                         )
                         onSuccess()
