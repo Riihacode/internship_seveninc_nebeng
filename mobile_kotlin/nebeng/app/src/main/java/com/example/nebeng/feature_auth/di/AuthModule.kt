@@ -1,7 +1,7 @@
 package com.example.nebeng.feature_auth.di
 
+import com.example.nebeng.core.model.Result
 import com.example.nebeng.core.session.UserPreferencesRepository
-import com.example.nebeng.feature_auth.data.local.dao.AuthDao
 import com.example.nebeng.feature_auth.data.remote.api.AuthApi
 import com.example.nebeng.feature_auth.data.repository.AuthRepository
 import com.example.nebeng.feature_auth.data.repository.AuthRepositoryImpl
@@ -16,6 +16,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
+
 
 
 @Module
@@ -45,20 +46,20 @@ object AuthModule {
         repository: AuthRepository,
         userPrefsRepo: UserPreferencesRepository
     ) = AuthUseCases(
-        getAllAuth  = GetAllAuthUseCase(repository),
-        createAuth  = CreateAuthUseCase(repository),
-        updateAuth  = UpdateAuthUseCase(repository),
-        deleteAuth  = DeleteAuthUseCase(repository),
-        loginAuth   = LoginUseCase(repository),
-        logout      = LogoutUseCase(userPrefsRepo)
+        getAllAuth = GetAllAuthUseCase(repository),
+        createAuth = CreateAuthUseCase(repository),
+        updateAuth = UpdateAuthUseCase(repository),
+        deleteAuth = DeleteAuthUseCase(repository),
+        loginAuth = LoginUseCase(repository),
+        logout = LogoutUseCase(userPrefsRepo)
     )
 }
 
 data class AuthUseCases(
-    val getAllAuth  : GetAllAuthUseCase,
-    val createAuth  : CreateAuthUseCase,
-    val updateAuth  : UpdateAuthUseCase,
-    val deleteAuth  : DeleteAuthUseCase,
-    val loginAuth   : LoginUseCase,
-    val logout      : LogoutUseCase
+    val getAllAuth : GetAllAuthUseCase,
+    val createAuth: CreateAuthUseCase,
+    val updateAuth: UpdateAuthUseCase,
+    val deleteAuth: DeleteAuthUseCase,
+    val loginAuth: LoginUseCase,
+    val logout: LogoutUseCase
 )

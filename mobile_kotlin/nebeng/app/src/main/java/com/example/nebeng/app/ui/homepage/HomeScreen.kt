@@ -1,5 +1,7 @@
 package com.example.nebeng.app.ui.homepage
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -14,6 +16,8 @@ import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
@@ -24,6 +28,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -36,7 +42,9 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -47,8 +55,17 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.nebeng.R
+import androidx.compose.material3.Typography
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -59,231 +76,40 @@ fun HomeScreen(
     val scrollState = rememberScrollState()
 
     Column(
+//        modifier = Modifier
+//            .fillMaxSize()
+//            .verticalScroll(scrollState)
+//            .background(Color(0xFFF8F9FD))
+//        modifier = Modifier
+//            .fillMaxSize()
+//            .verticalScroll(scrollState)
+//            .background(Color(0xFFF8F9FD))
+//            .padding(
+//                bottom = WindowInsets.navigationBars
+//                    .only(WindowInsetsSides.Bottom)
+//                    .asPaddingValues()
+//                    .calculateBottomPadding()
+//            )
+
+//            modifier = Modifier
+//                .fillMaxSize()
+//                .verticalScroll(scrollState)
+//                .background(Color(0xFFF8F9FD))
+//                .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom))
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(scrollState)
+            .verticalScroll(rememberScrollState())
             .background(Color(0xFFF8F9FD))
+            .padding(
+                bottom = 80.dp // kira-kira tinggi BottomNavigationView + margin kecil
+            )
+
     ) {
-        // ===== HEADER BLUE SECTION =====
-//        Box(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .height(220.dp)
-//                .background(
-//                    Brush.verticalGradient(
-//                        colors = listOf(Color(0xFF1877F2), Color(0xFF3B8DFE))
-//                    )
-//                )
-////                .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal)) // ✅ biar tetap aman dari notch
-////                .windowInsetsPadding(WindowInsets.statusBars) // ✅ ini ganti statusBarsPadding()
-////                .padding(top = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()) // ✅ ini langsung dorong isi teks ke bawah
-//
-//        )
-//        Box(
-//            modifier = Modifier
-//                .fillMaxSize() // = match_parent
-//                .background(
-//                    Brush.verticalGradient(
-//                        listOf(Color(0xFF1877F2), Color(0xFF3B8DFE))
-//                    )
-//                )
-//                .padding(top = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()) // agar konten tidak ketimpa jam
-//        ) {
-//            Column(
-//                modifier = Modifier
-//                    .fillMaxSize()
-//                    .padding(horizontal = 24.dp, vertical = 32.dp)
-//            ) {
-//                Text(
-//                    text = "Selamat Siang,",
-//                    color = Color.White,
-//                    style = MaterialTheme.typography.bodyLarge
-//                )
-//                Text(
-//                    text = userName,
-//                    color = Color.White,
-//                    style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold)
-//                )
-//            }
-//
-//            IconButton(
-//                onClick = { /* TODO: notifikasi */ },
-//                modifier = Modifier
-//                    .align(Alignment.TopEnd)
-//                    .padding(top = 32.dp, end = 16.dp)
-//                    .size(32.dp)
-//                    .background(Color.White.copy(alpha = 0.2f), shape = CircleShape)
-//            ) {
-//                Icon(
-//                    imageVector = Icons.Default.Notifications,
-//                    contentDescription = "Notifikasi",
-//                    tint = Color.White
-//                )
-//            }
-//        }
-        // ===== HEADER BLUE SECTION =====
-//        Box(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .height(220.dp)
-//                .background(
-//                    Brush.verticalGradient(
-//                        colors = listOf(Color(0xFF1877F2), Color(0xFF3B8DFE))
-//                    )
-//                )
-//                .padding(top = WindowInsets.statusBars.asPaddingValues().calculateTopPadding())
-//        ) {
-//            Column(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(horizontal = 24.dp, vertical = 32.dp)
-//            ) {
-//                Text(
-//                    text = "Selamat Siang,",
-//                    color = Color.White,
-//                    style = MaterialTheme.typography.bodyLarge
-//                )
-//                Text(
-//                    text = userName,
-//                    color = Color.White,
-//                    style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold)
-//                )
-//            }
-//
-//            IconButton(
-//                onClick = { /* TODO: notifikasi */ },
-//                modifier = Modifier
-//                    .align(Alignment.TopEnd)
-//                    .padding(top = 32.dp, end = 16.dp)
-//                    .size(32.dp)
-//                    .background(Color.White.copy(alpha = 0.2f), shape = CircleShape)
-//            ) {
-//                Icon(
-//                    imageVector = Icons.Default.Notifications,
-//                    contentDescription = "Notifikasi",
-//                    tint = Color.White
-//                )
-//            }
-//        }
-
-//        Box(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .background(Color(0xFF6200EE)) // warna ungu status bar
-//        ) {
-//            Box(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .height(220.dp)
-//                    .background(
-//                        Brush.verticalGradient(
-//                            listOf(Color(0xFF1877F2), Color(0xFF3B8DFE))
-//                        )
-//                    )
-//                    .padding(top = WindowInsets.statusBars.asPaddingValues().calculateTopPadding())
-//            ) {
-//                Column(
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .padding(horizontal = 24.dp, vertical = 32.dp)
-//                ) {
-//                    Text(
-//                        text = "Selamat Siang,",
-//                        color = Color.White,
-//                        style = MaterialTheme.typography.bodyLarge
-//                    )
-//                    Text(
-//                        text = userName,
-//                        color = Color.White,
-//                        style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold)
-//                    )
-//                }
-//
-//                IconButton(
-//                    onClick = { /* TODO: notifikasi */ },
-//                    modifier = Modifier
-//                        .align(Alignment.TopEnd)
-//                        .padding(top = 32.dp, end = 16.dp)
-//                        .size(32.dp)
-//                        .background(Color.White.copy(alpha = 0.2f), shape = CircleShape)
-//                ) {
-//                    Icon(
-//                        imageVector = Icons.Default.Notifications,
-//                        contentDescription = "Notifikasi",
-//                        tint = Color.White
-//                    )
-//                }
-//            }
-//        }
-
-//        // === Header: Ungu + Gradasi Biru ===
-//        Box(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .height(240.dp)
-//        ) {
-//            // Lapisan ungu (menyatu dengan status bar)
-//            Box(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .height(40.dp) // tinggi status bar rata-rata
-//                    .background(Color(0xFF6200EE))
-//            )
-//
-//            // Lapisan biru (mulai tepat dari atas layar, menutupi sedikit ungu)
-//            Box(
-//                modifier = Modifier
-//                    .matchParentSize()
-//                    .background(
-//                        Brush.verticalGradient(
-//                            listOf(
-//                                Color(0xFF1877F2),
-//                                Color(0xFF3B8DFE)
-//                            )
-//                        )
-//                    )
-//                    .padding(top = WindowInsets.statusBars.asPaddingValues().calculateTopPadding())
-//            ) {
-//                Column(
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .padding(horizontal = 24.dp, vertical = 32.dp)
-//                ) {
-//                    Text(
-//                        text = "Selamat Siang,",
-//                        color = Color.White,
-//                        style = MaterialTheme.typography.bodyLarge
-//                    )
-//                    Text(
-//                        text = userName,
-//                        color = Color.White,
-//                        style = MaterialTheme.typography.headlineSmall.copy(
-//                            fontWeight = FontWeight.Bold
-//                        )
-//                    )
-//                }
-//
-//                IconButton(
-//                    onClick = { /* TODO: notifikasi */ },
-//                    modifier = Modifier
-//                        .align(Alignment.TopEnd)
-//                        .padding(top = 32.dp, end = 16.dp)
-//                        .size(32.dp)
-//                        .background(Color.White.copy(alpha = 0.2f), shape = CircleShape)
-//                ) {
-//                    Icon(
-//                        imageVector = Icons.Default.Notifications,
-//                        contentDescription = "Notifikasi",
-//                        tint = Color.White
-//                    )
-//                }
-//            }
-//        }
         // HEADER BLUE SECTION (tanpa padding status bar)
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(220.dp)
+                .height(200.dp)
                 .background(
                     Brush.verticalGradient(
                         listOf(Color(0xFF1877F2), Color(0xFF3B8DFE))
@@ -298,13 +124,15 @@ fun HomeScreen(
                 Text("Selamat Siang,", color = Color.White, style = MaterialTheme.typography.bodyLarge)
                 Text(userName, color = Color.White,
                     style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold))
+
+
             }
 
             IconButton(
                 onClick = { /* TODO */ },
                 modifier = Modifier
                     .align(Alignment.TopEnd)
-                    .padding(top = 32.dp, end = 16.dp)
+                    .padding(top = 56.dp, end = 32.dp)
                     .size(32.dp)
                     .background(Color.White.copy(alpha = 0.2f), shape = CircleShape)
             ) {
@@ -326,11 +154,11 @@ fun HomeScreen(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.padding(16.dp)
             ) {
-                Icon(
+                Image(
                     painter = painterResource(id = R.drawable.ic_star),
                     contentDescription = "Poin",
-                    tint = Color(0xFFFFC107),
-                    modifier = Modifier.size(28.dp)
+//                    tint = Color(0xFFFFC107),
+                    modifier = Modifier.size(42.dp)
                 )
                 Spacer(Modifier.width(12.dp))
                 Column {
@@ -351,28 +179,38 @@ fun HomeScreen(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp),
+                .padding(horizontal = 32.dp),
 //            horizontalArrangement = Arrangement.spacedBy(24.dp, Alignment.CenterHorizontally)
-            horizontalArrangement = Arrangement.SpaceEvenly, // ✅ jarak antar ikon sama besar
+//            horizontalArrangement = Arrangement.SpaceEvenly, // ✅ jarak antar ikon sama besar
+//            horizontalArrangement = Arrangement.SpaceBetween,
+            horizontalArrangement = Arrangement.spacedBy(8.dp), // spasi antar item lebih konsisten
             verticalAlignment = Alignment.CenterVertically
+
         ) {
-            MenuItem(R.drawable.ic_motor, "Motor")
-            MenuItem(R.drawable.ic_mobil, "Mobil")
-            MenuItem(R.drawable.ic_barang, "Barang")
-            MenuItem(R.drawable.ic_transport, "Barang\n(Transportasi Umum)")
+            MenuItem(R.drawable.ic_motor, "Motor", modifier = Modifier.weight(1f))
+            MenuItem(R.drawable.ic_mobil, "Mobil", modifier = Modifier.weight(1f))
+            MenuItem(R.drawable.ic_barang, "Barang", modifier = Modifier.weight(1f))
+            MenuItem(R.drawable.ic_transport, "Barang \n(Transportasi Umum)", modifier = Modifier.weight(1f))
         }
 
         Spacer(Modifier.height(24.dp))
 
         // ===== BANNER =====
-        Image(
-            painter = painterResource(id = R.drawable.banner_nebeng),
-            contentDescription = "Banner Nebeng",
-            modifier = Modifier
-                .padding(horizontal = 24.dp)
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(16.dp)),
-            contentScale = ContentScale.Crop
+//        Image(
+//            painter = painterResource(id = R.drawable.banner_nebeng),
+//            contentDescription = "Banner Nebeng",
+//            modifier = Modifier
+//                .padding(horizontal = 24.dp)
+//                .fillMaxWidth()
+//                .clip(RoundedCornerShape(16.dp)),
+//            contentScale = ContentScale.Crop
+//        )
+        BannerSlider(
+            banners = listOf(
+                R.drawable.banner_nebeng,
+                R.drawable.banner_nebeng,
+                R.drawable.banner_nebeng
+            )
         )
 
         Spacer(Modifier.height(24.dp))
@@ -404,10 +242,39 @@ fun HomeScreen(
     }
 }
 
+//@Composable
+//fun MenuItem(iconRes: Int, label: String) {
+//    Column(
+//        horizontalAlignment = Alignment.CenterHorizontally
+//    ) {
+//        Box(
+//            modifier = Modifier
+//                .size(48.dp)
+//                .clip(CircleShape)
+//                .background(Color(0xFFEAF2FF)),
+//            contentAlignment = Alignment.Center
+//        ) {
+//            Image(
+//                painter = painterResource(id = iconRes),
+//                contentDescription = label,
+//                modifier = Modifier.size(48.dp)
+//            )
+//        }
+//        Spacer(Modifier.height(8.dp))
+//        Text(
+//            label,
+//            style = MaterialTheme.typography.bodySmall,
+//            textAlign = TextAlign.Center,
+//            modifier = Modifier.heightIn(min = 56.dp)
+//        )
+//    }
+//}
 @Composable
-fun MenuItem(iconRes: Int, label: String) {
+fun MenuItem(iconRes: Int, label: String, modifier: Modifier = Modifier) {
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier = modifier, // <- terima Modifier.weight dari parent Row
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
         Box(
             modifier = Modifier
@@ -419,20 +286,40 @@ fun MenuItem(iconRes: Int, label: String) {
             Image(
                 painter = painterResource(id = iconRes),
                 contentDescription = label,
-                modifier = Modifier.size(28.dp)
+                modifier = Modifier.size(56.dp)
             )
         }
+
         Spacer(Modifier.height(8.dp))
-        Text(label, style = MaterialTheme.typography.bodySmall, textAlign = TextAlign.Center)
+
+        Box (
+            modifier = Modifier.height(56.dp),
+            contentAlignment = Alignment.TopCenter
+
+        ) {
+            Text(
+                text = label,
+//                style = MaterialTheme.typography.bodySmall,
+                style = MaterialTheme.typography.bodySmall.copy(fontSize = 11.sp),
+                textAlign = TextAlign.Center,
+                lineHeight = 12.sp,
+//            maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 2.dp)
+            )
+        }
     }
 }
+
 
 @Composable
 fun PopularCityCard(city: String, imageRes: Int) {
     Box(
         modifier = Modifier
-            .width(200.dp)
-            .height(130.dp)
+            .width(280.dp)
+            .height(140.dp)
             .clip(RoundedCornerShape(12.dp))
     ) {
         Image(
@@ -458,5 +345,116 @@ fun PopularCityCard(city: String, imageRes: Int) {
                 .align(Alignment.BottomStart)
                 .padding(12.dp)
         )
+    }
+}
+
+@Composable
+fun BannerSlider(
+    banners: List<Int>,
+    autoScrollInterval: Long = 3000L // auto-scroll tiap 3 detik
+) {
+    val pagerState = rememberPagerState(pageCount = { banners.size })
+    val coroutineScope = rememberCoroutineScope()
+
+    // Auto-scroll coroutine
+    LaunchedEffect(pagerState.currentPage) {
+        delay(autoScrollInterval)
+        val nextPage = (pagerState.currentPage + 1) % banners.size
+        coroutineScope.launch {
+            pagerState.animateScrollToPage(nextPage)
+        }
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 24.dp)
+    ) {
+        HorizontalPager(state = pagerState) { page ->
+            Image(
+                painter = painterResource(id = banners[page]),
+                contentDescription = "Banner ${page + 1}",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp)
+                    .clip(RoundedCornerShape(16.dp)),
+                contentScale = ContentScale.Crop
+            )
+        }
+
+        // Dots indicator
+//        Row(
+//            modifier = Modifier
+//                .padding(top = 12.dp)
+//                .fillMaxWidth(),
+//            horizontalArrangement = Arrangement.Center
+//        ) {
+//            repeat(banners.size) { index ->
+//                val isSelected = pagerState.currentPage == index
+//                Box(
+//                    modifier = Modifier
+//                        .padding(4.dp)
+//                        .size(if (isSelected) 10.dp else 8.dp)
+//                        .clip(RoundedCornerShape(50))
+//                        .background(
+//                            if (isSelected) MaterialTheme.colorScheme.primary
+//                            else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
+//                        )
+//                )
+//            }
+//        }
+        // ===== DOTS INDICATOR (STYLE: OVAL ACTIVE) =====
+        Row(
+            modifier = Modifier
+                .padding(top = 12.dp)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            repeat(banners.size) { index ->
+                val isSelected = pagerState.currentPage == index
+
+                // Animasi perubahan ukuran dan warna
+                val dotWidth by animateDpAsState(
+                    targetValue = if (isSelected) 20.dp else 8.dp,
+                    label = ""
+                )
+                val dotColor by animateColorAsState(
+                    targetValue = if (isSelected) Color(0xFF1877F2) else Color.LightGray,
+                    label = ""
+                )
+
+                Box(
+                    modifier = Modifier
+                        .padding(horizontal = 4.dp)
+                        .height(8.dp)
+                        .width(dotWidth)
+                        .clip(CircleShape)
+                        .background(dotColor)
+                )
+            }
+        }
+    }
+}
+
+@Preview(
+    showBackground = true,
+    showSystemUi = true,
+    name = "Home Screen Preview"
+)
+@Composable
+fun PreviewHomeScreen() {
+    // Bungkus dengan tema agar warna dan typography tampil benar
+    MaterialTheme(
+        colorScheme = lightColorScheme(),
+        typography = Typography()
+    ) {
+        // Gunakan Scaffold atau Surface agar background mengikuti tema
+        Surface {
+            HomeScreen(
+                userName = "Nadya Amalya",
+                points = 120
+            )
+        }
     }
 }

@@ -5,6 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.lightColorScheme
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.nebeng.databinding.FragmentHistoryOrderBinding
@@ -22,17 +25,34 @@ class HistoryOrderFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val historyOrderViewModel =
-            ViewModelProvider(this).get(HistoryOrderViewModel::class.java)
+//        val historyOrderViewModel =
+//            ViewModelProvider(this).get(HistoryOrderViewModel::class.java)
 
+//        _binding = FragmentHistoryOrderBinding.inflate(inflater, container, false)
+//        val root: View = binding.root
+//
+//        val textView: TextView = binding.textHome
+//        historyOrderViewModel.text.observe(viewLifecycleOwner) {
+//            textView.text = it
+//        }
+//        return root
         _binding = FragmentHistoryOrderBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        return binding.root
+    }
 
-        val textView: TextView = binding.textHome
-        historyOrderViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.composeView.apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                MaterialTheme(
+                    colorScheme = lightColorScheme()
+                ) {
+                    HistoryOrderScreen()
+                }
+            }
         }
-        return root
     }
 
     override fun onDestroyView() {
