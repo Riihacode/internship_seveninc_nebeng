@@ -123,7 +123,9 @@ class Terminal extends Model
      * Bisa dipakai jika nanti longitude dan latitude mau disimpan sebagai float
      */
     protected $casts = [
-        'longitude' => 'string',
-        'latitude' => 'string',
+        // 'longitude' => 'string',
+        // 'latitude' => 'string',
+        'latitude'  => 'float',
+        'longitude' => 'float',
     ];
 }
