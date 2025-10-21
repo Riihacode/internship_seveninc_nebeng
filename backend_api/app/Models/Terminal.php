@@ -23,8 +23,10 @@ class Terminal extends Model
         'regency_id',
         'district_id',
         'full_address',
-        'longitude',
+        // 'longitude',
+        // 'latitude',
         'latitude',
+        'longitude',
     ];
 
     /**
