@@ -18,7 +18,7 @@ class AuthSeeder extends Seeder
         $users = [
             [
                 'name' => 'Super Admin',
-                'username' => 'superadmin',
+                'username' => 'cd ',
                 'email' => 'superadmin@example.com',
                 'user_type' => 'superadmin',
                 'password' => Hash::make('password123'), // 🔐 default password
