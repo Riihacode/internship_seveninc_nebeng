@@ -50,8 +50,8 @@ return new class extends Migration
             $table->integer('commission_percentage')->default(0);
 
             // ENUM status perjalanan
-            $table->enum('ride_status', ['Pending', 'Dalam Perjalanan', 'Selesai', 'Dibatalkan'])
-                  ->default('Pending');
+            $table->enum('ride_status', ['pending', 'dalam perjalanan', 'selesai', 'dibatalkan'])
+                  ->default('pending');
 
             $table->timestamps();
         });

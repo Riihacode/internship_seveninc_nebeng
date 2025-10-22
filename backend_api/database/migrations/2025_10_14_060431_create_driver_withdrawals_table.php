@@ -32,8 +32,8 @@ return new class extends Migration
             $table->string('account_number');
 
             // Status penarikan
-            $table->enum('status', ['Pending', 'Diterima', 'Ditolak'])
-                  ->default('Pending');
+            $table->enum('status', ['pending', 'diterima', 'ditolak'])
+                  ->default('pending');
 
             // Alasan penolakan (jika ditolak)
             $table->string('rejected_reason')->nullable();

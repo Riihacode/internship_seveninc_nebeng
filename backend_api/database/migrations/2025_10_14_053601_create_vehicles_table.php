@@ -32,7 +32,7 @@ return new class extends Migration
             $table->string('vehicle_color');
 
             // Enum jenis kendaraan
-            $table->enum('vehicle_type', ['Motor', 'Mobil']);
+            $table->enum('vehicle_type', ['motor', 'mobil']);
 
             $table->string('vehicle_img');
             $table->boolean('vehicle_verified')->default(false);

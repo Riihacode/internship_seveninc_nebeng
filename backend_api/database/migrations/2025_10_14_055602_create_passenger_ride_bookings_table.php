@@ -39,8 +39,8 @@ return new class extends Migration
             $table->integer('total_price');
 
             // Status booking (enum)
-            $table->enum('status', ['Pending', 'Diterima', 'Ditolak'])
-                  ->default('Pending');
+            $table->enum('status', ['pending', 'diterima', 'ditolak'])
+                  ->default('pending');
 
             $table->timestamps();
         });

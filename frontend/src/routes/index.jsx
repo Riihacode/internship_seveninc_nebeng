@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "../context/AuthProvider.jsx";
 import Login from "../pages/login.jsx";
 import Home from "../pages/home.jsx";
+import Mitra from "../pages/Mitra.jsx";
 import ProtectedRoute from "../components/ProtectedRoute.jsx";
 
 export default function AppRoutes() {
@@ -15,6 +16,14 @@ export default function AppRoutes() {
             element={
               <ProtectedRoute>
                 <Home />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/mitra"
+            element={
+              <ProtectedRoute>
+                <Mitra />
               </ProtectedRoute>
             }
           />

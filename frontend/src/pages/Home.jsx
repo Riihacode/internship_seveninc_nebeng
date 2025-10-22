@@ -1,28 +1,18 @@
-import { useNavigate } from "react-router-dom";
+import SideBar from "../components/SideBar";
 import useAuth from "../hooks/useAuth";
 
 export default function Home() {
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
-  const handleLogout = async () => {
-    try {
-      await logout();
-      navigate("/login");
-    } catch (error) {
-      alert("Logout gagal, coba lagi");
-      console.log(error);
-    }
-  };
-
+  const { user } = useAuth();
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
-      <h1 className="text-3xl mb-4">Selamat datang, {user?.name} 👋</h1>
-      <button
-        onClick={handleLogout}
-        className="bg-red-500 text-white px-4 py-2 rounded"
-      >
-        Logout
-      </button>
-    </div>
+    <>
+      <div className="flex min-h-screen">
+        <SideBar />
+        <div className="flex-1 flex flex-row bg-gray-100 w-screen">
+          <header className="bg-gray-100 dark:bg-gray-400 dark:text-white py-3 h-17 text-end w-full border-b border-gray-200">
+            <h2 className="p-3 font-semibold">{user?.name}</h2>
+          </header>
+        </div>
+      </div>
+    </>
   );
 }

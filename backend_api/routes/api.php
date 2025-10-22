@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdministratorController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DriverController;
@@ -22,12 +23,14 @@ use App\Http\Controllers\PassengerTransactionController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/administrator', [AdministratorController::class, 'store']);
 
 Route::middleware('auth:sanctum')->group(function() {
-    Route::post('/logout', [AuthController::class, 'logout']);
-});
 
-// [ TERMINAL ]
+    // [PRIVATE ROUTE]
+    Route::post('/logout', [AuthController::class, 'logout']);
+
+    // [ TERMINAL ]
 Route::prefix('terminals')->group(function () {
     Route::get('/', [TerminalController::class, 'index']);
     Route::get('/{id}', [TerminalController::class, 'show']);
@@ -217,3 +220,22 @@ Route::prefix('passenger-ride-bookings')->group(function () {
     Route::patch('/{id}/status', [PassengerRideBookingController::class, 'updateStatus']);
     Route::delete('/{id}', [PassengerRideBookingController::class, 'destroy']);
 });
+
+// ######################################################################################
+// ######################################################################################
+// ######################################################################################
+// ######################################################################################
+// ######################################################################################
+
+//  [ ADMINISTRATOR ]
+Route::prefix('administrator')->group(function() {
+    Route::get('/', [AdministratorController::class, 'index']);
+    Route::get('/{id}', [AdministratorController::class, 'show']);
+    Route::get('/user/{userId}', [AdministratorController::class, 'getByUserId']);
+    //Route::post('/', [AdministratorController::class, 'store']);
+    Route::put('/{id}', [AdministratorController::class, 'update']);
+    Route::delete('/{id}', [AdministratorController::class, 'destroy']);
+});
+
+});
+

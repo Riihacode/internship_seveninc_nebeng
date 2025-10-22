@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('goods_pricings', function (Blueprint $table) {
             $table->id();
-            $table->enum('transport_type', ['Sendiri', 'Umum']);
+            $table->enum('transport_type', ['sendiri', 'umum']);
 
             // Departure TErminal
             $table->foreignId('departure_terminal_id')
@@ -35,7 +35,7 @@ return new class extends Migration
 
             $table->integer('price_per_kg');
             $table->integer('commission_percentage');
-            
+
             $table->timestamps();
         });
     }

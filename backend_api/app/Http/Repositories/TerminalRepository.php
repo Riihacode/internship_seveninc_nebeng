@@ -31,7 +31,6 @@ class TerminalRepository {
                 'departurePassengerRides',
                 'arrivalPassengerRides',
                 'departureGoodsRides',
-                'arrivalPassengerRides',
                 'departurePassengerPricings',
                 'arrivalPassengerPricings',
                 'departureGoodsPricings',

@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('passenger_pricings', function (Blueprint $table) {
             $table->id();
 
-            $table->enum('vehicle_type', ['Motor', 'Mobile']);
-            
+            $table->enum('vehicle_type', ['motor', 'mobil']);
+
             $table->foreignId('departure_terminal_id')
                 ->constrained(
                     table: 'terminals',
@@ -23,15 +23,15 @@ return new class extends Migration
                 )
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-            
+
             $table->foreignId('arrival_terminal_id')
                 ->constrained(
-                    table: 'terminals', 
+                    table: 'terminals',
                     indexName: 'passenger_pricing_arrival_terminal_id_fk'
                 )
                 ->cascadeOnUpdate()
-                ->cascadeOnDelete(); 
-            
+                ->cascadeOnDelete();
+
             $table->integer('price_per_seat');
             $table->integer('commision_percentage');
 

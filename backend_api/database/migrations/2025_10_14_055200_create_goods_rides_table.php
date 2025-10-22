@@ -24,10 +24,10 @@ return new class extends Migration
                 ->cascadeOnDelete();
 
             // Jenis transportasi (Sendiri / Umum)
-            $table->enum('transport_type', ['Sendiri', 'Umum']);
+            $table->enum('transport_type', ['sendiri', 'umum']);
 
             // Subtipe terminal publik (Terminal Bis / Stasiun Kereta / Bandara / Pelabuhan)
-            $table->enum('public_terminal_subtype', ['Terminal Bis', 'Stasiun Kereta', 'Bandara', 'Pelabuhan']);
+            $table->enum('public_terminal_subtype', ['terminal bis', 'stasiun kereta', 'bandara', 'pelabuhan']);
 
             // Terminal keberangkatan dan tujuan
             $table->foreignId('departure_terminal_id')

@@ -48,8 +48,8 @@ return new class extends Migration
             $table->string('payment_proof_img')->nullable();
 
             // Status pembayaran
-            $table->enum('payment_status', ['Pending', 'Diterima', 'Ditolak', 'Credited'])
-                  ->default('Pending');
+            $table->enum('payment_status', ['pending', 'diterima', 'ditolak', 'credited'])
+                  ->default('pending');
 
             // Jumlah kredit yang digunakan (switch dari boolean)
             $table->integer('credit_used')->default(0);
