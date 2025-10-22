@@ -60,6 +60,8 @@ import javax.inject.Singleton
 //        }
 //    }
 //}
+
+
 @Singleton
 class AuthRepositoryImpl @Inject constructor(
     private val api: AuthApi
@@ -119,7 +121,7 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun login(username: String, password: String): Result<Auth?> {
         return try {
-            val response = api.login(LoginRequest(login = username, password = password))
+            val response = api.login(LoginRequest(userIdentifier = username, password = password))
             if (response.success) {
                 val data = response.data?.user
                 if (data != null) {

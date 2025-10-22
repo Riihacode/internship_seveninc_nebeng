@@ -213,7 +213,7 @@ Route::prefix('payment-methods')->group(function () {
 Route::prefix('passenger-ride-bookings')->group(function () {
     Route::get('/', [PassengerRideBookingController::class, 'index']);
     Route::get('/{id}', [PassengerRideBookingController::class, 'show']);
-    Route::get('/ride/{ride_id}', [PassengerRideBookingController::class, 'byRide']);
+    Route::get('/ride/{ride_id}', action: [PassengerRideBookingController::class, 'byRide']);
     Route::get('/customer/{customer_id}', [PassengerRideBookingController::class, 'byCustomer']);
     Route::post('/', [PassengerRideBookingController::class, 'store']);
     Route::put('/{id}', [PassengerRideBookingController::class, 'update']);

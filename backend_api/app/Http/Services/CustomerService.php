@@ -37,19 +37,19 @@ class CustomerService
     public function createCustomer(array $data)
     {
         $validator = Validator::make($data, [
-            'user_id' => 'required|exists:users,id|unique:customers,user_id',
-            'full_name' => 'required|string|max:255',
-            'telephone' => 'required|string|max:20',
-            'full_address' => 'required|string|max:255',
-            'profile_img' => 'nullable|string',
-            'verified' => 'nullable|boolean',
-            'face_img' => 'nullable|string',
-            'face_with_id_img' => 'nullable|string',
-            'id_card_img' => 'nullable|string',
-            'id_card_number' => 'nullable|string|max:50',
-            'id_card_fullname' => 'nullable|string|max:255',
+            'user_id'           => 'required|exists:users,id|unique:customers,user_id',
+            'full_name'         => 'required|string|max:255',
+            'telephone'         => 'required|string|max:20',
+            'full_address'      => 'required|string|max:255',
+            'profile_img'       => 'nullable|string',
+            'verified'          => 'nullable|boolean',
+            'face_img'          => 'nullable|string',
+            'face_with_id_img'  => 'nullable|string',
+            'id_card_img'       => 'nullable|string',
+            'id_card_number'    => 'nullable|string|max:50',
+            'id_card_fullname'  => 'nullable|string|max:255',
             'id_card_birthdate' => 'nullable|date',
-            'credit_amount' => 'nullable|integer|min:0',
+            'credit_amount'     => 'nullable|integer|min:0',
         ]);
 
         if ($validator->fails()) {
@@ -66,18 +66,18 @@ class CustomerService
     public function updateCustomer($id, array $data)
     {
         $validator = Validator::make($data, [
-            'full_name' => 'sometimes|string|max:255',
-            'telephone' => 'sometimes|string|max:20',
-            'full_address' => 'sometimes|string|max:255',
-            'profile_img' => 'nullable|string',
-            'verified' => 'sometimes|boolean',
-            'face_img' => 'nullable|string',
-            'face_with_id_img' => 'nullable|string',
-            'id_card_img' => 'nullable|string',
-            'id_card_number' => 'nullable|string|max:50',
-            'id_card_fullname' => 'nullable|string|max:255',
+            'full_name'         => 'sometimes|string|max:255',
+            'telephone'         => 'sometimes|string|max:20',
+            'full_address'      => 'sometimes|string|max:255',
+            'profile_img'       => 'nullable|string',
+            'verified'          => 'sometimes|boolean',
+            'face_img'          => 'nullable|string',
+            'face_with_id_img'  => 'nullable|string',
+            'id_card_img'       => 'nullable|string',
+            'id_card_number'    => 'nullable|string|max:50',
+            'id_card_fullname'  => 'nullable|string|max:255',
             'id_card_birthdate' => 'nullable|date',
-            'credit_amount' => 'sometimes|integer|min:0',
+            'credit_amount'     => 'sometimes|integer|min:0',
         ]);
 
         if ($validator->fails()) {

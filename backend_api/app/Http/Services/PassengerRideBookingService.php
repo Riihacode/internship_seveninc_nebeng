@@ -44,10 +44,10 @@ class PassengerRideBookingService
     {
         $validator = Validator::make($data, [
             'passenger_ride_id' => 'required|exists:passenger_rides,id',
-            'customer_id' => 'required|exists:customers,id',
-            'seats_reserved' => 'required|integer|min:1',
-            'total_price' => 'required|integer|min:0',
-            'status' => 'nullable|string|in:Pending,Diterima,Ditolak',
+            'customer_id'       => 'required|exists:customers,id',
+            'seats_reserved'    => 'required|integer|min:1',
+            'total_price'       => 'required|integer|min:0',
+            'status'            => 'nullable|string|in:Pending,Diterima,Ditolak',
         ]);
 
         if ($validator->fails()) {
@@ -64,9 +64,9 @@ class PassengerRideBookingService
     public function updateBooking($id, array $data)
     {
         $validator = Validator::make($data, [
-            'seats_reserved' => 'sometimes|integer|min:1',
-            'total_price' => 'sometimes|integer|min:0',
-            'status' => 'sometimes|string|in:Pending,Diterima,Ditolak',
+            'seats_reserved'    => 'sometimes|integer|min:1',
+            'total_price'       => 'sometimes|integer|min:0',
+            'status'            => 'sometimes|string|in:Pending,Diterima,Ditolak',
         ]);
 
         if ($validator->fails()) {

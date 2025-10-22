@@ -52,7 +52,23 @@ class PassengerTransactionController extends Controller
     {
         try {
             $transaction = $this->transactionService->createTransaction($request->all());
-            return response()->json(['data' => $transaction], 201);
+            // return response()->json(['data' => $transaction], 201);
+            return response()->json([
+                        'data' => [
+                            'id' => $transaction->id,
+                            'passenger_ride_booking_id' => $transaction->passenger_ride_booking_id,
+                            'customer_id' => $transaction->customer_id,
+                            'total_amount' => $transaction->total_amount,
+                            'payment_method_id' => $transaction->payment_method_id,
+                            'payment_proof_img' => $transaction->payment_proof_img,
+                            'payment_status' => $transaction->payment_status,
+                            'credit_used' => $transaction->credit_used,
+                            'transaction_date' => $transaction->transaction_date,
+                            'created_at' => $transaction->created_at,
+                            'updated_at' => $transaction->updated_at,
+                        ]
+                    ], 201);
+
         } catch (ValidationException $e) {
             return response()->json(['errors' => $e->errors()], 422);
         }

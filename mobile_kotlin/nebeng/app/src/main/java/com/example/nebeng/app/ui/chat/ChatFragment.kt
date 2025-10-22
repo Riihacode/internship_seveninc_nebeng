@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.lightColorScheme
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.nebeng.databinding.FragmentChatBinding
@@ -22,17 +24,34 @@ class ChatFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val chatViewModel =
-            ViewModelProvider(this).get(ChatViewModel::class.java)
+//        val chatViewModel =
+//            ViewModelProvider(this).get(ChatViewModel::class.java)
+//
+//        _binding = FragmentChatBinding.inflate(inflater, container, false)
+//        val root: View = binding.root
+//
+//        val textView: TextView = binding.textNotifications
+//        chatViewModel.text.observe(viewLifecycleOwner) {
+//            textView.text = it
+//        }
+//        return root
 
         _binding = FragmentChatBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        return binding.root
+    }
 
-        val textView: TextView = binding.textNotifications
-        chatViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.composeView.apply {
+            setContent {
+                MaterialTheme(
+                    colorScheme = lightColorScheme()
+                ) {
+                    ChatScreen()
+                }
+            }
         }
-        return root
     }
 
     override fun onDestroyView() {
