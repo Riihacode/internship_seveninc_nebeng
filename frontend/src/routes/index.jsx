@@ -1,9 +1,14 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "../context/AuthProvider.jsx";
-import Login from "../pages/login.jsx";
-import Home from "../pages/home.jsx";
+import Login from "../pages/Login.jsx";
+import Home from "../pages/Home.jsx";
 import Mitra from "../pages/Mitra.jsx";
 import ProtectedRoute from "../components/ProtectedRoute.jsx";
+import Customer from "../pages/Customer.jsx";
+import Pesanan from "../pages/Pesanan.jsx";
+import Refund from "../pages/Refund.jsx";
+import Laporan from "../pages/Laporan.jsx";
+import Pengaturan from "../pages/Pengaturan.jsx";
 
 export default function AppRoutes() {
   return (
@@ -24,6 +29,46 @@ export default function AppRoutes() {
             element={
               <ProtectedRoute>
                 <Mitra />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/customer"
+            element={
+              <ProtectedRoute>
+                <Customer />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/pesanan"
+            element={
+              <ProtectedRoute>
+                <Pesanan />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/refund"
+            element={
+              <ProtectedRoute>
+                <Refund />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/laporan"
+            element={
+              <ProtectedRoute>
+                <Laporan />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/pengaturan"
+            element={
+              <ProtectedRoute>
+                <Pengaturan />
               </ProtectedRoute>
             }
           />

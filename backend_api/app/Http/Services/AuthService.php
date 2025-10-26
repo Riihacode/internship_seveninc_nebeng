@@ -5,6 +5,7 @@ namespace App\Http\Services;
 use App\Http\Repositories\UserRepository;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthService{
     protected $userRepo;
@@ -15,7 +16,7 @@ class AuthService{
 
     public function register(array $data){
         $user = $this->userRepo->createUser($data);
-        $token = $user->createToken('api-token')->plainTextToken;
+        $token = JWTAuth::fromUser($user);
 
         return [
             'user' => $user,
@@ -33,7 +34,7 @@ class AuthService{
             ]);
         }
 
-        $token = $user->createToken('api-token')->plainTextToken;
+        $token = JWTAuth::fromUser($user);
 
         return [
             'user' => $user,
@@ -42,7 +43,7 @@ class AuthService{
     }
 
     public function logout($user){
-        $user->tokens()->delete();
+        JWTAuth::invalidate(JWTAuth::getToken());
         return ['message' => 'Logout successfully'];
     }
 

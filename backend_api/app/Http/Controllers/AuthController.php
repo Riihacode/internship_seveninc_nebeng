@@ -71,7 +71,7 @@ class AuthController extends Controller
                 'success' => false,
                 'message' => 'Invalid credetial',
                 'erros' => $e->errors()
-            ], 500);
+            ], 422);
 
         } catch (ModelNotFoundException $e) {
             return response()->json([
@@ -98,10 +98,10 @@ class AuthController extends Controller
 
     public function logout(Request $request){
         try {
-            $data = $this->authService->logout($request->user());
+            $this->authService->logout($request->user());
             return response()->json([
                 'success' => true,
-                'message' => $data['message']
+                'message' => 'Logout Successully'
             ]);
         } catch (Exception $e) {
             return response()->json([

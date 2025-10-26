@@ -149,7 +149,7 @@ export default function SideBar() {
             </li>
             <li className="cursor-pointer text-gray-700 dark:text-white hover:text-white">
               <NavLink
-                to="refund"
+                to="/refund"
                 className={({ isActive }) =>
                   `relative flex items-center px-4 py-3 transition-all duration-300 group
                 ${
@@ -221,7 +221,7 @@ export default function SideBar() {
         <ul className="flex flex-col">
           <li className="cursor-pointer hover:text-white">
             <NavLink
-              to=""
+              to="/pengaturan"
               className="relative flex items-center w-full text-left px-4 py-3 transition-all duration-300 group text-gray-600 dark:text-gray-300 hover:text-red-500 hover:before:content-[''] hover:before:absolute hover:before:left-0 hover:before:top-0 hover:before:h-full hover:before:w-[3px] hover:before:bg-red-500 hover:before:rounded-r-md"
             >
               <svg
