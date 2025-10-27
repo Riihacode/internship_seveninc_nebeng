@@ -28,6 +28,9 @@ return new class extends Migration
             $table->string('profile_img')->nullable();      // ini wajib diganti karena tidak boleh null
             $table->integer('balance')->default(0);
             $table->integer('credit_score')->default(0);
+            $table->integer('total_rating')->default(0);
+            $table->integer('rating_count')->default(0);
+            $table->float('average_rating')->default(0);
 
             // ====== ID CARD ======
             $table->string('face_img')->nullable();

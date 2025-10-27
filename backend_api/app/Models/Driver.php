@@ -23,6 +23,9 @@ class Driver extends Model
         'profile_img',
         'balance',
         'credit_score',
+        'total_rating',
+        'rating_count',
+        'average_rating',
 
         // ID Card
         'face_img',

@@ -2,17 +2,21 @@
 
 namespace App\Http\Services;
 
-use App\Http\Repositories\RatingRepository;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Repositories\DriverRepository;
+use App\Http\Repositories\RatingRepository;
 use Illuminate\Validation\ValidationException;
 
 class RatingService
 {
     protected $ratingRepository;
+    protected $driverRepository;
 
-    public function __construct(RatingRepository $ratingRepository)
+    public function __construct(RatingRepository $ratingRepository, DriverRepository $driverRepository)
     {
         $this->ratingRepository = $ratingRepository;
+        $this->driverRepository = $driverRepository;
     }
 
     // List semua rating
@@ -48,7 +52,21 @@ class RatingService
             throw new ValidationException($validator);
         }
 
-        return $this->ratingRepository->create($data);
+        return DB::transaction( function () use ($data){
+            $rating = $this->ratingRepository->create($data);
+
+            $driver = $this->driverRepository->updateRating($data['driver_id'], $data['rating']);
+
+            return [
+            'rating' => $rating,
+            'driver' => [
+                'id' => $driver->id,
+                'average_rating' => $driver->average_rating,
+                'rating_count' => $driver->rating_count,
+            ],
+        ];
+        });
+
     }
 
     // Update rating
@@ -71,4 +89,5 @@ class RatingService
     {
         return $this->ratingRepository->delete($id);
     }
+
 }

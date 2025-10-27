@@ -58,4 +58,16 @@ class DriverRepository
         $driver = $this->model->findOrFail($id);
         return $driver->delete();
     }
+
+    public function updateRating($driverId, $newRating){
+        $driver = $this->findById($driverId);
+
+        $driver->total_rating += $newRating;
+        $driver->rating_count += 1;
+        $driver->average_rating = $driver->total_rating / $driver->rating_count;
+        $driver->save();
+
+        return $driver;
+
+    }
 }
