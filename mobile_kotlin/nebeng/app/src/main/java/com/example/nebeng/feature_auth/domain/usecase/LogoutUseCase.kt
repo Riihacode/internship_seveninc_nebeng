@@ -1,12 +1,20 @@
 package com.example.nebeng.feature_auth.domain.usecase
 
-import com.example.nebeng.core.session.UserPreferencesRepository
+import com.example.nebeng.core.session.domain.SessionRepository
 import javax.inject.Inject
 
+//class LogoutUseCase @Inject constructor(
+//    private val userPrefsRepo: UserPreferencesRepository
+//){
+//    suspend operator fun invoke() {
+//        userPrefsRepo.clearSession()
+//    }
+//}
+
 class LogoutUseCase @Inject constructor(
-    private val userPrefsRepo: UserPreferencesRepository
-){
+    private val sessionRepository: SessionRepository
+) {
     suspend operator fun invoke() {
-        userPrefsRepo.clearSession()
+        sessionRepository.clearSession()
     }
 }

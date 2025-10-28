@@ -1,8 +1,8 @@
 package com.example.nebeng.core.di
 
 import android.content.Context
-import com.example.nebeng.core.session.UserPreferences
-import com.example.nebeng.core.session.UserPreferencesRepository
+import com.example.nebeng.core.session.data.UserPreferences
+import com.example.nebeng.core.session.data.UserPreferencesRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

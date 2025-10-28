@@ -3,294 +3,187 @@ package com.example.nebeng.feature_auth.presentation.profile
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.nebeng.core.session.UserPreferencesRepository
-import com.example.nebeng.feature_auth.di.AuthUseCases
+import com.example.nebeng.app.ui.RoleCache
+import com.example.nebeng.core.session.data.UserPreferencesRepository
 import com.example.nebeng.feature_auth.domain.model.Auth
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import com.example.nebeng.core.model.Result
+import com.example.nebeng.core.common.Result
+import com.example.nebeng.feature_auth.domain.usecase.ProfileUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
-
-//
-//@HiltViewModel
-//class ProfileViewModel @Inject constructor(
-//    private val useCases: AuthUseCases,
-//    private val userPrefsRepo: UserPreferencesRepository
-//) : ViewModel() {
-//
-//    // ===============================
-//    // 1️⃣ Daftar semua user (untuk admin)
-//    // ===============================
-//    private val _users = MutableStateFlow<Result<List<Auth>>>(Result.Loading)
-//    val users: StateFlow<Result<List<Auth>>> = _users
-//
-//    // ===============================
-//    // 2️⃣ User yang sedang login
-//    // ===============================
-//    private val _currentUser = MutableStateFlow<Auth?>(null)
-//    val currentUser: StateFlow<Auth?> = _currentUser
-//
-//    init {
-//        observeCurrentSession()
-//        loadUsers()
-//    }
-//
-//    // ===============================
-//    // 3️⃣ Pantau session dari DataStore
-//    // ===============================
-//    fun observeCurrentSession() {
-//        viewModelScope.launch {
-//            combine(
-//                userPrefsRepo.userIdFlow,
-//                userPrefsRepo.nameFlow,
-//                userPrefsRepo.usernameFlow,
-//                userPrefsRepo.userTypeFlow,
-//                userPrefsRepo.isLoggedInFlow
-//            ) { id, name, username, user_type, isLoggedIn ->
-//                if (isLoggedIn) Auth(
-//                    id = id,
-//                    name = name,
-//                    username = username,
-//                    password = "",
-//                    email = "",
-//                    user_type = user_type
-//                )
-//                else null
-//            }.collectLatest { sessionUser ->
-//                if (sessionUser != null) {
-//                    useCases.getAllAuth().collectLatest { result ->
-//                        if (result is Result.Success) {
-//                            _currentUser.value = result.data.find { it.id == sessionUser.id }
-//                        }
-//                    }
-//                } else {
-//                    _currentUser.value = null
-//                }
-//            }
-//        }
-//    }
-//
-//    // ===============================
-//    // 4️⃣ Ambil semua user
-//    // ===============================
-//    fun loadUsers() {
-//        viewModelScope.launch {
-//            useCases.getAllAuth().collectLatest { result ->
-//                _users.value = result
-//            }
-//        }
-//    }
-//
-//    // ===============================
-//    // 5️⃣ Update profil
-//    // ===============================
-//    fun updateProfile(
-//        id: Int,
-//        name: String,
-//        username: String,
-//        password: String,
-//        user_type: String,
-//        onSuccess: () -> Unit,
-//        onError: (String) -> Unit
-//    ) {
-//        viewModelScope.launch {
-//            val updatedUser = Auth(
-//                id = id,
-//                name = name,
-//                username = username,
-//                password = password,
-//                email = "",
-//                user_type = user_type)
-//            when (val result = useCases.updateAuth(updatedUser)) {
-//                is Result.Success -> {
-//                    onSuccess()
-//                    loadUsers()
-//                    observeCurrentSession()
-//                }
-//                is Result.Error -> onError(result.message ?: "Gagal memperbarui profil")
-//                else -> {}
-//            }
-//        }
-//    }
-//
-//    // ===============================
-//    // 6️⃣ Hapus akun
-//    // ===============================
-//    fun deleteAccount(
-//        id: Int,
-//        onSuccess: () -> Unit,
-//        onError: (String) -> Unit
-//    ) {
-//        viewModelScope.launch {
-//            when (val result = useCases.deleteAuth(id)) {
-//                is Result.Success -> {
-////                    onSuccess()
-////                    loadUsers()
-//                    // penghapusan session otomatis
-//                    userPrefsRepo.clearSession()
-//                    _currentUser.value = null
-//                    onSuccess()
-//                }
-//                is Result.Error -> onError(result.message ?: "Gagal menghapus akun")
-//                else -> {}
-//            }
-//        }
-//    }
-//
-//    // ===============================
-//    // 7️⃣ Logout (hapus DataStore)
-//    // ===============================
-//    fun logout(onLogoutDone: () -> Unit) {
-//        viewModelScope.launch {
-//            try {
-//                userPrefsRepo.clearSession()
-//                _currentUser.value = null
-//                onLogoutDone()
-//            } catch (e: Exception) {
-//                Log.e("ProfileViewModel", "Logout gagal: ${e.message}")
-//            }
-//        }
-//    }
-//}
-
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val useCases: AuthUseCases,
+    private val interactor: ProfileUseCases,
     private val userPrefsRepo: UserPreferencesRepository
 ) : ViewModel() {
 
-    // ===============================
-    // 1️⃣ Daftar semua user (untuk admin)
-    // ===============================
-    private val _users = MutableStateFlow<Result<List<Auth>>>(Result.Loading)
-    val users: StateFlow<Result<List<Auth>>> = _users
+    private val _uiState = MutableStateFlow(ProfileUiState())
+    val uiState: StateFlow<ProfileUiState> = _uiState.asStateFlow()
 
-    // ===============================
-    // 2️⃣ User yang sedang login
-    // ===============================
-    private val _currentUser = MutableStateFlow<Auth?>(null)
-    val currentUser: StateFlow<Auth?> = _currentUser
+    // ================================================================
+    // 1️⃣ Cached Flow untuk session dan user list
+    // ================================================================
+    private val sessionFlow: StateFlow<Auth?> = combine(
+        userPrefsRepo.userIdFlow,
+        userPrefsRepo.nameFlow,
+        userPrefsRepo.usernameFlow,
+        userPrefsRepo.userTypeFlow,
+        userPrefsRepo.isLoggedInFlow
+    ) { id, name, username, userType, isLoggedIn ->
+        if (isLoggedIn) Auth(id, name, username, "", "", userType) else null
+    }.distinctUntilChanged()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
+
+    private val allUsersFlow: StateFlow<Result<List<Auth>>> =
+        interactor.getAllAuth()
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), Result.Loading)
+
+    private var initialized = false
 
     init {
-        observeCurrentSession()
-        loadUsers()
+        if (!initialized) {
+            initialized = true
+            observeCurrentSession()
+        }
     }
 
-    // ===============================
-    // 3️⃣ Pantau session dari DataStore
-    // ===============================
-    fun observeCurrentSession() {
+    // ================================================================
+    // 2️⃣ Observasi session & daftar user bersamaan
+    // ================================================================
+    private fun observeCurrentSession() {
         viewModelScope.launch {
-            combine(
-                userPrefsRepo.userIdFlow,
-                userPrefsRepo.nameFlow,
-                userPrefsRepo.usernameFlow,
-                userPrefsRepo.userTypeFlow,
-                userPrefsRepo.isLoggedInFlow
-            ) { id, name, username, user_type, isLoggedIn ->
-                if (isLoggedIn) Auth(
-                    id = id,
-                    name = name,
-                    username = username,
-                    password = "",
-                    email = "",
-                    user_type = user_type
-                )
-                else null
-            }.collectLatest { sessionUser ->
-                if (sessionUser != null) {
-                    useCases.getAllAuth().collectLatest { result ->
-                        if (result is Result.Success) {
-                            _currentUser.value = result.data.find { it.id == sessionUser.id }
+            combine(sessionFlow, allUsersFlow) { sessionUser, result ->
+                Pair(sessionUser, result)
+            }.collectLatest { (sessionUser, result) ->
+
+                Log.d("ProfileVM", "🧩 sessionUser = ${sessionUser?.username ?: "null"}")
+                Log.d("ProfileVM", "🧩 result type = ${result::class.simpleName}")
+
+                when (result) {
+                    is Result.Success -> {
+                        val matched = result.data.find { it.id == sessionUser?.id }
+                        Log.d("ProfileVM", "✅ matched user = ${matched?.username ?: "tidak ada"}")
+                        _uiState.update {
+                            it.copy(
+                                currentUser = matched,
+                                users = result,
+                                isLoading = false,
+                                errorMessage = null
+                            )
                         }
                     }
-                } else {
-                    _currentUser.value = null
+
+                    is Result.Error -> _uiState.update {
+                        Log.e("ProfileVM", "❌ getAllUser error: ${result.message}")
+                        it.copy(isLoading = false, errorMessage = result.message)
+                    }
+
+                    is Result.Loading -> {
+                        Log.d("ProfileVM", "⏳ Loading users...")
+                        _uiState.update { it.copy(isLoading = true) }
+                    }
+                }
+
+                // Jika user sudah logout
+                if (sessionUser == null) {
+                    Log.w("ProfileVM", "⚠️ sessionUser = null → kemungkinan belum login atau session kosong")
+                    _uiState.update {
+                        it.copy(currentUser = null, isLoading = false)
+                    }
                 }
             }
         }
     }
 
-    // ===============================
-    // 4️⃣ Ambil semua user
-    // ===============================
+    // ================================================================
+    // 3️⃣ Fungsi manual refresh daftar user (retrigger flow)
+    // ================================================================
     fun loadUsers() {
         viewModelScope.launch {
-            useCases.getAllAuth().collectLatest { result ->
-                _users.value = result
+            _uiState.update { it.copy(isLoading = true) }
+            interactor.getAllAuth().collectLatest { result ->
+                _uiState.update { it.copy(users = result, isLoading = false) }
             }
         }
     }
 
-    // ===============================
-    // 5️⃣ Update profil
-    // ===============================
+    // ================================================================
+    // 4️⃣ Update profil (I/O thread)
+    // ================================================================
     fun updateProfile(
         id: Int,
         name: String,
         username: String,
         password: String,
-        user_type: String,
+        userType: String,
         onSuccess: () -> Unit,
         onError: (String) -> Unit
     ) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val updatedUser = Auth(
                 id = id,
                 name = name,
                 username = username,
                 password = password,
                 email = "",
-                user_type = user_type)
-            when (val result = useCases.updateAuth(updatedUser)) {
+                user_type = userType
+            )
+
+            when (val result = interactor.updateAuth(updatedUser)) {
                 is Result.Success -> {
                     onSuccess()
-                    loadUsers()
-                    observeCurrentSession()
+                    loadUsers() // 🔁 refresh manual agar data user terupdate
                 }
+
                 is Result.Error -> onError(result.message ?: "Gagal memperbarui profil")
                 else -> {}
             }
         }
     }
 
-    // ===============================
-    // 6️⃣ Hapus akun
-    // ===============================
+    // ================================================================
+    // 5️⃣ Hapus akun
+    // ================================================================
     fun deleteAccount(
         id: Int,
-        onSuccess: () -> Unit,
-        onError: (String) -> Unit
+        onSuccess: () -> Unit = {},
+        onError: (String) -> Unit = {}
     ) {
-        viewModelScope.launch {
-            when (val result = useCases.deleteAuth(id)) {
+        viewModelScope.launch(Dispatchers.IO) {
+            when (val result = interactor.deleteAuth(id)) {
                 is Result.Success -> {
-//                    onSuccess()
-//                    loadUsers()
-                    // penghapusan session otomatis
                     userPrefsRepo.clearSession()
-                    _currentUser.value = null
+                    _uiState.update { it.copy(currentUser = null, isDeleted = true) }
                     onSuccess()
                 }
+
                 is Result.Error -> onError(result.message ?: "Gagal menghapus akun")
                 else -> {}
             }
         }
     }
 
-    // ===============================
-    // 7️⃣ Logout (hapus DataStore)
-    // ===============================
+    // ================================================================
+    // 6️⃣ Logout (hapus DataStore)
+    // ================================================================
     fun logout(onLogoutDone: () -> Unit) {
         viewModelScope.launch {
             try {
                 userPrefsRepo.clearSession()
-                _currentUser.value = null
+                _uiState.update { it.copy(currentUser = null, isLoggedOut = true) }
+                RoleCache.isLoggedIn = false
+                RoleCache.role = null
                 onLogoutDone()
             } catch (e: Exception) {
                 Log.e("ProfileViewModel", "Logout gagal: ${e.message}")

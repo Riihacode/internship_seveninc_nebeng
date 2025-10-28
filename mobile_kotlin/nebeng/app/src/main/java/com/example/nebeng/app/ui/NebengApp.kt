@@ -1,36 +1,42 @@
 package com.example.nebeng.app.ui
 
 import android.app.Application
-import com.example.nebeng.core.database.AppDatabase
-import com.example.nebeng.feature_auth.data.local.entity.AuthEntity
+import com.example.nebeng.core.session.data.UserPreferencesRepository
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltAndroidApp
-class NebengApp : Application()
-// [Ini cuman untuk testing awal ]
-//{
-//    @Inject lateinit var database: AppDatabase
-//
-//    override fun onCreate() {
-//        super.onCreate()
-//
-//        // Tamabahkan user dummy di background thread
-//        CoroutineScope(Dispatchers.IO).launch {
-//            val existing = database.authDao().login("admin", "1234")
-//            if(existing == null) {
-//                database.authDao().insertUser(
-//                    AuthEntity(
-//                        id = 1,
-//                        username = "admin",
-//                        password = "1234",
-//                        role = "admin"
-//                    )
-//                )
-//            }
-//        }
-//    }
-//}
+class NebengApp : Application() {
+
+    companion object {
+        lateinit var instance: NebengApp
+            private set
+
+        val appContext get() = instance.applicationContext
+    }
+
+    @Inject
+    lateinit var userPrefsRepo: UserPreferencesRepository
+
+    override fun onCreate() {
+        super.onCreate()
+        instance = this
+
+        // Preload DataStore secara sinkron ke RoleCache
+        CoroutineScope(Dispatchers.IO).launch {
+            val cachedRole = userPrefsRepo.userTypeFlow.first()
+            val isLoggedIn = userPrefsRepo.isLoggedInFlow.first()
+            RoleCache.role = cachedRole
+            RoleCache.isLoggedIn = isLoggedIn
+        }
+    }
+}
+
+object RoleCache {
+    var role: String? = null
+    var isLoggedIn: Boolean = false
+}
