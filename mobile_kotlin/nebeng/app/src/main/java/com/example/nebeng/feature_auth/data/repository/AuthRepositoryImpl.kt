@@ -1,9 +1,13 @@
 package com.example.nebeng.feature_auth.data.repository
 
+import android.util.Log
+import com.example.nebeng.app.ui.NebengApp
 import com.example.nebeng.feature_auth.domain.model.Auth
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import com.example.nebeng.core.model.Result
+import com.example.nebeng.core.common.Result
+import com.example.nebeng.core.session.data.UserPreferences
+import com.example.nebeng.core.session.data.UserPreferencesRepository
 import com.example.nebeng.feature_auth.data.remote.api.AuthApi
 import com.example.nebeng.feature_auth.data.remote.model.LoginRequest
 import com.example.nebeng.feature_auth.data.remote.model.RegisterRequest
@@ -70,8 +74,15 @@ class AuthRepositoryImpl @Inject constructor(
     override fun getAllUser(): Flow<Result<List<Auth>>> = flow {
         emit(Result.Loading)
         try {
-            // backend kamu belum ada endpoint /users, jadi kosongkan dulu
-            emit(Result.Success(emptyList()))
+            val prefsRepo = UserPreferencesRepository(UserPreferences(NebengApp.appContext))
+            val user = prefsRepo.getUser()
+            if (user != null) {
+                emit(Result.Success(listOf(user)))
+                Log.d("AuthRepo", "✅ getAllUser emit ${user.username}")
+            } else {
+                emit(Result.Success(emptyList()))
+                Log.w("AuthRepo", "⚠️ Tidak ada user login di DataStore")
+            }
         } catch (e: Exception) {
             emit(Result.Error(e.message ?: "Gagal ambil data user"))
         }

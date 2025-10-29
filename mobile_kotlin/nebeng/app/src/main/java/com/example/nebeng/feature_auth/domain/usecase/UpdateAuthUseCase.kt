@@ -2,7 +2,7 @@ package com.example.nebeng.feature_auth.domain.usecase
 
 import com.example.nebeng.feature_auth.data.repository.AuthRepository
 import com.example.nebeng.feature_auth.domain.model.Auth
-import com.example.nebeng.core.model.Result
+import com.example.nebeng.core.common.Result
 import javax.inject.Inject
 
 class UpdateAuthUseCase @Inject constructor(

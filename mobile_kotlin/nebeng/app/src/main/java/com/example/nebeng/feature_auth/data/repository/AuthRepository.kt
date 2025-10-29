@@ -2,7 +2,7 @@ package com.example.nebeng.feature_auth.data.repository
 
 import com.example.nebeng.feature_auth.domain.model.Auth
 import kotlinx.coroutines.flow.Flow
-import com.example.nebeng.core.model.Result
+import com.example.nebeng.core.common.Result
 
 interface AuthRepository {
     fun getAllUser(): Flow<Result<List<Auth>>>

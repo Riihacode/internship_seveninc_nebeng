@@ -6,7 +6,6 @@ import com.example.nebeng.feature_auth.data.remote.model.LogoutResponse
 import com.example.nebeng.feature_auth.data.remote.model.RegisterRequest
 import retrofit2.http.Body
 import retrofit2.http.Header
-import retrofit2.http.Headers
 import retrofit2.http.POST
 
 interface AuthApi {
@@ -16,7 +15,6 @@ interface AuthApi {
         request: LoginRequest
     ): AuthResponse
 
-//    @Headers("Content-Type: application/json")
     @POST("api/register")
     suspend fun register(
         @Body

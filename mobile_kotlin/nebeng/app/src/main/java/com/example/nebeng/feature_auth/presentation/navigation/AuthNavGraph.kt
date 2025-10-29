@@ -9,16 +9,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.nebeng.app.ui.MainActivity
-import com.example.nebeng.core.session.UserPreferencesRepository
-import com.example.nebeng.feature_auth.presentation.profile.DeleteAccountScreen
-import com.example.nebeng.feature_auth.presentation.login.LoginScreen
-import com.example.nebeng.feature_auth.presentation.login.LoginViewModel
-import com.example.nebeng.feature_auth.presentation.profile.EditProfileScreen
-import com.example.nebeng.feature_auth.presentation.profile.ProfileDetailScreen
-//import com.example.nebeng.feature_auth.presentation.profile.EditProfileScreen
-import com.example.nebeng.feature_auth.presentation.signup.SignupScreen
-import com.example.nebeng.feature_auth.presentation.signup.SignupViewModel
-import com.example.nebeng.feature_auth.presentation.profile.UserListScreen
+import com.example.nebeng.core.session.data.UserPreferencesRepository
+import com.example.nebeng.feature_auth.presentation.auth.login.LoginScreen
+import com.example.nebeng.feature_auth.presentation.auth.login.LoginViewModel
+//import com.example.nebeng.feature_auth.presentation.profile.screen.EditProfileScreen
+import com.example.nebeng.feature_auth.presentation.auth.signup.SignupScreen
+import com.example.nebeng.feature_auth.presentation.auth.signup.SignupViewModel
 
 @Composable
 fun AuthNavGraph(
