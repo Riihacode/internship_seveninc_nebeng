@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import LogoutButton from "./LogoutButton";
 export default function SideBar() {
   return (
-    <aside className="hidden md:flex flex-col justify-between bg-white text-gray-700 dark:border-gray-700 dark:text-white dark:bg-gray-600 w-64 min-h-screen">
+    <aside className="hidden md:flex flex-col justify-between bg-white text-gray-700 dark:border-gray-700 dark:text-white dark:bg-gray-600 w-64 min-h-screen relative">
       {/* ATAS */}
       <div className="">
         <div className="py-3 h-17 text-2xl uppercase text-center tracking-widest bg-gray-900 border-b-1 border-gray-800 mb-8 dark:bg-gray-700">
