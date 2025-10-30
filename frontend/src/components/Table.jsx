@@ -77,7 +77,7 @@ export default function Table({ columns, data, loading, error }) {
               {columns.map((col, j) => (
                 <td
                   key={j}
-                  className={`px-6 py-4 whitespace-nowrap text-sm font-medium ${
+                  className={`relative px-6 py-4 whitespace-nowrap text-sm font-medium ${
                     col.align === "center"
                       ? "text-center"
                       : col.align === "right"

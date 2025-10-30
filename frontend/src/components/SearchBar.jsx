@@ -45,7 +45,7 @@ export default function SearchBar() {
           <option value="">Status</option>
         </select>
       </div>
-      <div className="flex items-center justify-center pr-2 mr-2 border-r-1 border-gray-300">
+      <div className="flex items-center justify-center pr-2 mr-2 border-r-1 border-gray-300 text-red-500">
         <button>
           {" "}
           <svg

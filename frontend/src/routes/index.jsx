@@ -9,6 +9,8 @@ import Pesanan from "../pages/Pesanan.jsx";
 import Refund from "../pages/Refund.jsx";
 import Laporan from "../pages/Laporan.jsx";
 import Pengaturan from "../pages/Pengaturan.jsx";
+import DetailMitra from "../pages/DetailMitra.jsx";
+import DetailCustomer from "../pages/DetailCustomer.jsx";
 
 export default function AppRoutes() {
   return (
@@ -33,10 +35,26 @@ export default function AppRoutes() {
             }
           />
           <Route
+            path="/mitra/:id"
+            element={
+              <ProtectedRoute>
+                <DetailMitra />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/customer"
             element={
               <ProtectedRoute>
                 <Customer />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/customer/:id"
+            element={
+              <ProtectedRoute>
+                <DetailCustomer />
               </ProtectedRoute>
             }
           />
