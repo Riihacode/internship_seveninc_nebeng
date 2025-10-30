@@ -1,4 +1,4 @@
-package com.example.nebeng.feature_chat.presentation.chat
+package com.example.nebeng.feature_chat.presentation.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,46 +13,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.nebeng.app.ui.common.LoadingScreen
 import com.example.nebeng.core.session.data.UserPreferencesRepository
 import com.example.nebeng.databinding.FragmentChatBinding
+import com.example.nebeng.feature_chat.presentation.screen_role.customer.ChatCustomerScreen
+import com.example.nebeng.feature_chat.presentation.screen_role.driver.ChatDriverScreen
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-
-//
-//class ChatFragment : Fragment() {
-//
-//    private var _binding: FragmentChatBinding? = null
-//
-//    // This property is only valid between onCreateView and
-//    // onDestroyView.
-//    private val binding get() = _binding!!
-//
-//    override fun onCreateView(
-//        inflater: LayoutInflater,
-//        container: ViewGroup?,
-//        savedInstanceState: Bundle?
-//    ): View {
-//        _binding = FragmentChatBinding.inflate(inflater, container, false)
-//        return binding.root
-//    }
-//
-//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        super.onViewCreated(view, savedInstanceState)
-//
-//        binding.composeView.apply {
-//            setContent {
-//                MaterialTheme(
-//                    colorScheme = lightColorScheme()
-//                ) {
-//                    ChatScreen()
-//                }
-//            }
-//        }
-//    }
-//
-//    override fun onDestroyView() {
-//        super.onDestroyView()
-//        _binding = null
-//    }
-//}
 
 @AndroidEntryPoint
 class ChatFragment : Fragment() {

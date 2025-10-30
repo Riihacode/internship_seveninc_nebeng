@@ -9,6 +9,10 @@ class UpdateAuthUseCase @Inject constructor(
     private val repository: AuthRepository
 ) {
     suspend operator fun invoke(user: Auth): Result<Unit>{
-        return repository.updateUser(user)
+        return try {
+            repository.updateUser(user)
+        } catch (e: Exception) {
+            Result.Error(e.message ?: "Terjadi kesalahan saat update profil")
+        }
     }
 }

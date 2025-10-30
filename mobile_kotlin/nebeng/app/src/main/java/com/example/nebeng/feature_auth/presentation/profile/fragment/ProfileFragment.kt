@@ -43,7 +43,8 @@ class ProfileFragment : Fragment() {
                     // 🧩 4️⃣ Navigasi internal profile
                     ProfileNavHost(
                         navController = navController,
-                        userType = role
+                        userType = role,
+                        viewModel = viewModel
                     )
                 }
             }

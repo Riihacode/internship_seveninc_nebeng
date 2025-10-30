@@ -1,4 +1,4 @@
-package com.example.nebeng.feature_chat.presentation.chat
+package com.example.nebeng.feature_chat.presentation
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

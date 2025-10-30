@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.withContext
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
@@ -71,7 +72,7 @@ class ProfileViewModel @Inject constructor(
                 Log.d("ProfileVM", "🧩 result type = ${result::class.simpleName}")
 
                 when (result) {
-                    is Result.Success -> {
+                    is Result.Success   -> {
                         val matched = result.data.find { it.id == sessionUser?.id }
                         Log.d("ProfileVM", "✅ matched user = ${matched?.username ?: "tidak ada"}")
                         _uiState.update {
@@ -84,12 +85,12 @@ class ProfileViewModel @Inject constructor(
                         }
                     }
 
-                    is Result.Error -> _uiState.update {
+                    is Result.Error     -> _uiState.update {
                         Log.e("ProfileVM", "❌ getAllUser error: ${result.message}")
                         it.copy(isLoading = false, errorMessage = result.message)
                     }
 
-                    is Result.Loading -> {
+                    is Result.Loading   -> {
                         Log.d("ProfileVM", "⏳ Loading users...")
                         _uiState.update { it.copy(isLoading = true) }
                     }
@@ -126,28 +127,59 @@ class ProfileViewModel @Inject constructor(
         name: String,
         username: String,
         password: String,
-        userType: String,
-        onSuccess: () -> Unit,
-        onError: (String) -> Unit
+        userType: String
     ) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val updatedUser = Auth(
-                id = id,
-                name = name,
-                username = username,
-                password = password,
-                email = "",
-                user_type = userType
-            )
+        viewModelScope.launch {
+            try {
+                _uiState.update { it.copy(isLoading = true) }
 
-            when (val result = interactor.updateAuth(updatedUser)) {
-                is Result.Success -> {
-                    onSuccess()
-                    loadUsers() // 🔁 refresh manual agar data user terupdate
+                val updatedUser = Auth(
+                    id = id,
+                    name = name,
+                    username = username,
+                    password = password,
+                    email = "",
+                    user_type = userType
+                )
+
+                when (val result = interactor.updateAuth(updatedUser)) {
+                    is Result.Success   -> {
+                        // Sinkronkan ke DataStore agar sessioflow ikut update otomatis
+                        userPrefsRepo.saveSession(
+                            userId = updatedUser.id,
+                            name = updatedUser.name,
+                            username = updatedUser.username,
+                            user_type = updatedUser.user_type,
+                            isLoggedIn = true
+                        )
+
+                        _uiState.update {
+                            it.copy(
+                                isLoading = false,
+                                isProfileUpdated = true,
+                                currentUser = updatedUser
+                            )
+                        }
+                    }
+
+                    is Result.Error     -> {
+                        _uiState.update {
+                            it.copy(
+                                isLoading = false,
+                                errorMessage = result.message
+                            )
+                        }
+                    }
+
+                    else -> {}
                 }
-
-                is Result.Error -> onError(result.message ?: "Gagal memperbarui profil")
-                else -> {}
+            } catch (e: Exception) {
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        errorMessage = e.message ?: "Terjadi kesalahan tak terduga"
+                    )
+                }
             }
         }
     }
@@ -189,5 +221,14 @@ class ProfileViewModel @Inject constructor(
                 Log.e("ProfileViewModel", "Logout gagal: ${e.message}")
             }
         }
+    }
+
+
+    fun resetProfileUpdatedFlag() {
+        _uiState.update { it.copy(isProfileUpdated = false) }
+    }
+
+    fun clearError() {
+        _uiState.update { it.copy(errorMessage = null) }
     }
 }

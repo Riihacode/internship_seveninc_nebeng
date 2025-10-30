@@ -40,8 +40,8 @@ class MainActivity : AppCompatActivity() {
                 combine(
                     appRoleViewModel.isLoggedInFlow,
                     appRoleViewModel.userTypeFlow
-                ) { isLoggedIn, userType ->
-                    isLoggedIn to userType
+                ) {
+                  isLoggedIn, userType -> isLoggedIn to userType
                 }.collect { (isLoggedIn, userType) ->
                     if (!isLoggedIn) {
                         redirectToAuth()

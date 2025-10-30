@@ -21,6 +21,8 @@ object ApiClient {
 //    private const val BASE_URL = "http://10.87.45.51:8000/"
 //    private const val BASE_URL = "http://10.122.43.51:8000/"
 //    private const val BASE_URL = "http://10.141.197.51:8000/"
+//    private const val BASE_URL = "http://10.72.126.51:8000/"
+
 
     private val okHttpClient = OkHttpClient.Builder()
         .connectTimeout(30, TimeUnit.SECONDS)
