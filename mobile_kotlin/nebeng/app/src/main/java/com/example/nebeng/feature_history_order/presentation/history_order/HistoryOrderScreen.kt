@@ -65,51 +65,6 @@ fun HistoryOrderScreen() {
         HistoryItemData("BB32KPL", "GRANMAX BOX", "YOG POS 3 → KLATEN", "Rp 70.000", "Pending", "Barang")
     )
 
-//    val historyData = listOf(
-//        HistorySectionData(
-//            date = "13 Juni 2024",
-//            items = listOf(
-//                HistoryItemData(
-//                    code = "XZH80BV",
-//                    title = "TOYOTA AVANZA VELOZ",
-//                    route = "YOG POS 2 → SOLO POS 1",
-//                    price = "Rp 90.000",
-//                    status = "Selesai"
-//                )
-//            )
-//        ),
-//        HistorySectionData(
-//            date = "1 Februari 2024",
-//            items = listOf(
-//                HistoryItemData(
-//                    code = "GH12UW2",
-//                    title = "NEBENG BARANG",
-//                    route = "YOG POS 2 → SOLO POS 1",
-//                    price = "Rp 50.000",
-//                    status = "Selesai"
-//                )
-//            )
-//        ),
-//        HistorySectionData(
-//            date = "8 Januari 2024",
-//            items = listOf(
-//                HistoryItemData(
-//                    code = "ZH12M3T",
-//                    title = "YAMAHA NMAX",
-//                    route = "YOG POS 2 → SOLO POS 1",
-//                    price = "Rp 110.000",
-//                    status = "Selesai"
-//                ),
-//                HistoryItemData(
-//                    code = "HY34BN2",
-//                    title = "HONDA SCOOPY",
-//                    route = "YOG POS 1 → MAGELANG",
-//                    price = "Rp 60.000",
-//                    status = "Selesai"
-//                )
-//            )
-//        )
-//    )
     val statusFromTab = when(selectedTab) {
         0   -> listOf("Selesai")
         1   -> listOf("Dalam Perjalanan", "Pending")
@@ -164,17 +119,6 @@ fun HistoryOrderScreen() {
                 Spacer(Modifier.height(12.dp))
             }
 
-//            item {
-//                // Filter chips
-//                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-//                    FilterChipItem("Mobil", selected = true)
-//                    FilterChipItem("Motor", selected = false)
-//                    FilterChipItem("Barang", selected = false)
-////                    FilterChipItem("Selesai", selected = true)
-//                    StatusDropdownChip()
-//                }
-//                Spacer(Modifier.height(16.dp))
-//            }
             // ===== FILTER BAR (Kategori + Status) =====
             item {
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -194,10 +138,6 @@ fun HistoryOrderScreen() {
                 Spacer(Modifier.height(16.dp))
             }
 
-//            // History Sections
-//            items(historyData) { section ->
-//                HistorySection(date = section.date, items = section.items)
-//            }
             // ===== HISTORY ITEMS =====
             if (filteredHistory.isEmpty()) {
                 item {
@@ -219,54 +159,6 @@ fun HistoryOrderScreen() {
     }
 }
 
-//// ==== Data Classes ====
-//data class HistoryItemData(
-//    val code: String,
-//    val title: String,
-//    val route: String,
-//    val price: String,
-//    val status: String
-//)
-//
-//data class HistorySectionData(
-//    val date: String,
-//    val items: List<HistoryItemData>
-//)
-//
-//// ==== UI Components ====
-//
-//@Composable
-//fun FilterChipItem(label: String, selected: Boolean) {
-//    FilterChip(
-//        selected = selected,
-//        onClick = { },
-//        label = { Text(label) },
-//        colors = FilterChipDefaults.filterChipColors(
-//            containerColor = if (selected) Color(0xFF1877F2) else Color.White,
-//            labelColor = if (selected) Color.White else Color.Black
-//        )
-//    )
-//}
-//
-//@Composable
-//fun HistorySection(date: String, items: List<HistoryItemData>) {
-//    Column {
-//        Text(
-//            text = date,
-//            style = MaterialTheme.typography.bodyMedium.copy(
-//                fontWeight = FontWeight.SemiBold,
-//                color = Color.Gray
-//            ),
-//            modifier = Modifier.padding(bottom = 8.dp)
-//        )
-//
-//        items.forEach { item ->
-//            HistoryCard(item)
-//            Spacer(Modifier.height(12.dp))
-//        }
-//    }
-//}
-//
 @Composable
 fun HistoryCard(item: HistoryItemData) {
     Card(
@@ -318,7 +210,7 @@ fun HistoryCard(item: HistoryItemData) {
         }
     }
 }
-//
+
 @Composable
 fun StatusChip(label: String) {
     Box(
@@ -334,10 +226,7 @@ fun StatusChip(label: String) {
     }
 }
 
-
-
 // ======== COMPONENTS ========
-
 @Composable
 fun CategoryChip(label: String, selected: Boolean, onSelected: () -> Unit) {
     val bgColor = if (selected) Color(0xFFDDE7FF) else Color(0xFFF0F2F7)
@@ -357,66 +246,6 @@ fun CategoryChip(label: String, selected: Boolean, onSelected: () -> Unit) {
         )
     }
 }
-
-//@Composable
-//fun StatusDropdownChip(
-//    selectedStatus: String,
-//    onStatusSelected: (String) -> Unit
-//) {
-//    var expanded by remember { mutableStateOf(false) }
-//
-//    val statuses = listOf("Pending", "Dalam Perjalanan", "Selesai", "Dibatalkan")
-//    val isActive = selectedStatus == "Selesai"
-//    val chipColor = if (isActive) Color(0xFF1877F2) else Color(0xFFE9EDF5)
-//    val textColor = if (isActive) Color.White else Color(0xFF1E2E4F)
-//
-//    Box {
-//        Row(
-//            modifier = Modifier
-//                .clip(RoundedCornerShape(12.dp))
-//                .background(chipColor)
-//                .clickable { expanded = !expanded }
-//                .padding(horizontal = 16.dp, vertical = 10.dp),
-//            verticalAlignment = Alignment.CenterVertically
-//        ) {
-//            Text(
-//                text = selectedStatus,
-//                color = textColor,
-//                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium)
-//            )
-//            Icon(
-//                imageVector = if (expanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
-//                contentDescription = null,
-//                tint = textColor,
-//                modifier = Modifier.size(18.dp)
-//            )
-//        }
-//
-//        DropdownMenu(
-//            expanded = expanded,
-//            onDismissRequest = { expanded = false },
-//            modifier = Modifier
-//                .background(Color.White)
-//                .clip(RoundedCornerShape(8.dp))
-//        ) {
-//            statuses.forEach { status ->
-//                DropdownMenuItem(
-//                    text = {
-//                        Text(
-//                            text = status,
-//                            color = if (status == selectedStatus) Color(0xFF1877F2) else Color.Black
-//                        )
-//                    },
-//                    onClick = {
-//                        onStatusSelected(status)
-//                        expanded = false
-//                    }
-//                )
-//            }
-//        }
-//    }
-//}
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

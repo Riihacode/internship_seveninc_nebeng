@@ -7,13 +7,13 @@
 
     <fragment
         android:id="@+id/navigation_homepage"
-        android:name="com.example.nebeng.feature_homepage.presentation.homepage.HomepageFragment"
+        android:name="com.example.nebeng.feature_homepage.presentation.fragment.HomepageFragment"
         android:label="@string/title_homepage"
         tools:layout="@layout/fragment_homepage" />
 
     <fragment
         android:id="@+id/navigation_history_order"
-        android:name="com.example.nebeng.feature_history_order.presentation.history_order.HistoryOrderFragment"
+        android:name="com.example.nebeng.feature_history_order.presentation.fragment.HistoryOrderFragment"
         android:label="@string/title_history_order"
         tools:layout="@layout/fragment_history_order" />
 

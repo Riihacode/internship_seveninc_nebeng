@@ -1,4 +1,4 @@
-package com.example.nebeng.feature_homepage.presentation.homepage
+package com.example.nebeng.feature_homepage.presentation.screen_base
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
@@ -64,29 +64,8 @@ fun HomeScreen(
     userName: String = "Nadya Amalya",
     points: Int = 0,
 ) {
-    val scrollState = rememberScrollState()
 
     Column(
-//        modifier = Modifier
-//            .fillMaxSize()
-//            .verticalScroll(scrollState)
-//            .background(Color(0xFFF8F9FD))
-//        modifier = Modifier
-//            .fillMaxSize()
-//            .verticalScroll(scrollState)
-//            .background(Color(0xFFF8F9FD))
-//            .padding(
-//                bottom = WindowInsets.navigationBars
-//                    .only(WindowInsetsSides.Bottom)
-//                    .asPaddingValues()
-//                    .calculateBottomPadding()
-//            )
-
-//            modifier = Modifier
-//                .fillMaxSize()
-//                .verticalScroll(scrollState)
-//                .background(Color(0xFFF8F9FD))
-//                .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom))
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
@@ -131,7 +110,6 @@ fun HomeScreen(
             }
         }
 
-
         // ===== CARD POIN =====
         Card(
             modifier = Modifier
@@ -148,7 +126,6 @@ fun HomeScreen(
                 Image(
                     painter = painterResource(id = R.drawable.ic_star),
                     contentDescription = "Poin",
-//                    tint = Color(0xFFFFC107),
                     modifier = Modifier.size(42.dp)
                 )
                 Spacer(Modifier.width(12.dp))
@@ -171,9 +148,6 @@ fun HomeScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 32.dp),
-//            horizontalArrangement = Arrangement.spacedBy(24.dp, Alignment.CenterHorizontally)
-//            horizontalArrangement = Arrangement.SpaceEvenly, // ✅ jarak antar ikon sama besar
-//            horizontalArrangement = Arrangement.SpaceBetween,
             horizontalArrangement = Arrangement.spacedBy(8.dp), // spasi antar item lebih konsisten
             verticalAlignment = Alignment.CenterVertically
 
@@ -187,15 +161,6 @@ fun HomeScreen(
         Spacer(Modifier.height(24.dp))
 
         // ===== BANNER =====
-//        Image(
-//            painter = painterResource(id = R.drawable.banner_nebeng),
-//            contentDescription = "Banner Nebeng",
-//            modifier = Modifier
-//                .padding(horizontal = 24.dp)
-//                .fillMaxWidth()
-//                .clip(RoundedCornerShape(16.dp)),
-//            contentScale = ContentScale.Crop
-//        )
         BannerSlider(
             banners = listOf(
                 R.drawable.banner_nebeng,
@@ -233,33 +198,6 @@ fun HomeScreen(
     }
 }
 
-//@Composable
-//fun MenuItem(iconRes: Int, label: String) {
-//    Column(
-//        horizontalAlignment = Alignment.CenterHorizontally
-//    ) {
-//        Box(
-//            modifier = Modifier
-//                .size(48.dp)
-//                .clip(CircleShape)
-//                .background(Color(0xFFEAF2FF)),
-//            contentAlignment = Alignment.Center
-//        ) {
-//            Image(
-//                painter = painterResource(id = iconRes),
-//                contentDescription = label,
-//                modifier = Modifier.size(48.dp)
-//            )
-//        }
-//        Spacer(Modifier.height(8.dp))
-//        Text(
-//            label,
-//            style = MaterialTheme.typography.bodySmall,
-//            textAlign = TextAlign.Center,
-//            modifier = Modifier.heightIn(min = 56.dp)
-//        )
-//    }
-//}
 @Composable
 fun MenuItem(iconRes: Int, label: String, modifier: Modifier = Modifier) {
     Column(
@@ -290,11 +228,9 @@ fun MenuItem(iconRes: Int, label: String, modifier: Modifier = Modifier) {
         ) {
             Text(
                 text = label,
-//                style = MaterialTheme.typography.bodySmall,
                 style = MaterialTheme.typography.bodySmall.copy(fontSize = 11.sp),
                 textAlign = TextAlign.Center,
                 lineHeight = 12.sp,
-//            maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -374,26 +310,6 @@ fun BannerSlider(
         }
 
         // Dots indicator
-//        Row(
-//            modifier = Modifier
-//                .padding(top = 12.dp)
-//                .fillMaxWidth(),
-//            horizontalArrangement = Arrangement.Center
-//        ) {
-//            repeat(banners.size) { index ->
-//                val isSelected = pagerState.currentPage == index
-//                Box(
-//                    modifier = Modifier
-//                        .padding(4.dp)
-//                        .size(if (isSelected) 10.dp else 8.dp)
-//                        .clip(RoundedCornerShape(50))
-//                        .background(
-//                            if (isSelected) MaterialTheme.colorScheme.primary
-//                            else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
-//                        )
-//                )
-//            }
-//        }
         // ===== DOTS INDICATOR (STYLE: OVAL ACTIVE) =====
         Row(
             modifier = Modifier

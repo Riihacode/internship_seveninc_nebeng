@@ -1,4 +1,4 @@
-package com.example.nebeng.feature_chat.presentation.screen
+package com.example.nebeng.feature_chat.presentation.screen_base
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
