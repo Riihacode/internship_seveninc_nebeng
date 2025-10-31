@@ -80,6 +80,9 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.foundation) // versi terbaru
     implementation(libs.coil.compose)
+    implementation(libs.material3)
+    implementation(libs.androidx.material3.window.size.class1)
+    implementation(libs.androidx.material3.adaptive.navigation.suite)
 
     // Android Studio Preview support
     implementation(libs.androidx.ui.tooling.preview)

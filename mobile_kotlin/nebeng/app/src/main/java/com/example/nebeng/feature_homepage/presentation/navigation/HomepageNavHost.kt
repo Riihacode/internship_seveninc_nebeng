@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.nebeng.feature_homepage.presentation.HomepageViewModel
 import com.example.nebeng.feature_homepage.presentation.screen_role.customer.HomepageCustomerScreenUi
+import com.example.nebeng.feature_homepage.presentation.screen_role.driver.HomepageDriverScreenUi
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -25,12 +26,29 @@ fun HomepageNavHost(
         "homepage_customer"
     }
 
-    NavHost(navController = navController, startDestination = startDestination) {
+    NavHost(
+        navController = navController,
+        startDestination = startDestination
+    ) {
         composable("homepage_customer") {
             HomepageCustomerScreenUi(state = uiState)
         }
+//        composable("homepage_driver") {
+////            HomepageDriverScreenUi(uiState = uiState)
+//        }
         composable("homepage_driver") {
-//            HomepageDriverScreenUi(uiState = uiState)
+            HomepageDriverScreenUi(
+                state = uiState,
+                onVerifyClicked = {
+                    // navigasi ke halaman verifikasi dokumen
+                    navController.navigate("verify_documents")
+                }
+            )
+        }
+
+        // Placeholder halaman verifikasi dokumen (nanti diganti actual screen)
+        composable("verify_documents") {
+            androidx.compose.material3.Text("Halaman Verifikasi Dokumen (coming soon)")
         }
     }
 }

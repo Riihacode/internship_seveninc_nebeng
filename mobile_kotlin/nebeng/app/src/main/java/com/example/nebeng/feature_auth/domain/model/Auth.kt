@@ -11,5 +11,8 @@ data class Auth(
 
     // [BELUM DITAMBAH DI BACKEND]
     val phone: String? = null,      // sementara
-    val avatarUrl: String? = null   // sementara
+    val avatarUrl: String? = null,   // sementara
+
+    // [BELUM DITAMBAH DI BACKEND] HomepageDriverScreenUi
+    val isVerified: Boolean = false
 )

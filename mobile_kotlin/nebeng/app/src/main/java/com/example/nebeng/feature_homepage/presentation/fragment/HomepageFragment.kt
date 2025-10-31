@@ -7,6 +7,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.nebeng.app.ui.common.RoleAwareFragment
 import com.example.nebeng.feature_homepage.presentation.HomepageViewModel
 import com.example.nebeng.feature_homepage.presentation.screen_role.customer.HomepageCustomerScreenUi
+import com.example.nebeng.feature_homepage.presentation.screen_role.driver.HomepageDriverScreenUi
 import dagger.hilt.android.AndroidEntryPoint
 
 //import com.example.nebeng.feature_homepage.presentation.homepage.screen_role.customer.HomepageCustomerScreen
@@ -70,6 +71,6 @@ class HomepageFragment : RoleAwareFragment() {
     @Composable
     override fun DriverUI() {
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-//        HomepageDriverScreenUi(uiState)
+        HomepageDriverScreenUi(uiState)
     }
 }
