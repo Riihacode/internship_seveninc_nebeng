@@ -1,18 +1,5 @@
 package com.example.nebeng.core.database
 
-import android.content.Context
-import androidx.room.Room
-import com.example.nebeng.feature_auth.data.local.dao.AuthDao
-import com.example.nebeng.feature_auth.data.remote.api.AuthApi
-import com.example.nebeng.feature_auth.data.repository.AuthRepository
-import com.example.nebeng.feature_auth.data.repository.AuthRepositoryImpl
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
-
 //@Module
 //@InstallIn(SingletonComponent::class)
 //object DatabaseModule {

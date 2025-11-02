@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".feature_homepage.presentation.fragment.HomepageFragment">
+    tools:context=".feature_a_homepage.presentation.fragment.HomepageFragment">
 
     <androidx.compose.ui.platform.ComposeView
         android:id="@+id/composeView"
