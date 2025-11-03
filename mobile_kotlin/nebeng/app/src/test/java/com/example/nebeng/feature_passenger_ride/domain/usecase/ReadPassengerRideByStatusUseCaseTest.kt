@@ -33,7 +33,7 @@ class ReadPassengerRideByStatusUseCaseTest {
                 seatsReserved = 1,
                 pricePerSeat = 25000,
                 commissionPercentage = 10,
-                rideStatus = "available",
+                rideStatus = "pending",
                 createdAt = "2025-11-01T08:00:00.000Z",
                 updatedAt = "2025-11-01T08:30:00.000Z"
             )

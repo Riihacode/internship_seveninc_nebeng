@@ -12,6 +12,10 @@ import org.mockito.Mockito.*
 import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.anyString
 
+// helper agar Mockito.any() tidak bikin NPE di Kotlin
+@Suppress("UNCHECKED_CAST")
+private fun <T> anyNonNull(): T = any<T>()
+
 class CreatePassengerRideUseCaseTest {
 
     private lateinit var repository: PassengerRideRepository
@@ -54,8 +58,10 @@ class CreatePassengerRideUseCaseTest {
             updatedAt = ""
         )
 
-        `when`(repository.createPassengerRide(anyString(), any(CreatePassengerRideRequest::class.java)))
-            .thenReturn(Result.Success(fakeRide))
+//        `when`(repository.createPassengerRide(anyString(), any(CreatePassengerRideRequest::class.java)))
+//            .thenReturn(Result.Success(fakeRide))
+        `when`(repository.createPassengerRide(anyString(), anyNonNull())).thenReturn(Result.Success(fakeRide))
+
 
         val result = useCase("dummy-token", fakeRequest)
 
@@ -68,8 +74,9 @@ class CreatePassengerRideUseCaseTest {
     @Test
     fun `should return error when repository fails`() = runBlocking {
         // Mock behavior dengan matcher valid
-        `when`(repository.createPassengerRide(anyString(), any(CreatePassengerRideRequest::class.java)))
-            .thenReturn(Result.Error("Gagal membuat passenger ride baru"))
+//        `when`(repository.createPassengerRide(anyString(), any(CreatePassengerRideRequest::class.java)))
+//            .thenReturn(Result.Error("Gagal membuat passenger ride baru"))
+        `when`(repository.createPassengerRide(anyString(), anyNonNull())).thenReturn(Result.Error("Gagal membuat passenger ride baru"))
 
         val fakeRequest = CreatePassengerRideRequest(
             driverId = 1,

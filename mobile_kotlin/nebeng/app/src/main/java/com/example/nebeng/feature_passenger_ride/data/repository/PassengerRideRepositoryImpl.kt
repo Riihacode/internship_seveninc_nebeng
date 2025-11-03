@@ -14,7 +14,10 @@ import javax.inject.Singleton
 class PassengerRideRepositoryImpl @Inject constructor(
     private val api: PassengerRideApi
 ): PassengerRideRepository {
-    override suspend fun getAllPassengerRides(token: String): Result<List<PassengerRide>> {
+
+    override suspend fun getAllPassengerRides(
+        token: String
+    ): Result<List<PassengerRide>> {
         return try {
             val response = api.getAllPassengerRides(token = "Bearer $token")
             if (response.isSuccessful) {
@@ -28,7 +31,10 @@ class PassengerRideRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getPassengerRideById(token: String, id: Int): Result<PassengerRide> {
+    override suspend fun getPassengerRideById(
+        token: String,
+        id: Int
+    ): Result<PassengerRide> {
         return try {
             val response = api.getPassengerRideById("Bearer $token", id)
             if(response.isSuccessful) {

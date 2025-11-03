@@ -12,30 +12,16 @@ import org.mockito.Mockito.*
 class ReadAllPassengerRideUseCaseTest {
 
     private lateinit var repository: PassengerRideRepository
-    private lateinit var useCase: ReadPassengerRideUseCase
+    private lateinit var useCase: ReadPassengerRideAllUseCase
 
     @Before
     fun setUp() {
         repository = mock(PassengerRideRepository::class.java)
-        useCase = ReadPassengerRideUseCase(repository)
+        useCase = ReadPassengerRideAllUseCase(repository)
     }
 
     @Test
     fun `should return success when repository returns data`() = runBlocking {
-        // given
-//        val fakeList = listOf(
-//            PassengerRide(
-//                id = 1,
-//                driverName = "Riiha",
-//                vehicleType = "Mobil",
-//                departureTerminalName = "Terminal A",
-//                arrivalTerminalName = "Terminal B",
-//                departureTime = "2025-11-01 08:00:00",
-//                pricePerSeat = 25000,
-//                seatsAvailable = 4,
-//                rideStatus = "available"
-//            )
-//        )
         val fakeList = listOf(
             PassengerRide(
                 id = 1,

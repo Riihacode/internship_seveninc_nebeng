@@ -3,10 +3,10 @@ package com.example.nebeng.feature_passenger_ride.data.remote.model.response
 import com.google.gson.annotations.SerializedName
 
 // NOTE: Model ini mengikuti struktur JSON backend secara penuh (tanpa simplifikasi)
-data class PassengerRideResponse(
+data class ReadAllPassengerRideResponse(
 
 	@field:SerializedName("data")
-	val data: List<DataItem>
+	val data: List<DataItem>? = emptyList()
 )
 
 data class DataItem(
@@ -37,18 +37,24 @@ data class DataItem(
 
 	@field:SerializedName("departure_terminal")
 	val departureTerminal: DepartureTerminal,
+//	@field:SerializedName("departure_terminal")
+//	val departureTerminal: DepartureTerminal? = null,
 
 	@field:SerializedName("updated_at")
 	val updatedAt: String,
 
 	@field:SerializedName("driver")
 	val driver: Driver,
+//	@field:SerializedName("driver")
+//	val driver: Driver? = null,
 
 	@field:SerializedName("id")
 	val id: Int,
 
 	@field:SerializedName("arrival_terminal")
 	val arrivalTerminal: ArrivalTerminal,
+//	@field:SerializedName("arrival_terminal")
+//	val arrivalTerminal: ArrivalTerminal? = null,
 
 	@field:SerializedName("departure_time")
 	val departureTime: String,
@@ -74,8 +80,10 @@ data class ArrivalTerminal(
 	@field:SerializedName("province_id")
 	val provinceId: Int,
 
+//	@field:SerializedName("latitude")
+//	val latitude: Any,
 	@field:SerializedName("latitude")
-	val latitude: Any,
+	val latitude: Double,
 
 	@field:SerializedName("name")
 	val name: String,
@@ -95,8 +103,10 @@ data class ArrivalTerminal(
 	@field:SerializedName("full_address")
 	val fullAddress: String,
 
+//	@field:SerializedName("longitude")
+//	val longitude: Any
 	@field:SerializedName("longitude")
-	val longitude: Any
+	val longitude: Double
 )
 
 data class DepartureTerminal(
@@ -113,8 +123,10 @@ data class DepartureTerminal(
 	@field:SerializedName("province_id")
 	val provinceId: Int,
 
+//	@field:SerializedName("latitude")
+//	val latitude: Any,
 	@field:SerializedName("latitude")
-	val latitude: Any,
+	val latitude: Double,
 
 	@field:SerializedName("name")
 	val name: String,
@@ -134,8 +146,10 @@ data class DepartureTerminal(
 	@field:SerializedName("full_address")
 	val fullAddress: String,
 
+//	@field:SerializedName("longitude")
+//	val longitude: Any
 	@field:SerializedName("longitude")
-	val longitude: Any
+	val longitude: Double
 )
 
 data class Driver(
@@ -143,20 +157,28 @@ data class Driver(
 	@field:SerializedName("credit_score")
 	val creditScore: Int,
 
+//	@field:SerializedName("face_img")
+//	val faceImg: Any,
 	@field:SerializedName("face_img")
-	val faceImg: Any,
+	val faceImg: String? = null,
 
 	@field:SerializedName("driver_license_number")
 	val driverLicenseNumber: String,
 
+//	@field:SerializedName("driver_license_img")
+//	val driverLicenseImg: Any,
 	@field:SerializedName("driver_license_img")
-	val driverLicenseImg: Any,
+	val driverLicenseImg: String? = null,
 
+//	@field:SerializedName("Police_clearance_certificate_img")
+//	val policeClearanceCertificateImg: Any,
 	@field:SerializedName("Police_clearance_certificate_img")
-	val policeClearanceCertificateImg: Any,
+	val policeClearanceCertificateImg: String? = null,
 
+//	@field:SerializedName("id_card_rejected_reason")
+//	val idCardRejectedReason: Any,
 	@field:SerializedName("id_card_rejected_reason")
-	val idCardRejectedReason: Any,
+	val idCardRejectedReason: String? = null,
 
 	@field:SerializedName("created_at")
 	val createdAt: String,
@@ -164,8 +186,10 @@ data class Driver(
 	@field:SerializedName("full_address")
 	val fullAddress: String,
 
+//	@field:SerializedName("face_with_id_img")
+//	val faceWithIdImg: Any,
 	@field:SerializedName("face_with_id_img")
-	val faceWithIdImg: Any,
+	val faceWithIdImg: String? = null,
 
 	@field:SerializedName("Police_clearance_certificate_expired")
 	val policeClearanceCertificateExpired: String,
@@ -176,11 +200,15 @@ data class Driver(
 	@field:SerializedName("driver_license_type")
 	val driverLicenseType: String,
 
+//	@field:SerializedName("id_card_img")
+//	val idCardImg: Any,
 	@field:SerializedName("id_card_img")
-	val idCardImg: Any,
+	val idCardImg: String? = null,
 
+//	@field:SerializedName("Police_clearance_rejected_reason")
+//	val policeClearanceRejectedReason: Any,
 	@field:SerializedName("Police_clearance_rejected_reason")
-	val policeClearanceRejectedReason: Any,
+	val policeClearanceRejectedReason: String? = null,
 
 	@field:SerializedName("balance")
 	val balance: Int,
@@ -194,8 +222,10 @@ data class Driver(
 	@field:SerializedName("id")
 	val id: Int,
 
+//	@field:SerializedName("driver_license_rejected_reason")
+//	val driverLicenseRejectedReason: Any,
 	@field:SerializedName("driver_license_rejected_reason")
-	val driverLicenseRejectedReason: Any,
+	val driverLicenseRejectedReason: String? = null,
 
 	@field:SerializedName("id_card_fullname")
 	val idCardFullname: String,
@@ -206,8 +236,10 @@ data class Driver(
 	@field:SerializedName("id_card_verified")
 	val idCardVerified: Boolean,
 
+//	@field:SerializedName("profile_img")
+//	val profileImg: Any,
 	@field:SerializedName("profile_img")
-	val profileImg: Any,
+	val profileImg: String? = null,
 
 	@field:SerializedName("full_name")
 	val fullName: String,

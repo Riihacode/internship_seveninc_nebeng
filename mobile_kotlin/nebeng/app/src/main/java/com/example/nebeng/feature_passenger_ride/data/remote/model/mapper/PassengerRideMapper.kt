@@ -27,19 +27,19 @@ import com.example.nebeng.feature_passenger_ride.domain.model.PassengerRide
 //}
 fun DataItem.toDomain(): PassengerRide {
     return PassengerRide(
-        id = id,
-        driverName = driver?.fullName ?: "",
-        vehicleType = vehicleType,
-        departureTerminalName = departureTerminal?.name ?: "",
-        arrivalTerminalName = arrivalTerminal?.name ?: "",
-        departureTime = departureTime,
-        seatsAvailable = seatsAvailable,
-        seatsReserved = seatsReserved,
-        pricePerSeat = pricePerSeat,
-        commissionPercentage = commissionPercentage,
-        rideStatus = rideStatus,
-        createdAt = createdAt,
-        updatedAt = updatedAt
+        id                      = id,
+        driverName              = driver?.fullName ?: "",
+        vehicleType             = vehicleType,
+        departureTerminalName   = departureTerminal?.name ?: "",
+        arrivalTerminalName     = arrivalTerminal?.name ?: "",
+        departureTime           = departureTime,
+        seatsAvailable          = seatsAvailable,
+        seatsReserved           = seatsReserved,
+        pricePerSeat            = pricePerSeat,
+        commissionPercentage    = commissionPercentage,
+        rideStatus              = rideStatus,
+        createdAt               = createdAt,
+        updatedAt               = updatedAt
     )
 }
 
@@ -48,19 +48,19 @@ fun DataItem.toDomain(): PassengerRide {
  */
 fun PassengerRideDto.toDomain(): PassengerRide {
     return PassengerRide(
-        id = id,
-        driverName = "", // kosong karena DTO tidak berisi driver nested
-        vehicleType = vehicleType,
-        departureTerminalName = "", // kosong karena DTO tidak berisi terminal nested
-        arrivalTerminalName = "",
-        departureTime = departureTime,
-        seatsAvailable = seatsAvailable,
-        seatsReserved = seatsReserved,
-        pricePerSeat = pricePerSeat,
-        commissionPercentage = commissionPercentage,
-        rideStatus = rideStatus,
-        createdAt = createdAt ?: "",
-        updatedAt = updatedAt ?: ""
+        id                      = id,
+        driverName              = "", // kosong karena DTO tidak berisi driver nested
+        vehicleType             = vehicleType,
+        departureTerminalName   = "", // kosong karena DTO tidak berisi terminal nested
+        arrivalTerminalName     = "",
+        departureTime           = departureTime,
+        seatsAvailable          = seatsAvailable,
+        seatsReserved           = seatsReserved,
+        pricePerSeat            = pricePerSeat,
+        commissionPercentage    = commissionPercentage,
+        rideStatus              = rideStatus,
+        createdAt               = createdAt,
+        updatedAt               = updatedAt
     )
 }
 

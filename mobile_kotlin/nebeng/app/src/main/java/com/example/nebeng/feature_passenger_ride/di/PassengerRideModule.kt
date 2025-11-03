@@ -9,7 +9,7 @@ import com.example.nebeng.feature_passenger_ride.domain.usecase.PassengerRideUse
 import com.example.nebeng.feature_passenger_ride.domain.usecase.ReadPassengerRideByDriverIdUseCase
 import com.example.nebeng.feature_passenger_ride.domain.usecase.ReadPassengerRideByIdUseCase
 import com.example.nebeng.feature_passenger_ride.domain.usecase.ReadPassengerRideByStatusUseCase
-import com.example.nebeng.feature_passenger_ride.domain.usecase.ReadPassengerRideUseCase
+import com.example.nebeng.feature_passenger_ride.domain.usecase.ReadPassengerRideAllUseCase
 import com.example.nebeng.feature_passenger_ride.domain.usecase.UpdatePassengerRideUseCase
 import dagger.Module
 import dagger.Provides
@@ -39,7 +39,7 @@ object PassengerRideModule {
         repository: PassengerRideRepository
     ): PassengerRideUseCases {
         return PassengerRideUseCases(
-            readAll         = ReadPassengerRideUseCase(repository),
+            readAll         = ReadPassengerRideAllUseCase(repository),
             readById        = ReadPassengerRideByIdUseCase(repository),
             readByDriverId  = ReadPassengerRideByDriverIdUseCase(repository),
             readByStatus    = ReadPassengerRideByStatusUseCase(repository),

@@ -4,7 +4,7 @@ import com.example.nebeng.feature_passenger_ride.data.remote.model.request.Creat
 import com.example.nebeng.feature_passenger_ride.data.remote.model.request.UpdatePassengerRideRequest
 import com.example.nebeng.feature_passenger_ride.data.remote.model.response.CreatePassengerRideResponse
 import com.example.nebeng.feature_passenger_ride.data.remote.model.response.DeletePassengerRideResponse
-import com.example.nebeng.feature_passenger_ride.data.remote.model.response.PassengerRideResponse
+import com.example.nebeng.feature_passenger_ride.data.remote.model.response.ReadAllPassengerRideResponse
 import com.example.nebeng.feature_passenger_ride.data.remote.model.response.UpdatePassengerRideResponse
 import retrofit2.Response
 import retrofit2.http.Body
@@ -19,25 +19,25 @@ interface PassengerRideApi {
     @GET("api/passenger-rides")
     suspend fun getAllPassengerRides(
         @Header("Authorization") token: String
-    ): Response<PassengerRideResponse>
+    ): Response<ReadAllPassengerRideResponse>
 
     @GET("api/passenger-rides/{id}")
     suspend fun getPassengerRideById(
         @Header("Authorization") token: String,
         @Path("id") id: Int
-    ): Response<PassengerRideResponse>
+    ): Response<ReadAllPassengerRideResponse>
 
     @GET("api/passenger-rides/driver/{id}")
     suspend fun getPassengerRidesByDriverId(
         @Header("Authorization") token: String,
         @Path("id") driverId: Int
-    ): Response<PassengerRideResponse>
+    ): Response<ReadAllPassengerRideResponse>
 
     @GET("api/passenger-rides/status/{status}")
     suspend fun getPassengerRidesByStatus(
         @Header("Authorization") token: String,
         @Path("status") status: String
-    ): Response<PassengerRideResponse>
+    ): Response<ReadAllPassengerRideResponse>
 
     @POST("api/passenger-rides/")
     suspend fun createPassengerRide(
