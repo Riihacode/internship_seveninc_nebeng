@@ -23,6 +23,7 @@ class GoodsRideBooking extends Model
         'item_img',
         'total_price',
         'status',
+        'booking_code',
     ];
 
     /**

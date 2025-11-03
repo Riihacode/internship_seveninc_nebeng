@@ -1,5 +1,5 @@
 import Layout from "../components/Layout";
-import { useDrivers } from "../hooks/useDrivers";
+import { useDrivers } from "../hooks/useDrivers.js";
 import { useParams } from "react-router-dom";
 import Input from "../components/Input";
 
@@ -52,9 +52,7 @@ export default function DetailMitra() {
             <div className="m-5">
               <img
                 className="rounded-full"
-                src={
-                  mitra.driver_license__img || "https://placehold.co/200x200"
-                }
+                src={mitra.profile_img || "https://placehold.co/200x200"}
                 alt="SIM"
               />
             </div>

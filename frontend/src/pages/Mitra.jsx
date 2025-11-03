@@ -1,6 +1,6 @@
 import Layout from "../components/Layout";
 import SearchBar from "../components/SearchBar";
-import { useDrivers } from "../hooks/useDrivers";
+import { useDrivers } from "../hooks/useDrivers.js";
 import Table from "../components/Table";
 import { useNavigate } from "react-router-dom";
 

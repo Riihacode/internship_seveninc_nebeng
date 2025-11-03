@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Carbon\Carbon;
 use App\Models\Customer;
 use App\Models\PassengerRide;
 use Illuminate\Database\Seeder;
@@ -38,12 +39,18 @@ class PassengerRideBookingSeeder extends Seeder
                 $totalPrice = $seatsReserved * $ride->price_per_seat;
                 $status = $statuses[array_rand($statuses)];
 
+                // Generate nomor booking
+                $today = Carbon::today()->format('Ymd');
+                $countToday = PassengerRideBooking::whereDate('created_at', Carbon::today())->count() + 1;
+                $bookingNumber = 'P-' . $today . '-' . str_pad($countToday, 4, '0', STR_PAD_LEFT);
+
                 PassengerRideBooking::create([
                     'passenger_ride_id' => $ride->id,
                     'customer_id'       => $customer->id,
                     'seats_reserved'    => $seatsReserved,
                     'total_price'       => $totalPrice,
                     'status'            => $status,
+                    'booking_code'      => $bookingNumber,
                 ]);
 
                 // Jika booking diterima, tambahkan seats_reserved di ride

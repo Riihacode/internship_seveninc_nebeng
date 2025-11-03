@@ -6,6 +6,7 @@ import Mitra from "../pages/Mitra.jsx";
 import ProtectedRoute from "../components/ProtectedRoute.jsx";
 import Customer from "../pages/Customer.jsx";
 import Pesanan from "../pages/Pesanan.jsx";
+import DetailPesanan from "../pages/DetailPasanan.jsx";
 import Refund from "../pages/Refund.jsx";
 import Laporan from "../pages/Laporan.jsx";
 import Pengaturan from "../pages/Pengaturan.jsx";
@@ -63,6 +64,14 @@ export default function AppRoutes() {
             element={
               <ProtectedRoute>
                 <Pesanan />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/orders/:booking_type/:id"
+            element={
+              <ProtectedRoute>
+                <DetailPesanan />
               </ProtectedRoute>
             }
           />

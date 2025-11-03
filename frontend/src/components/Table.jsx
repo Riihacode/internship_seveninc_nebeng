@@ -73,7 +73,7 @@ export default function Table({ columns, data, loading, error }) {
           </tr>
         ) : (
           data.map((row, i) => (
-            <tr key={row.id || i}>
+            <tr key={row.booking_code ? row.booking_code : row.id || i}>
               {columns.map((col, j) => (
                 <td
                   key={j}

@@ -69,8 +69,8 @@ class AuthController extends Controller
         } catch (ValidationException $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Invalid credetial',
-                'erros' => $e->errors()
+                'message' => 'Invalid credential',
+                'error' => $e->errors()
             ], 422);
 
         } catch (ModelNotFoundException $e) {

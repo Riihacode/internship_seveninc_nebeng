@@ -2,17 +2,17 @@ import { NavLink } from "react-router-dom";
 import LogoutButton from "./LogoutButton";
 export default function SideBar() {
   return (
-    <aside className="hidden md:flex flex-col justify-between bg-white text-gray-700 dark:border-gray-700 dark:text-white dark:bg-gray-600 w-64 min-h-screen relative">
+    <aside className="hidden md:flex flex-col justify-between bg-[#10367d] dark:border-gray-700 dark:text-white dark:bg-gray-600 w-64 min-h-screen relative">
       {/* ATAS */}
       <div className="">
-        <div className="py-3 h-17 text-2xl uppercase text-center tracking-widest bg-gray-900 border-b-1 border-gray-800 mb-8 dark:bg-gray-700">
+        <div className="py-3 h-17 text-2xl uppercase text-center tracking-widest bg-[#10367d] border-b-1 border-white mb-8 dark:bg-gray-700">
           <NavLink to="/" className="text-white">
             Logo
           </NavLink>
         </div>
-        <nav className="text-sm text-gray-400">
+        <nav className="text-sm text-white">
           <ul className="flex flex-col">
-            <li className="cursor-pointer text-gray-700  hover:text-blue-500">
+            <li className="cursor-pointer hover:text-blue-500">
               <NavLink
                 to="/home"
                 className={({ isActive }) =>
@@ -20,7 +20,7 @@ export default function SideBar() {
                 ${
                   isActive
                     ? "text-blue-500 font-semibold before:content-[''] before:absolute before:left-0 before:top-0 before:h-full before:w-[3px] before:bg-blue-500 before:rounded-r-md"
-                    : "text-gray-600 dark:text-gray-300 hover:text-blue-500"
+                    : "white dark:text-gray-300 hover:text-blue-500"
                 }`
                 }
               >
@@ -46,7 +46,7 @@ export default function SideBar() {
                 Beranda
               </NavLink>
             </li>
-            <li className="cursor-pointer text-gray-700 dark:text-white hover:text-blue-500">
+            <li className="cursor-pointer text-white hover:text-blue-500">
               <NavLink
                 to="/mitra"
                 className={({ isActive }) =>
@@ -54,7 +54,7 @@ export default function SideBar() {
                 ${
                   isActive
                     ? "text-blue-500 font-semibold before:content-[''] before:absolute before:left-0 before:top-0 before:h-full before:w-[3px] before:bg-blue-500 before:rounded-r-md"
-                    : "text-gray-600 dark:text-gray-300 hover:text-blue-500"
+                    : "text-white dark:text-gray-300 hover:text-blue-500"
                 }`
                 }
               >
@@ -80,7 +80,7 @@ export default function SideBar() {
                 Mitra
               </NavLink>
             </li>
-            <li className="cursor-pointer text-gray-700 dark:text-white hover:text-white">
+            <li className="cursor-pointer text-white hover:text-white">
               <NavLink
                 to="/customer"
                 className={({ isActive }) =>
@@ -88,7 +88,7 @@ export default function SideBar() {
                 ${
                   isActive
                     ? "text-blue-500 font-semibold before:content-[''] before:absolute before:left-0 before:top-0 before:h-full before:w-[3px] before:bg-blue-500 before:rounded-r-md"
-                    : "text-gray-600 dark:text-gray-300 hover:text-blue-500"
+                    : "text-white dark:text-gray-300 hover:text-blue-500"
                 }`
                 }
               >
@@ -114,7 +114,7 @@ export default function SideBar() {
                 Customer
               </NavLink>
             </li>
-            <li className="cursor-pointer text-gray-700 dark:text-white hover:text-white">
+            <li className="cursor-pointer text-white hover:text-white">
               <NavLink
                 to="/pesanan"
                 className={({ isActive }) =>
@@ -122,7 +122,7 @@ export default function SideBar() {
                 ${
                   isActive
                     ? "text-blue-500 font-semibold before:content-[''] before:absolute before:left-0 before:top-0 before:h-full before:w-[3px] before:bg-blue-500 before:rounded-r-md"
-                    : "text-gray-600 dark:text-gray-300 hover:text-blue-500"
+                    : "text-white dark:text-gray-300 hover:text-blue-500"
                 }`
                 }
               >
@@ -147,7 +147,7 @@ export default function SideBar() {
                 Pesananan
               </NavLink>
             </li>
-            <li className="cursor-pointer text-gray-700 dark:text-white hover:text-white">
+            <li className="cursor-pointer text-white hover:text-white">
               <NavLink
                 to="/refund"
                 className={({ isActive }) =>
@@ -155,7 +155,7 @@ export default function SideBar() {
                 ${
                   isActive
                     ? "text-blue-500 font-semibold before:content-[''] before:absolute before:left-0 before:top-0 before:h-full before:w-[3px] before:bg-blue-500 before:rounded-r-md"
-                    : "text-gray-600 dark:text-gray-300 hover:text-blue-500"
+                    : "text-white dark:text-gray-300 hover:text-blue-500"
                 }`
                 }
               >
@@ -180,7 +180,7 @@ export default function SideBar() {
                 Refund
               </NavLink>
             </li>
-            <li className="cursor-pointer text-gray-700 dark:text-white hover:text-white">
+            <li className="cursor-pointer text-white hover:text-white">
               <NavLink
                 to="/laporan"
                 className={({ isActive }) =>
@@ -188,7 +188,7 @@ export default function SideBar() {
                 ${
                   isActive
                     ? "text-blue-500 font-semibold before:content-[''] before:absolute before:left-0 before:top-0 before:h-full before:w-[3px] before:bg-blue-500 before:rounded-r-md"
-                    : "text-gray-600 dark:text-gray-300 hover:text-blue-500"
+                    : "text-white dark:text-gray-300 hover:text-blue-500"
                 }`
                 }
               >
@@ -217,12 +217,12 @@ export default function SideBar() {
         </nav>
       </div>
       {/* NAVBAR BAWAH */}
-      <div className="border-t dark:border-gray-700 dark:text-white pb-8 bg-white text-gray-400 dark:bg-gray-700">
+      <div className="border-t dark:border-gray-700 dark:text-white pb-8 bg-[#10367d] text-white dark:bg-gray-700">
         <ul className="flex flex-col">
           <li className="cursor-pointer hover:text-white">
             <NavLink
               to="/pengaturan"
-              className="relative flex items-center w-full text-left px-4 py-3 transition-all duration-300 group text-gray-600 dark:text-gray-300 hover:text-red-500 hover:before:content-[''] hover:before:absolute hover:before:left-0 hover:before:top-0 hover:before:h-full hover:before:w-[3px] hover:before:bg-red-500 hover:before:rounded-r-md"
+              className="relative flex items-center w-full text-left px-4 py-3 transition-all duration-300 group text-white dark:text-gray-300 hover:text-red-500 hover:before:content-[''] hover:before:absolute hover:before:left-0 hover:before:top-0 hover:before:h-full hover:before:w-[3px] hover:before:bg-red-500 hover:before:rounded-r-md"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

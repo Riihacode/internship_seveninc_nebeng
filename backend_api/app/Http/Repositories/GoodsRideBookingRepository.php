@@ -22,6 +22,10 @@ class GoodsRideBookingRepository
             ->get();
     }
 
+    public function countByDate($date){
+        return $this->model->whereDate('created_at', $date)->count();
+    }
+
     // Ambil booking berdasarkan ID
     public function findById($id)
     {
@@ -62,6 +66,10 @@ class GoodsRideBookingRepository
         $booking = $this->model->findOrFail($id);
         $booking->update($data);
         return $booking;
+    }
+
+    public function getByCode(string $code){
+        return $this->model->where('booking_code', $code)->firstOrFail();
     }
 
     // Hapus booking

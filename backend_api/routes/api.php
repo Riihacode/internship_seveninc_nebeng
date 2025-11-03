@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdministratorController;
+use App\Http\Controllers\RideController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DriverController;
@@ -18,6 +19,7 @@ use App\Http\Controllers\CreditScoreLogController;
 use App\Http\Controllers\DriverCommissionController;
 use App\Http\Controllers\DriverWithdrawalController;
 use App\Http\Controllers\GoodsRideBookingController;
+use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\PassengerRideBookingController;
 use App\Http\Controllers\PassengerTransactionController;
 
@@ -72,8 +74,20 @@ Route::prefix('goods-rides')->group(function () {
     Route::delete('/{id}', [GoodsRideController::class, 'destroy']);
 });
 
+// [ORDERS]
+Route::prefix('orders')->group(function(){
+    Route::get('/',[OrdersController::class, 'index']);
+    Route::get('/{type}/{id}',[OrdersController::class, 'show']);
+});
 
 
+//  [RIDE]
+Route::prefix('ride')->group(function(){
+    Route::get('/', [RideController::class, 'index']);
+    Route::get('/driver/{driverId}', [RideController::class, 'byDriver']);
+    Route::get('/status/{status}', [RideController::class, 'byStatus']);
+    Route::get('/{type}/{id}', [RideController::class, 'show']);
+});
 // ######################################################################################
 // ######################################################################################
 // ######################################################################################

@@ -17,16 +17,20 @@ class PassengerRideBookingRepository
     public function getAll()
     {
         return $this->model
-            ->with(['passengerRide', 'customer', 'passengerTransaction'])
+            ->with(['passengerRide.driver', 'customer', 'passengerTransaction'])
             ->orderBy('created_at', 'DESC')
             ->get();
+    }
+
+     public function countByDate($date){
+        return $this->model->whereDate('created_at', $date)->count();
     }
 
     // Ambil booking berdasarkan ID
     public function findById($id)
     {
         return $this->model
-            ->with(['passengerRide', 'customer', 'passengerTransaction'])
+            ->with(['passengerRide.driver', 'customer', 'passengerTransaction'])
             ->find($id);
     }
 
@@ -62,6 +66,10 @@ class PassengerRideBookingRepository
         $booking = $this->model->findOrFail($id);
         $booking->update($data);
         return $booking;
+    }
+
+    public function getByCode(string $code){
+        return $this->model->where('booking_code', $code)->firstOrFail();
     }
 
     // Hapus booking

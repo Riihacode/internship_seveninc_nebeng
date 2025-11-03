@@ -2,9 +2,10 @@
 
 namespace App\Http\Services;
 
-use App\Http\Repositories\GoodsRideBookingRepository;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use App\Http\Repositories\GoodsRideBookingRepository;
 
 class GoodsRideBookingService
 {
@@ -13,6 +14,14 @@ class GoodsRideBookingService
     public function __construct(GoodsRideBookingRepository $repo)
     {
         $this->goodsRideBookingRepository = $repo;
+    }
+
+    protected function generateBookingNumbers($prefix = 'G'){
+        $date = Carbon :: now()->format('Ymd');
+        $countToday = $this->goodsRideBookingRepository->countByDate(Carbon::today());
+
+        $sequence = str_pad($countToday + 1, 4, '0', STR_PAD_LEFT);
+        return "{prefix}-{$date}-{$sequence}";
     }
 
     // List semua booking
@@ -25,6 +34,11 @@ class GoodsRideBookingService
     public function getBooking($id)
     {
         return $this->goodsRideBookingRepository->findById($id);
+    }
+
+    // Get By Code
+    public function getByCode(string $code) {
+        return $this->goodsRideBookingRepository->getByCode($code);
     }
 
     // Get by Driver ID

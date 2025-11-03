@@ -21,6 +21,7 @@ class PassengerRideBooking extends Model
         'seats_reserved',
         'total_price',
         'status',
+        'booking_code',
     ];
 
     /**

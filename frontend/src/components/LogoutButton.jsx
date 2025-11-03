@@ -25,7 +25,7 @@ export default function LogoutButton() {
       <li>
         <button
           onClick={handleLogout}
-          className="relative flex items-center w-full text-left px-4 py-3 transition-all duration-300 group text-gray-600 dark:text-gray-300 hover:text-red-500 hover:before:content-[''] hover:before:absolute hover:before:left-0 hover:before:top-0 hover:before:h-full hover:before:w-[3px] hover:before:bg-red-500 hover:before:rounded-r-md"
+          className="relative flex items-center w-full text-left px-4 py-3 transition-all duration-300 group text-white dark:text-gray-300 hover:text-red-500 hover:before:content-[''] hover:before:absolute hover:before:left-0 hover:before:top-0 hover:before:h-full hover:before:w-[3px] hover:before:bg-red-500 hover:before:rounded-r-md"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -47,7 +47,7 @@ export default function LogoutButton() {
       {loading && (
         <div className="fixed inset-0 bg-gray-300 opacity-40 flex items-center justify-center z-50">
           <svg
-            className="w-15 h-15 mx-auto text-gray-500 animate-spin"
+            className="w-15 h-15 mx-auto text-white animate-spin"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"

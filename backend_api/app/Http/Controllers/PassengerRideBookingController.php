@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use App\Http\Services\PassengerRideBookingService;
 
+use function Laravel\Prompts\error;
+
 class PassengerRideBookingController extends Controller
 {
     //
@@ -55,7 +57,10 @@ class PassengerRideBookingController extends Controller
             return response()->json(['data' => $booking], 201);
         } catch (ValidationException $e) {
             return response()->json(['errors' => $e->errors()], 422);
+        } catch (\Throwable $er){
+            return response()->json(['errors' => $er], 500);
         }
+
     }
 
     // PUT /api/passenger-ride-bookings/{id}

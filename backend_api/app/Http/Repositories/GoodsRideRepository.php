@@ -24,6 +24,25 @@ class GoodsRideRepository {
             ->find($id);
     }
 
+    public function getByDriver($driverId)
+    {
+        return $this->model
+            ->where('driver_id', $driverId)
+            ->with(['departureTerminal', 'arrivalTerminal'])
+            ->orderBy('departure_time', 'ASC')
+            ->get();
+    }
+
+    // Filter ride berdasarkan status
+    public function getByStatus($status)
+    {
+        return $this->model
+            ->where('ride_status', $status)
+            ->with(['driver', 'departureTerminal', 'arrivalTerminal'])
+            ->orderBy('departure_time', 'ASC')
+            ->get();
+    }
+
     public function create(array $data) {
         return $this->model->create($data);
     }

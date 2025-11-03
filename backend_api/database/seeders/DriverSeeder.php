@@ -53,6 +53,11 @@ class DriverSeeder extends Seeder
 
         foreach ($drivers as $index => $data) {
             $user = $users[$index % $users->count()]; // rotasi user driver
+
+            $totalRating = rand(10, 50); // total skor akumulatif
+            $ratingCount = rand(3, 10);  // jumlah ulasan
+
+            $averageRating = round($totalRating / $ratingCount, 2);
             Driver::updateOrCreate(
                 ['user_id' => $user->id],
                 [
@@ -63,6 +68,12 @@ class DriverSeeder extends Seeder
                     'profile_img'   => null,
                     'balance'       => rand(100000, 1000000),
                     'credit_score'  => rand(70, 100),
+
+                    // rating
+                    'total_rating'  => $totalRating,
+                    'rating_count'  => $ratingCount,
+                    'average_rating'=> $averageRating,
+
 
                     // ID Card
                     'id_card_number'          => 'ID' . rand(10000000, 99999999),

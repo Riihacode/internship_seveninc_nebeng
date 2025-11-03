@@ -2,9 +2,10 @@
 
 namespace App\Http\Services;
 
-use App\Http\Repositories\PassengerRideBookingRepository;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use App\Http\Repositories\PassengerRideBookingRepository;
 
 class PassengerRideBookingService
 {
@@ -14,6 +15,15 @@ class PassengerRideBookingService
     {
         $this->bookingRepository = $repo;
     }
+
+     protected function generateBookingNumbers($prefix = 'P'){
+        $date = Carbon :: now()->format('Ymd');
+        $countToday = $this->bookingRepository->countByDate(Carbon::today());
+
+        $sequence = str_pad($countToday + 1, 4, '0', STR_PAD_LEFT);
+        return "{$prefix}-{$date}-{$sequence}";
+    }
+
 
     // List semua booking
     public function listBookings()
@@ -31,6 +41,11 @@ class PassengerRideBookingService
     public function listByRide($rideId)
     {
         return $this->bookingRepository->getByRide($rideId);
+    }
+
+    // Get by Code
+    public function getByCode(string $code) {
+        return $this->bookingRepository->getByCode($code);
     }
 
     // Booking per customer
@@ -56,7 +71,7 @@ class PassengerRideBookingService
 
         // Default status jika tidak diset
         $data['status'] = $data['status'] ?? 'Pending';
-
+        $data['booking_code'] = $this->generateBookingNumbers('P');
         return $this->bookingRepository->create($data);
     }
 

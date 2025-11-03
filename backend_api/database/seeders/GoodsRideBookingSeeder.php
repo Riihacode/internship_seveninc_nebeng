@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Carbon\Carbon;
 use App\Models\Customer;
 use App\Models\GoodsRide;
 use Illuminate\Database\Seeder;
@@ -45,6 +46,11 @@ class GoodsRideBookingSeeder extends Seeder
                 $totalPrice = $itemWeight * $pricePerKg;
                 $status = $statuses[array_rand($statuses)];
 
+                // Generate nomor booking
+                $today = Carbon::today()->format('Ymd');
+                $countToday = GoodsRideBooking::whereDate('created_at', Carbon::today())->count() + 1;
+                $bookingNumber = 'G-' . $today . '-' . str_pad($countToday, 4, '0', STR_PAD_LEFT);
+
                 GoodsRideBooking::create([
                     'goods_ride_id'   => $ride->id,
                     'customer_id'     => $customer->id,
@@ -53,6 +59,7 @@ class GoodsRideBookingSeeder extends Seeder
                     'item_img'        => null,
                     'total_price'     => $totalPrice,
                     'status'          => $status,
+                    'booking_code'    => $bookingNumber,
                 ]);
 
                 // Jika booking diterima, tambahkan berat ke ride

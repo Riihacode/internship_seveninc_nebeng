@@ -9,9 +9,9 @@ export default function Header() {
     const path = location.pathname;
 
     if (path === "/mitra") return "Data Mitra";
-    if (path.startsWith("/mitra/")) return "Data Detail Mitra";
+    if (path.startsWith("/mitra/")) return "Detail Mitra";
     if (path === "/mitra") return "Data Customer";
-    if (path.startsWith("/customer/")) return "Data Detail Customer";
+    if (path.startsWith("/customer/")) return "Detail Customer";
     if (path.startsWith("/pesanan")) return "Data Pesanan";
     if (path.startsWith("/refund")) return "Data Refund";
     if (path.startsWith("/laporan")) return "Data Laporan";
