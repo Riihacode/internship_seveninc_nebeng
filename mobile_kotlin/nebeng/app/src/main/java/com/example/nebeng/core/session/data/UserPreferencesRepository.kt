@@ -1,6 +1,6 @@
 package com.example.nebeng.core.session.data
 
-import com.example.nebeng.feature_auth.domain.model.Auth
+import com.example.nebeng.feature_a_auth.domain.model.Auth
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 import javax.inject.Singleton

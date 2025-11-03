@@ -1,13 +1,11 @@
 package com.example.nebeng.core.network
 
-import com.example.nebeng.feature_auth.data.remote.api.AuthApi
+import com.example.nebeng.feature_a_auth.data.remote.api.AuthApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 import javax.inject.Singleton
 
 //@Module
@@ -39,7 +37,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideAuthApi(retrofit: Retrofit): AuthApi =
-        retrofit.create(AuthApi::class.java)
+    fun provideAuthApi(
+        retrofit: Retrofit
+    ): AuthApi = retrofit.create(AuthApi::class.java)
 }
-

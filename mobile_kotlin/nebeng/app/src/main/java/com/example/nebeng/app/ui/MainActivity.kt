@@ -14,7 +14,7 @@ import com.example.nebeng.R
 import com.example.nebeng.app.ui.navigation.CustomerNavGraph
 import com.example.nebeng.app.ui.navigation.DriverNavGraph
 import com.example.nebeng.databinding.ActivityMainBinding
-import com.example.nebeng.feature_auth.presentation.auth.AuthActivity
+import com.example.nebeng.feature_a_auth.presentation.auth.AuthActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
@@ -40,8 +40,8 @@ class MainActivity : AppCompatActivity() {
                 combine(
                     appRoleViewModel.isLoggedInFlow,
                     appRoleViewModel.userTypeFlow
-                ) { isLoggedIn, userType ->
-                    isLoggedIn to userType
+                ) {
+                  isLoggedIn, userType -> isLoggedIn to userType
                 }.collect { (isLoggedIn, userType) ->
                     if (!isLoggedIn) {
                         redirectToAuth()
