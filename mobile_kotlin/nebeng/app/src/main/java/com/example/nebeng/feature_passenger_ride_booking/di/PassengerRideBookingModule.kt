@@ -32,7 +32,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class PassengerRideBookingModule {
+object PassengerRideBookingModule {
     @Provides
     @Singleton
     fun providePassengerRideBookingApi(
