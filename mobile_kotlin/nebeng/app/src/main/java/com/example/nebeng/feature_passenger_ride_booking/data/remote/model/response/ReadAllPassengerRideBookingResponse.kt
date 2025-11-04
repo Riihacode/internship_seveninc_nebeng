@@ -1,14 +1,10 @@
 package com.example.nebeng.feature_passenger_ride_booking.data.remote.model.response
 
-import com.example.nebeng.feature_passenger_ride_booking.data.remote.model.dto.CustomerDto
 import com.example.nebeng.feature_passenger_ride_booking.data.remote.model.dto.DataDto
-import com.example.nebeng.feature_passenger_ride_booking.data.remote.model.dto.DriverDto
-import com.example.nebeng.feature_passenger_ride_booking.data.remote.model.dto.PassengerRideDto
-import com.example.nebeng.feature_passenger_ride_booking.data.remote.model.dto.PassengerTransactionDto
 import com.google.gson.annotations.SerializedName
 
 data class ReadAllPassengerRideBookingResponse(
-	@field:SerializedName("data") val data: List<DataDto>
+	@field:SerializedName("data") val dataDto: List<DataDto>
 )
 //{
 //	data class PassengerRide(

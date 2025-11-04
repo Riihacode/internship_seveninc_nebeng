@@ -1,6 +1,5 @@
 package com.example.nebeng.feature_passenger_ride_booking.domain.model
 
-
 import com.example.nebeng.feature_passenger_ride.domain.model.PassengerRide
 
 data class PassengerRideBooking(
