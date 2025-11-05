@@ -22,7 +22,6 @@ import org.mockito.kotlin.whenever
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class ReadAllDriverUseCaseTest {
-
     @Mock
     private lateinit var repository: DriverRepository
 
@@ -77,19 +76,19 @@ class ReadAllDriverUseCaseTest {
             )
         )
 
-        val flow: Flow<com.example.nebeng.core.common.Result<List<Driver>>> = flow {
-            emit(com.example.nebeng.core.common.Result.Loading)
-            emit(com.example.nebeng.core.common.Result.Success(drivers))
+        val flow: Flow<Result<List<Driver>>> = flow {
+            emit(Result.Loading)
+            emit(Result.Success(drivers))
         }
 
         whenever(repository.getAllDrivers(token)).thenReturn(flow)
 
-        val results = mutableListOf<com.example.nebeng.core.common.Result<List<Driver>>>()
+        val results = mutableListOf<Result<List<Driver>>>()
         useCase(token).collect { results.add(it) }
 
-        assertTrue(results.first() is com.example.nebeng.core.common.Result.Loading)
-        assertTrue(results.last() is com.example.nebeng.core.common.Result.Success)
-        assertEquals(drivers.size, (results.last() as com.example.nebeng.core.common.Result.Success).data.size)
+        assertTrue(results.first() is Result.Loading)
+        assertTrue(results.last() is Result.Success)
+        assertEquals(drivers.size, (results.last() as Result.Success).data.size)
     }
 
     // ============================================================
@@ -99,18 +98,18 @@ class ReadAllDriverUseCaseTest {
     fun `invoke should emit Error when repository throws exception`() = runTest {
         val token = "fake-token"
 
-        val flow: Flow<com.example.nebeng.core.common.Result<List<Driver>>> = flow {
-            emit(com.example.nebeng.core.common.Result.Loading)
-            emit(com.example.nebeng.core.common.Result.Error("Failed to load"))
+        val flow: Flow<Result<List<Driver>>> = flow {
+            emit(Result.Loading)
+            emit(Result.Error("Failed to load"))
         }
 
         whenever(repository.getAllDrivers(token)).thenReturn(flow)
 
-        val results = mutableListOf<com.example.nebeng.core.common.Result<List<Driver>>>()
+        val results = mutableListOf<Result<List<Driver>>>()
         useCase(token).collect { results.add(it) }
 
-        assertTrue(results.first() is com.example.nebeng.core.common.Result.Loading)
-        assertTrue(results.last() is com.example.nebeng.core.common.Result.Error)
+        assertTrue(results.first() is Result.Loading)
+        assertTrue(results.last() is Result.Error)
         assertEquals("Failed to load", (results.last() as Result.Error).message)
     }
 }

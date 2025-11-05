@@ -4,12 +4,12 @@ package com.example.nebeng.feature_passenger_ride_booking.data.remote.model.mapp
 import com.example.nebeng.feature_passenger_ride.domain.model.PassengerRide
 import com.example.nebeng.feature_passenger_ride_booking.data.remote.model.dto.*
 import com.example.nebeng.feature_passenger_ride_booking.domain.model.*
+
 /**
  * ======================================
  *  DTO → DOMAIN MAPPER
  * ======================================
  */
-
 fun PassengerRideBookingDto.toDomain(): PassengerRideBooking {
     return PassengerRideBooking(
         id = id,
@@ -51,7 +51,6 @@ fun DataDto.toDomain(): PassengerRideBooking {
  *  CHILD DTO → DOMAIN
  * ======================================
  */
-
 fun PassengerRideDto.toDomain(): PassengerRide {
     return PassengerRide(
         id = id,

@@ -1,6 +1,5 @@
 package com.example.nebeng.feature_passenger_ride_booking.domain.usecase
 
-
 import com.example.nebeng.feature_passenger_ride_booking.data.repository.PassengerRideBookingRepository
 import com.example.nebeng.feature_passenger_ride_booking.domain.model.PassengerRideBooking
 import kotlinx.coroutines.flow.first

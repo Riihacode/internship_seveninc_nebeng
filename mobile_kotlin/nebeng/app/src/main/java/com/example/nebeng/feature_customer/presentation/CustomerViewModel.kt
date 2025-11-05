@@ -1,24 +1,21 @@
-package com.example.nebeng.feature_driver.presentation
+package com.example.nebeng.feature_customer.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.nebeng.feature_driver.domain.usecase.DriverUseCases
-import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
-import javax.inject.Inject
 import com.example.nebeng.core.common.Result
 import com.example.nebeng.feature_customer.data.remote.model.request.CreateCustomerRequest
 import com.example.nebeng.feature_customer.data.remote.model.request.PatchAddCreditAmountCustomerRequest
 import com.example.nebeng.feature_customer.data.remote.model.request.PatchDeductCreditAmountCustomerRequest
 import com.example.nebeng.feature_customer.data.remote.model.request.UpdateCustomerRequest
 import com.example.nebeng.feature_customer.domain.usecase.CustomerUseCases
-import com.example.nebeng.feature_customer.presentation.CustomerUiState
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 @HiltViewModel
-class CustomerViewModel @Inject constructor(
+class CustomerViewModel (
     private val useCases: CustomerUseCases
 ) : ViewModel() {
 
