@@ -51,12 +51,12 @@ return new class extends Migration
             $table->string('driver_license_rejected_reason')->nullable();
 
             // ====== POLICE CLEARANCE CERTIFICATE (SKCK) ======
-            $table->string('Police_clearance_certificate_number')->nullable();
-            $table->string('Police_clearance_certificate_fullname')->nullable();
-            $table->string('Police_clearance_certificate_expired')->nullable();
-            $table->string('Police_clearance_certificate_img')->nullable();
-            $table->boolean('Police_clearance_verified')->nullable();
-            $table->string('Police_clearance_rejected_reason')->nullable();
+            $table->string('police_clearance_certificate_number')->nullable();
+            $table->string('police_clearance_certificate_fullname')->nullable();
+            $table->string('police_clearance_certificate_expired')->nullable();
+            $table->string('police_clearance_certificate_img')->nullable();
+            $table->boolean('police_clearance_verified')->nullable();
+            $table->string('police_clearance_rejected_reason')->nullable();
 
             $table->timestamps();
         });

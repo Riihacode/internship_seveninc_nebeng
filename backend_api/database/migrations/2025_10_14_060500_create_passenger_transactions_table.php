@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('passenger_transactions', function (Blueprint $table) {
             $table->id();
+            $table->string('transaction_code')->unique();
 
             $table->foreignId('passenger_ride_booking_id')
                 ->constrained(

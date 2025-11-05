@@ -18,6 +18,14 @@ class GoodsTransactionRepository
         return $this->model->with(['goodsRideBooking', 'customer', 'paymentMethod'])->get();
     }
 
+    public function getByBooking($bookingId)
+    {
+        return $this->model
+            ->where('goods_ride_booking_id', $bookingId)
+            ->with(['customer', 'paymentMethod'])
+            ->first();
+    }
+
     public function findById($id)
     {
         return $this->model->with(['goodsRideBooking', 'customer', 'paymentMethod'])->findOrFail($id);

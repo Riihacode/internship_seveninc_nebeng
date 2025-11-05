@@ -22,6 +22,7 @@ use App\Http\Controllers\GoodsRideBookingController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\PassengerRideBookingController;
 use App\Http\Controllers\PassengerTransactionController;
+use App\Http\Controllers\TransactionController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -200,6 +201,13 @@ Route::prefix('customers')->group(function () {
     Route::patch('/{id}/add-credit', [CustomerController::class, 'addCredit']);
     Route::patch('/{id}/deduct-credit', [CustomerController::class, 'deductCredit']);
     Route::delete('/{id}', [CustomerController::class, 'destroy']);
+});
+
+// [ TRANSACTION ]
+Route::prefix('transactions')->group(function(){
+    Route::get('/',[ TransactionController::class, 'index']);
+    Route::get('/{type}/{id}',[TransactionController::class, 'show']);
+    Route::get('/{type}/booking/{BookingId}',[TransactionController::class, 'getByBooking']);
 });
 
 // [ PASSENGER TRANSACTIONS ]

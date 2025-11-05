@@ -3,6 +3,9 @@
 namespace App\Http\Services;
 
 use App\Http\Repositories\PassengerTransactionRepository;
+use App\Models\GoodsTransaction;
+use App\Models\PassengerRideBooking;
+use App\Models\PassengerTransaction;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
@@ -57,13 +60,32 @@ class PassengerTransactionService
             throw new ValidationException($validator);
         }
 
+        $booking = PassengerRideBooking::find($data['passenger_ride_booking_id']);
+
+        if(!$booking){
+            throw ValidationException::withMessages([
+                'passenger_ride_booking_id' => 'Booking not found',
+            ]);
+        }
+
+        // Transaction Code
+        $transaction_code = $this->generateCode($booking->booking_code);
+
         // Default status
+        $data['transaction_code'] = $transaction_code;
         $data['payment_status'] = $data['payment_status'] ?? 'Pending';
         $data['transaction_date'] = $data['transaction_date'] ?? now();
 
         return $this->transactionRepository->create($data);
     }
 
+    public function generateCode($bookingCode){
+        $cleanCode = str_replace(['','_'], '-', strtoupper($bookingCode));
+        $today = now()->format('Ymd');
+        $countToday = PassengerTransaction::whereDate('created_at', now()->toDateString())->count()+1;
+
+        return 'TX-'. $cleanCode . '-' . str_pad($countToday, 4, '0', STR_PAD_LEFT);
+    }
     // Update transaksi (misal update bukti pembayaran)
     public function updateTransaction($id, array $data)
     {

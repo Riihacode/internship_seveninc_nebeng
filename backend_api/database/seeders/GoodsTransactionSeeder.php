@@ -29,10 +29,15 @@ class GoodsTransactionSeeder extends Seeder
 
         $statuses = ['Pending', 'Diterima', 'Ditolak', 'Credited'];
 
+
         foreach ($bookings as $booking) {
+            $countToday = GoodsTransaction::whereDate('created_at', Carbon::today())->count()+1;
+            $transactionCode = 'TX-' . strtoupper($booking->booking_code) . '-' . str_pad($countToday, 4, '0', STR_PAD_LEFT);
+
             GoodsTransaction::create([
                 'goods_ride_booking_id' => $booking->id,
                 'customer_id'           => $booking->customer_id ?? $customers->random()->id,
+                'transaction_code'      => $transactionCode,
                 'total_amount'          => $booking->total_price ?? rand(50000, 200000),
                 'payment_method_id'     => $methods->random()->id,
                 'payment_proof_img'     => null,

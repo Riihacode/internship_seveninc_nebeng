@@ -3,6 +3,8 @@
 namespace App\Http\Services;
 
 use App\Http\Repositories\GoodsTransactionRepository;
+use App\Models\GoodsRideBooking;
+use App\Models\GoodsTransaction;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
@@ -18,6 +20,11 @@ class GoodsTransactionService
     public function listTransactions()
     {
         return $this->repository->getAll();
+    }
+
+    public function getByBooking($bookingId)
+    {
+        return $this->repository->getByBooking($bookingId);
     }
 
     public function getTransaction($id)
@@ -52,7 +59,30 @@ class GoodsTransactionService
             throw new ValidationException($validator);
         }
 
+        $booking = GoodsRideBooking::find($data['goods_ride_booking_id']);
+
+        if(!$booking){
+            throw ValidationException::withMessages([
+                'goods_ride_booking_id' => 'booking not found'
+            ]);
+        }
+
+        $transaction_code = $this->generateCode($booking->booking_code);
+
+        // Default status
+        $data['transaction_code'] = $transaction_code;
+        $data['payment_status'] = $data['payment_status'] ?? 'Pending';
+        $data['transaction_date'] = $data['transaction_date'] ?? now();
+
         return $this->repository->create($data);
+    }
+
+    public function generateCode($bookingCode){
+        $cleanCode = str_replace(['','_'], '-', strtoupper($bookingCode));
+        $today = now()->format('Ymd');
+        $countToday = GoodsTransaction::whereDate('created_at', now()->toDateString())->count()+1;
+
+        return 'TX-'. $cleanCode . '-' . str_pad($countToday, 4, '0', STR_PAD_LEFT);
     }
 
     public function updateTransaction($id, array $data)

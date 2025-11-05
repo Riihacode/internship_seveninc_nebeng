@@ -60,7 +60,7 @@ export default function AppRoutes() {
             }
           />
           <Route
-            path="/pesanan"
+            path="/orders"
             element={
               <ProtectedRoute>
                 <Pesanan />

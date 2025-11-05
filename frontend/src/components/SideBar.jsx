@@ -116,7 +116,7 @@ export default function SideBar() {
             </li>
             <li className="cursor-pointer text-white hover:text-white">
               <NavLink
-                to="/pesanan"
+                to="/orders"
                 className={({ isActive }) =>
                   `relative flex items-center px-4 py-3 transition-all duration-300 group
                 ${

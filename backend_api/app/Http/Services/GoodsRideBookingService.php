@@ -21,7 +21,7 @@ class GoodsRideBookingService
         $countToday = $this->goodsRideBookingRepository->countByDate(Carbon::today());
 
         $sequence = str_pad($countToday + 1, 4, '0', STR_PAD_LEFT);
-        return "{prefix}-{$date}-{$sequence}";
+        return "{$prefix}-{$date}-{$sequence}";
     }
 
     // List semua booking
@@ -69,6 +69,9 @@ class GoodsRideBookingService
         if ($validator->fails()) {
             throw new ValidationException($validator);
         }
+
+        $data['status'] = $data['status'] ?? 'Pending';
+        $data['booking_code'] = $this->generateBookingNumbers('G');
 
         return $this->goodsRideBookingRepository->create($data);
     }

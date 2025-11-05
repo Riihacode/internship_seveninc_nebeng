@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('goods_transactions', function (Blueprint $table) {
             $table->id();
+            $table->string('transaction_code')->unique();
 
             // Relasi ke goods_ride_bookings
             $table->foreignId('goods_ride_booking_id')

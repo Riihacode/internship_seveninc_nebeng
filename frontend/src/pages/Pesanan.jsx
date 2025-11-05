@@ -23,6 +23,10 @@ export default function Pesanan() {
       key: "driver_name",
     },
     {
+      label: "Customer",
+      key: "customer_name",
+    },
+    {
       label: "Tanggal",
       render: (row) => (row.created_at ? formatTanggal(row.created_at) : "-"),
     },

@@ -12,7 +12,8 @@ export default function Header() {
     if (path.startsWith("/mitra/")) return "Detail Mitra";
     if (path === "/mitra") return "Data Customer";
     if (path.startsWith("/customer/")) return "Detail Customer";
-    if (path.startsWith("/pesanan")) return "Data Pesanan";
+    if (path.startsWith("/orders")) return "Detail Pesanan";
+    if (path === "/orders") return "Data Pesanan";
     if (path.startsWith("/refund")) return "Data Refund";
     if (path.startsWith("/laporan")) return "Data Laporan";
   };

@@ -25,6 +25,7 @@ class PassengerTransaction extends Model
         'payment_status',
         'credit_used',
         'transaction_date',
+        'transaction_code',
     ];
 
     /**

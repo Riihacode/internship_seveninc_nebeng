@@ -76,6 +76,7 @@ export default function DetailMitra() {
             </div>
           </div>
           <br />
+          <hr />
           <h1 className="m-3 font-bold">Informasi KTP</h1>
           <div className="m-3 flex justify-baseline w-full">
             {/* Sisi Kiri */}
@@ -85,33 +86,39 @@ export default function DetailMitra() {
                 value={mitra.id_card_fullname}
               />
               <Input label="Tanggal Lahir" value={mitra.id_card_birthdate} />
-            </div>
-            {/* Sisi Kanan */}
-            <div className="flex flex-col">
               <Input label="NIK" value={mitra.id_card_number} />
               <Input
                 label="Status"
                 value={mitra.card_verified == 1 ? "Terverivikasi" : "Terblokir"}
               />
             </div>
-          </div>
-          <div className="w-fit bg-gray-300 m-3 rounded-2xl min-h-fit">
-            <div className="rounded-2xl">
-              <img
-                src={mitra.id_card_img || "https://placehold.co/300x200"}
-                alt="ktp"
-              />
+            {/* Sisi Kanan */}
+            <div className="flex flex-col m-3">
+              <div className="w-fit bg-gray-300 m-3 rounded-2xl min-h-fit">
+                <div className="rounded-2xl">
+                  <img
+                    src={mitra.id_card_img || "https://placehold.co/300x200"}
+                    alt="ktp"
+                  />
+                </div>
+              </div>
+              <div className="p-3">
+                <button className="bg-green-500 text-white px-3 py-2 rounded-xl mr-2">
+                  Terima
+                </button>
+                <button className="bg-red-500 text-white px-3 py-2 rounded-xl">
+                  Tolak
+                </button>
+              </div>
             </div>
           </div>
+          <hr />
           <h1 className="m-3 font-bold">Informasi SIM</h1>
           <div className="m-3 flex justify-baseline w-full">
             {/* Sisi Kiri */}
             <div className="flex flex-col min-w-lg">
               <Input label="No SIM" value={mitra.driver_license_number} />
               <Input label="Tipe SIM" value={mitra.driver_license_type} />
-            </div>
-            {/* Sisi Kanan */}
-            <div className="flex flex-col">
               <Input
                 label="Batas Aktif SIM"
                 value={mitra.driver_license_expired}
@@ -125,16 +132,79 @@ export default function DetailMitra() {
                 }
               />
             </div>
+            {/* Sisi Kanan */}
+            <div className="flex flex-col m-3">
+              <div className="w-fit bg-gray-300 m-3 rounded-2xl min-h-fit">
+                <div className="rounded-2xl">
+                  <img
+                    src={mitra.id_card_img || "https://placehold.co/300x200"}
+                    alt="ktp"
+                  />
+                </div>
+              </div>
+              <div className="p-3">
+                <button className="bg-green-500 text-white px-3 py-2 rounded-xl mr-2">
+                  Terima
+                </button>
+                <button className="bg-red-500 text-white px-3 py-2 rounded-xl">
+                  Tolak
+                </button>
+              </div>
+            </div>
           </div>
-          <div className="w-fit bg-gray-300 m-3 rounded-2xl min-h-fit">
-            <div className="rounded-2xl">
-              <img
-                src={
-                  mitra.driver_license__img || "https://placehold.co/300x200"
+          <hr />
+          <h1 className="m-3 font-bold">Informasi STNK</h1>
+          <div className="m-3 flex justify-baseline w-full">
+            {/* Sisi Kiri */}
+            <div className="flex flex-col min-w-lg">
+              <Input
+                label="No STNK"
+                value={mitra.police_clearance_certificate_number}
+              />
+              <Input
+                label="Nama STNK"
+                value={mitra.police_clearance_certificate_fullname}
+              />
+              <Input
+                label="Batas Aktif STNK"
+                value={mitra.police_clearance_certificate_expired}
+              />
+              <Input
+                label="Verivikasi"
+                value={
+                  mitra.police_clearance_certificate_verified == 1
+                    ? "Terverivikasi"
+                    : "Terblokir"
                 }
-                alt="SIM"
               />
             </div>
+            {/* Sisi Kanan */}
+            <div className="flex flex-col m-3">
+              <div className="w-fit bg-gray-300 m-3 rounded-2xl min-h-fit">
+                <div className="rounded-2xl">
+                  <img
+                    src={mitra.id_card_img || "https://placehold.co/300x200"}
+                    alt="ktp"
+                  />
+                </div>
+              </div>
+              <div className="p-3">
+                <button className="bg-green-500 text-white px-3 py-2 rounded-xl mr-2">
+                  Terima
+                </button>
+                <button className="bg-red-500 text-white px-3 py-2 rounded-xl">
+                  Tolak
+                </button>
+              </div>
+            </div>
+          </div>
+          <div className="p-3">
+            <button className="bg-green-500 text-white px-3 py-2 rounded-xl mr-2">
+              Terima
+            </button>
+            <button className="bg-red-500 text-white px-3 py-2 rounded-xl">
+              Tolak
+            </button>
           </div>
         </div>
       )}

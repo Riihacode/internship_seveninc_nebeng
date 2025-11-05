@@ -32,10 +32,13 @@ class PassengerTransactionSeeder extends Seeder
         foreach ($bookings as $booking) {
             // Ambil customer dari booking atau random
             $customer = $customers->random();
+            $countToday = PassengerTransaction::whereDate('created_at', Carbon::today())->count()+1;
+            $transactionCode = 'TX-' . strtoupper($booking->booking_code) . '-' . str_pad($countToday, 4, '0', STR_PAD_LEFT);
 
             PassengerTransaction::create([
                 'passenger_ride_booking_id' => $booking->id,
                 'customer_id'               => $booking->customer_id ?? $customer->id,
+                'transaction_code'          => $transactionCode,
                 'total_amount'              => $booking->total_price ?? rand(10000, 150000),
                 'payment_method_id'         => $methods->random()->id,
                 'payment_proof_img'         => null,

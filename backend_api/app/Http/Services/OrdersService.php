@@ -20,6 +20,13 @@ class OrdersService{
             $b->booking_type ='Passenger';
             $b->layanan = $b->passengerRide->vehicle_type ?? null;
             $b->driver_name = $b->passengerRide->driver->full_name ?? '-';
+            $b->customer_name = $b->customer->full_name ?? '-';
+            $b->driver_phone = $b->passengerRide->driver->telephone ?? '-';
+            $b->terminal_keberangkatan = $b->passengerRide->departureTerminal->name ?? '-';
+            $b->terminal_tujuan = $b->passengerRide->arrivalTerminal->name ?? '-';
+            $b->kota_tujuan = $b->passengerRide->departureTerminal->regency->name ?? '-';
+            $b->kota_awal = $b->passengerRide->arrivalTerminal->regency->name ?? '-';
+            $b->booking_id = $b->id;
             return $b;
         });
 
@@ -27,6 +34,13 @@ class OrdersService{
             $b->booking_type ='Goods';
             $b->layanan = $b->goodsRide->transport_type ?? null;
             $b->driver_name = $b->goodsRide->driver->full_name ?? '-';
+            $b->customer_name = $b->customer->full_name ?? '-';
+            $b->driver_phone = $b->goodsRide->driver->telephone;
+            $b->terminal_keberangkatan = $b->goodsRide->departureTerminal->name ?? '-';
+            $b->terminal_tujuan = $b->goodsRide->arrivalTerminal->name?? '-';
+            $b->kota_tujuan = $b->goodsRide->arrivalTerminal->regency->name ?? '-';
+            $b->kota_awal = $b->goodsRide->departureTerminal->regency->name ?? '-';
+            $b->booking_id = $b->id;
             return $b;
         });
 
