@@ -15,4 +15,3 @@ data class PassengerRide(
     val createdAt: String,               // dari passenger_rides
     val updatedAt: String                // dari passenger_rides
 )
-

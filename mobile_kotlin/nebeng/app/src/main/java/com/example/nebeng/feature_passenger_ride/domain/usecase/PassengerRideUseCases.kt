@@ -1,7 +1,7 @@
 package com.example.nebeng.feature_passenger_ride.domain.usecase
 
 data class PassengerRideUseCases(
-    val readAll: ReadPassengerRideUseCase,
+    val readAll: ReadPassengerRideAllUseCase,
     val readById: ReadPassengerRideByIdUseCase,
     val readByDriverId: ReadPassengerRideByDriverIdUseCase,
     val readByStatus: ReadPassengerRideByStatusUseCase,

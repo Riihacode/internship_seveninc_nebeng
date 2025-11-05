@@ -5,7 +5,7 @@ import javax.inject.Inject
 import com.example.nebeng.core.common.Result
 import com.example.nebeng.feature_passenger_ride.domain.model.PassengerRide
 
-class ReadPassengerRideUseCase @Inject constructor(
+class ReadPassengerRideAllUseCase @Inject constructor(
     private val repository: PassengerRideRepository
 ) {
     suspend operator fun invoke(token: String): Result<List<PassengerRide>> {

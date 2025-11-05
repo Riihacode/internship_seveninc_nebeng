@@ -1,6 +1,5 @@
 package com.example.nebeng.feature_passenger_ride.domain.usecase
 
-import android.annotation.SuppressLint
 import com.example.nebeng.core.common.Result
 import com.example.nebeng.feature_passenger_ride.data.remote.model.request.UpdatePassengerRideRequest
 import com.example.nebeng.feature_passenger_ride.data.repository.PassengerRideRepository
@@ -11,12 +10,9 @@ import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito.*
 
-@SuppressLint("CheckResult")
+// helper agar Mockito.any() tidak bikin NPE di Kotlin
 @Suppress("UNCHECKED_CAST")
-private fun <T> anySafe(): T {
-    any<T>()
-    return null as T
-}
+private fun <T> anyNonNull(): T = any<T>()
 
 class UpdatePassengerRideUseCaseTest {
     private lateinit var repository: PassengerRideRepository
@@ -39,7 +35,7 @@ class UpdatePassengerRideUseCaseTest {
             seatsReserved = 3,
             pricePerSeat = 37084,
             commissionPercentage = 11,
-            rideStatus = "Selesai"
+            rideStatus = "selesai"
         )
 
         val fakeRide = PassengerRide(
@@ -53,26 +49,32 @@ class UpdatePassengerRideUseCaseTest {
             seatsAvailable = 4,
             seatsReserved = 3,
             commissionPercentage = 11,
-            rideStatus = "Selesai",
+            rideStatus = "selesai",
             createdAt = "",
             updatedAt = ""
         )
 
-        `when`(repository.updatePassengerRide(anyString(), anyInt(), any(UpdatePassengerRideRequest::class.java)))
-            .thenReturn(Result.Success(fakeRide))
+//        `when`(repository.updatePassengerRide(anyString(), anyInt(), any(UpdatePassengerRideRequest::class.java)))
+//            .thenReturn(Result.Success(fakeRide))
+        `when`(
+            repository.updatePassengerRide(anyString(), anyInt(), anyNonNull())
+        ).thenReturn(Result.Success(fakeRide))
 
         val result = useCase("dummy-token", 3, fakeRequest)
 
         assertTrue(result is Result.Success)
         val ride = (result as Result.Success).data
         assertEquals("Mobil", ride.vehicleType)
-        assertEquals("Selesai", ride.rideStatus)
+        assertEquals("selesai", ride.rideStatus)
     }
 
     @Test
     fun `should return error when repository fails`() = runBlocking {
-        `when`(repository.updatePassengerRide(anyString(), anyInt(), any(UpdatePassengerRideRequest::class.java)))
-            .thenReturn(Result.Error("Gagal memperbarui passenger ride"))
+//        `when`(repository.updatePassengerRide(anyString(), anyInt(), any(UpdatePassengerRideRequest::class.java)))
+//            .thenReturn(Result.Error("Gagal memperbarui passenger ride"))
+        `when`(
+            repository.updatePassengerRide(anyString(), anyInt(), anyNonNull())
+        ).thenReturn(Result.Error("Gagal memperbarui passenger ride"))
 
         val result = useCase("dummy-token", 3, mock(UpdatePassengerRideRequest::class.java))
 
