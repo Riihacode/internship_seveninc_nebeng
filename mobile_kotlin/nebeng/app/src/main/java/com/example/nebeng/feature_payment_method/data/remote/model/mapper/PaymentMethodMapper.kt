@@ -5,7 +5,7 @@ import com.example.nebeng.feature_payment_method.data.remote.model.request.Creat
 import com.example.nebeng.feature_payment_method.data.remote.model.request.UpdatePaymentMethodRequest
 import com.example.nebeng.feature_payment_method.data.remote.model.response.DataItem
 import com.example.nebeng.feature_payment_method.domain.model.PaymentMethod
-import com.example.nebeng.feature_payment_method.domain.model.PaymentStatus
+import com.example.nebeng.core.utils.PaymentStatus
 
 /* ============================================================
    🔹 Mapper untuk DataDto → Domain (dipakai di create/update/readById)

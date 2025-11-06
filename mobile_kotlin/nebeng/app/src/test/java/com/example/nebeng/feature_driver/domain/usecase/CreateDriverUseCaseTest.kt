@@ -16,7 +16,7 @@ import com.example.nebeng.core.common.Result
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
 import org.mockito.kotlin.whenever
-import kotlin.String
+import kotlin.Int
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class CreateDriverUseCaseTest {
@@ -76,6 +76,9 @@ class CreateDriverUseCaseTest {
             policeClearanceCertificateNumber = "Tanjiro Kamado",
             policeClearanceCertificateFullname = "Tanjiro Kamado GG",
             idCardFullname = "Tanjiro Kamado",
+            totalRating = 3,
+            ratingCount = 3,
+            averageRating = 5.00f
         )
 
         val flow: Flow<Result<Driver>> = flow {

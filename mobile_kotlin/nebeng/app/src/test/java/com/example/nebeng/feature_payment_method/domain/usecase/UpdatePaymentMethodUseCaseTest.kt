@@ -4,7 +4,7 @@ import com.example.nebeng.core.common.Result
 import com.example.nebeng.feature_payment_method.data.remote.model.request.UpdatePaymentMethodRequest
 import com.example.nebeng.feature_payment_method.data.repository.PaymentMethodRepository
 import com.example.nebeng.feature_payment_method.domain.model.PaymentMethod
-import com.example.nebeng.feature_payment_method.domain.model.PaymentStatus
+import com.example.nebeng.core.utils.PaymentStatus
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

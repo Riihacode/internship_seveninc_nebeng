@@ -1,8 +1,8 @@
-package com.example.nebeng.feature_passenger_ride_booking.domain.model
+package com.example.nebeng.core.utils
 
 enum class BookingStatus (val value: String) {
     PENDING("Pending"),
-    DITERMA("Diterima"),
+    DITERIMA("Diterima"),
     DITOLAK("Ditolak");
 
     companion object {

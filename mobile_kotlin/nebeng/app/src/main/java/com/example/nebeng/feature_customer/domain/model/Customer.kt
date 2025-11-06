@@ -21,8 +21,8 @@ data class Customer(
 
     val creditAmount: Int,
     val createdAt: String,
-    val updatedAt: String,
+    val updatedAt: String
 
     // Relasi
-    val user: User? = null
+//    val user: User? = null
 )

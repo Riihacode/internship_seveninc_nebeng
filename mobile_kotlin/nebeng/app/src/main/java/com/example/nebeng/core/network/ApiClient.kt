@@ -36,4 +36,18 @@ object ApiClient {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
+
+//    private val okHttpClient by lazy {
+//        OkHttpClient.Builder()
+//            .connectTimeout(30, TimeUnit.SECONDS)
+//            .readTimeout(30, TimeUnit.SECONDS)
+//            // bisa tambahkan interceptor tanpa ubah file ini
+//            .build()
+//    }
+//
+//    fun createRetrofit(): Retrofit = Retrofit.Builder()
+//        .baseUrl(BASE_URL)
+//        .client(okHttpClient)
+//        .addConverterFactory(GsonConverterFactory.create())
+//        .build()
 }

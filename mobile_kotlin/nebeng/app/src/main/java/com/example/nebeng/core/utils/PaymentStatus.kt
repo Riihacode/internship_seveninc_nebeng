@@ -1,4 +1,4 @@
-package com.example.nebeng.feature_payment_method.domain.model
+package com.example.nebeng.core.utils
 
 enum class PaymentStatus(val value: String) {
     PENDING("Pending"),

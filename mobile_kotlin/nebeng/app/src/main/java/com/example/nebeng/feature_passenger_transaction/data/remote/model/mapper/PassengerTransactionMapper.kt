@@ -9,7 +9,7 @@ import com.example.nebeng.feature_passenger_transaction.data.remote.model.dto.Pa
 import com.example.nebeng.feature_passenger_transaction.data.remote.model.response.*
 import com.example.nebeng.feature_passenger_transaction.domain.model.PassengerTransaction
 import com.example.nebeng.feature_payment_method.domain.model.PaymentMethod
-import com.example.nebeng.feature_payment_method.domain.model.PaymentStatus
+import com.example.nebeng.core.utils.PaymentStatus
 
 ///* ============================================================
 //   🔹 Mapper untuk ReadAll / ReadById / ReadByPassengerRideBookingId
@@ -132,8 +132,8 @@ fun CustomerDto.toDomain(): Customer {
         idCardBirthdate = idCardBirthdate,
         creditAmount = creditAmount,
         createdAt = createdAt,
-        updatedAt = updatedAt,
-        user = null
+        updatedAt = updatedAt
+//        user = null
     )
 }
 

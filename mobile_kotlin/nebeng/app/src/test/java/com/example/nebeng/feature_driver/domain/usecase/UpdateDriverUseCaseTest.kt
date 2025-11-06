@@ -51,7 +51,10 @@ class UpdateDriverUseCaseTest {
             "profile.png", null, null, null, null, null, 95, 60000, "Tanjiro Kamado", true, true,
             true, "DL123", "A", "2000", "2030", "2030", "", "", "",
             policeClearanceCertificateNumber = "Tanjiro Kamado",
-            policeClearanceCertificateFullname = "Tanjiro Kamado GG"
+            policeClearanceCertificateFullname = "Tanjiro Kamado GG",
+            totalRating = 3,
+            ratingCount = 3,
+            averageRating = 5.00f
         )
 
         val flow: Flow<Result<Driver>> = flow {

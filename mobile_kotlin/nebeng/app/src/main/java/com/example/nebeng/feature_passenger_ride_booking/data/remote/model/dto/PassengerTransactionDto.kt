@@ -1,6 +1,6 @@
 package com.example.nebeng.feature_passenger_ride_booking.data.remote.model.dto
 
-import com.example.nebeng.feature_payment_method.domain.model.PaymentStatus
+import com.example.nebeng.core.utils.PaymentStatus
 import com.google.gson.annotations.SerializedName
 
 data class PassengerTransactionDto(

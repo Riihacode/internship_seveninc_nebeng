@@ -7,7 +7,6 @@ import com.example.nebeng.feature_driver.data.remote.model.dto.UserDto
 import com.example.nebeng.feature_driver.domain.model.Driver
 import com.example.nebeng.feature_rating.domain.model.Rating
 import com.example.nebeng.feature_user.domain.model.User
-import kotlin.String
 
 /* ============================================================
    🔹 Mapper untuk DataDto (digunakan oleh endpoint detail/create/update)
@@ -42,9 +41,13 @@ fun DataDto.toDomain(): Driver {
         policeClearanceCertificateNumber = policeClearanceCertificateNumber,
         policeClearanceCertificateFullname = policeClearanceCertificateFullname,
 
+        totalRating = null,
+        averageRating = null,
+        ratingCount = null
+
         // relasi kosong karena endpoint ini tidak kirim ratings/user
-        ratings = emptyList(),
-        user = null
+//        ratings = emptyList(),
+//        user = null
     )
 }
 
@@ -80,10 +83,13 @@ fun DataItemDto.toDomain(): Driver {
         policeClearanceCertificateFullname = policeClearanceCertificateFullname,
         createdAt = createdAt,
         updatedAt = updatedAt,
+        totalRating = totalRating,
+        averageRating = averageRating,
+        ratingCount = ratingCount
 
         // 🔹 map nested relasi
-        ratings = ratings.map { it.toDomain() },
-        user = user.toDomain()
+//        ratings = ratings.map { it.toDomain() },
+//        user = user.toDomain()
     )
 }
 

@@ -141,6 +141,10 @@ fun DriverDto.toDomain(): Driver {
         creditScore = creditScore,
         balance = balance,
         createdAt = createdAt,
-        updatedAt = updatedAt
+        updatedAt = updatedAt,
+
+        totalRating = totalRating,
+        ratingCount = ratingCount,
+        averageRating = averageRating
     )
 }

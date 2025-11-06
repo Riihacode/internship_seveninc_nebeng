@@ -76,6 +76,9 @@ class ReadAllDriverUseCaseTest {
                 policeClearanceCertificateNumber = "Tanjiro Kamado",
                 policeClearanceCertificateFullname = "Tanjiro Kamado GG",
                 idCardFullname = "Tanjiro Kamado",
+                totalRating = 3,
+                ratingCount = 3,
+                averageRating = 5.00f
             )
         )
 

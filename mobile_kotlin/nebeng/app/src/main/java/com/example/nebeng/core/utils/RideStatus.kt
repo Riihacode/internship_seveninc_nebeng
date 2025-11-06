@@ -1,4 +1,4 @@
-package com.example.nebeng.feature_passenger_ride.domain.model
+package com.example.nebeng.core.utils
 
 enum class RideStatus(val value: String) {
     PENDING("pending"),
@@ -7,7 +7,7 @@ enum class RideStatus(val value: String) {
     DIBATALKAN("dibatalkan");
 
     companion object {
-        fun from(value: String): RideStatus? =
-            entries.find { it.value.equals(value, ignoreCase = true) }
+        fun fromString(value: String): RideStatus? =
+            entries.find { it.value.equals(value, ignoreCase = true) } ?: PENDING
     }
 }

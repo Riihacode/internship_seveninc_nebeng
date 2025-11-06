@@ -27,9 +27,9 @@ fun DataDto.toDomain(): Customer {
         idCardBirthdate = idCardBirthdate,
         creditAmount = creditAmount,
         createdAt = createdAt,
-        updatedAt = updatedAt,
+        updatedAt = updatedAt
 
-        user = null // biasanya DataDto tidak mengandung nested user
+//        user = null // biasanya DataDto tidak mengandung nested user
     )
 }
 
@@ -53,9 +53,9 @@ fun DataItemDto.toDomain(): Customer {
         idCardBirthdate = idCardBirthdate,
         creditAmount = creditAmount,
         createdAt = createdAt,
-        updatedAt = updatedAt,
+        updatedAt = updatedAt
 
-        user = user.toDomain() // nested object
+//        user = user.toDomain() // nested object
     )
 }
 

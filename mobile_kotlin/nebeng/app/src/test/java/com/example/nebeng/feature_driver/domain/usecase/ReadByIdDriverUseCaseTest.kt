@@ -59,7 +59,10 @@ class ReadByIdDriverUseCaseTest {
             updatedAt = "",
 
             policeClearanceCertificateNumber = "Tanjiro Kamado",
-            policeClearanceCertificateFullname = "Tanjiro Kamado GG"
+            policeClearanceCertificateFullname = "Tanjiro Kamado GG",
+            totalRating = 3,
+            ratingCount = 3,
+            averageRating = 5.00f
         )
 
         val flow: Flow<Result<Driver>> = flow {

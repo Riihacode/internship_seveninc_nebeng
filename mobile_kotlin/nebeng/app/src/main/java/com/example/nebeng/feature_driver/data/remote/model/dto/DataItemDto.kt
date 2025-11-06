@@ -26,7 +26,7 @@ data class DataItemDto(
     @field:SerializedName("driver_license_rejected_reason") val driverLicenseRejectedReason: String,
     @field:SerializedName("id_card_fullname") val idCardFullname: String,
     @field:SerializedName("telephone") val telephone: String,
-    @field:SerializedName("average_rating") val averageRating: String,
+    @field:SerializedName("average_rating") val averageRating: Float,
     @field:SerializedName("id_card_verified") val idCardVerified: Boolean,
     @field:SerializedName("rating_count") val ratingCount: Int,
     @field:SerializedName("profile_img") val profileImg: String,

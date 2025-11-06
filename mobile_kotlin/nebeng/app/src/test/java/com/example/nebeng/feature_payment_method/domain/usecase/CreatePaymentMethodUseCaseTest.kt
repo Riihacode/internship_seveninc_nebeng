@@ -1,6 +1,7 @@
 package com.example.nebeng.feature_payment_method.domain.usecase
 
 import com.example.nebeng.core.common.Result
+import com.example.nebeng.core.utils.PaymentStatus
 import com.example.nebeng.feature_payment_method.data.remote.model.request.CreatePaymentMethodRequest
 import com.example.nebeng.feature_payment_method.data.repository.PaymentMethodRepository
 import com.example.nebeng.feature_payment_method.domain.model.PaymentMethod
@@ -44,7 +45,7 @@ class CreatePaymentMethodUseCaseTest {
             customerId = 0,
             totalAmount = 0,
             paymentMethod = 1,
-            paymentStatus = com.example.nebeng.feature_payment_method.domain.model.PaymentStatus.PENDING,
+            paymentStatus = PaymentStatus.PENDING,
             creditUsed = 0,
             transactionDate = "2025-11-05",
             createdAt = "2025-11-05",
