@@ -7,135 +7,14 @@ import com.example.nebeng.feature_customer.domain.model.Customer
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.*
 import org.junit.*
 import org.mockito.Mock
-import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
 import org.mockito.kotlin.whenever
-
-//@OptIn(ExperimentalCoroutinesApi::class)
-//class CreateCustomerUseCaseTest {
-//
-//    private lateinit var repository: CustomerRepository
-//    private lateinit var useCase: CreateCustomerUseCase
-//    private val dispatcher = StandardTestDispatcher()
-//
-//    @Before fun setup() {
-//        Dispatchers.setMain(dispatcher)
-//        repository = mock(CustomerRepository::class.java)
-//        useCase = CreateCustomerUseCase(repository)
-//    }
-//
-//    @After fun tearDown() {
-//        Dispatchers.resetMain()
-//    }
-//
-//    @Test
-//    fun `invoke returns success`() = runTest {
-//        val request = CreateCustomerRequest(
-//            faceImg = "face.png",
-//            idCardFullname = "Riiha",
-//            verified = true,
-//            creditAmount = 0,
-//            telephone = "08123",
-//            fullAddress = "Jogja",
-//            faceWithIdImg = "facewithid.png",
-//            profileImg = "profile.png",
-//            idCardImg = "id.png",
-//            fullName = "Riiha",
-//            idCardNumber = "123",
-//            idCardBirthdate = "2000-01-01",
-//            userId = 1
-//        )
-//        val expected = Customer(1, 1, "Riiha", "08123", "Jogja", null, true, null, null, null, "123", "Riiha", "2000-01-01", 0)
-//
-////        `when`(repository.createCustomer(anyString(), eq(request))).thenReturn(flowOf(Result.Success(expected)))
-//        `when`(repository.createCustomer(anyString(), any()))
-//            .thenReturn(flowOf(Result.Success(expected)))
-//
-//        val result = useCase.invoke("token", request)
-//        val emitted = result.first()
-//
-//        assertTrue(emitted is Result.Success)
-//        assertEquals(expected.fullName, (emitted as Result.Success).data.fullName)
-//    }
-//
-//    @Test
-//    fun `invoke returns error`() = runTest {
-//        val request = mock(CreateCustomerRequest::class.java)
-//        `when`(repository.createCustomer(anyString(), eq(request))).thenReturn(flowOf(Result.Error("Failed")))
-//        val result = useCase.invoke("token", request)
-//        assertTrue(result.first() is Result.Error)
-//    }
-//}
-//@OptIn(ExperimentalCoroutinesApi::class)
-//class CreateCustomerUseCaseTest {
-//
-//    private lateinit var repository: CustomerRepository
-//    private lateinit var useCase: CreateCustomerUseCase
-//    private val dispatcher = StandardTestDispatcher()
-//
-//    @Before fun setup() {
-//        Dispatchers.setMain(dispatcher)
-//        repository = mock(CustomerRepository::class.java)
-//        useCase = CreateCustomerUseCase(repository)
-//    }
-//
-//    @After fun tearDown() {
-//        Dispatchers.resetMain()
-//    }
-//
-//    @Test
-//    fun `invoke returns success`() = runTest {
-//        val request = CreateCustomerRequest(
-//            faceImg = "face.png",
-//            idCardFullname = "Riiha",
-//            verified = true,
-//            creditAmount = 0,
-//            telephone = "08123",
-//            fullAddress = "Jogja",
-//            faceWithIdImg = "facewithid.png",
-//            profileImg = "profile.png",
-//            idCardImg = "id.png",
-//            fullName = "Riiha",
-//            idCardNumber = "123",
-//            idCardBirthdate = "2000-01-01",
-//            userId = 1
-//        )
-//
-//        val expected = Customer(
-//            1, 1, "Riiha", "08123", "Jogja",
-//            null, true, null, null, null,
-//            "123", "Riiha", "2000-01-01", 0
-//        )
-//
-//        // ✅ pakai any() biar tidak NPE
-//        `when`(repository.createCustomer(anyString(), any()))
-//            .thenReturn(flowOf(Result.Success(expected)))
-//
-//        val result = useCase.invoke("token", request).first()
-//
-//        assertTrue(result is Result.Success)
-//        assertEquals("Riiha", (result as Result.Success).data.fullName)
-//    }
-//
-//    @Test
-//    fun `invoke returns error`() = runTest {
-//        val request = mock(CreateCustomerRequest::class.java)
-//        `when`(repository.createCustomer(anyString(), any()))
-//            .thenReturn(flowOf(Result.Error("Failed")))
-//
-//        val result = useCase.invoke("token", request).first()
-//        assertTrue(result is Result.Error)
-//    }
-//}
-
+import kotlin.String
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class CreateCustomerUseCaseTest {
@@ -184,7 +63,9 @@ class CreateCustomerUseCaseTest {
             idCardNumber = "123",
             idCardFullName = "Riiha",
             idCardBirthdate = "2000-01-01",
-            creditAmount = 0
+            creditAmount = 0,
+            createdAt = "2025-08-01",
+            updatedAt = "2025-08-01"
         )
 
         val flow: Flow<Result<Customer>> = flow {

@@ -48,8 +48,10 @@ class UpdateDriverUseCaseTest {
 
         val updatedDriver = Driver(
             id, 1, "Tanjiro Updated", "081234", "Yogyakarta",
-            "profile.png", null, null, null, null, null, 95, 60000, true, true, true,
-            "111", "DL123", "A", "2000", "2030", "2030", "", ""
+            "profile.png", null, null, null, null, null, 95, 60000, "Tanjiro Kamado", true, true,
+            true, "DL123", "A", "2000", "2030", "2030", "", "", "",
+            policeClearanceCertificateNumber = "Tanjiro Kamado",
+            policeClearanceCertificateFullname = "Tanjiro Kamado GG"
         )
 
         val flow: Flow<Result<Driver>> = flow {

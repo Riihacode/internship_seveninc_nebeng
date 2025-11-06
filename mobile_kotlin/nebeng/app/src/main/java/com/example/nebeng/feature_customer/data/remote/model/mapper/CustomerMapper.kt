@@ -5,6 +5,7 @@ import com.example.nebeng.feature_customer.data.remote.model.dto.DataItemDto
 import com.example.nebeng.feature_customer.data.remote.model.dto.UserDto
 import com.example.nebeng.feature_customer.domain.model.Customer
 import com.example.nebeng.feature_user.domain.model.User
+import kotlin.String
 
 /* ============================================================
    🔹 Mapper untuk DataDto (digunakan oleh endpoint create/update/detail)
@@ -25,6 +26,9 @@ fun DataDto.toDomain(): Customer {
         idCardFullName = idCardFullname,
         idCardBirthdate = idCardBirthdate,
         creditAmount = creditAmount,
+        createdAt = createdAt,
+        updatedAt = updatedAt,
+
         user = null // biasanya DataDto tidak mengandung nested user
     )
 }
@@ -48,6 +52,9 @@ fun DataItemDto.toDomain(): Customer {
         idCardFullName = idCardFullname,
         idCardBirthdate = idCardBirthdate,
         creditAmount = creditAmount,
+        createdAt = createdAt,
+        updatedAt = updatedAt,
+
         user = user.toDomain() // nested object
     )
 }

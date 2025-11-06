@@ -17,6 +17,7 @@ data class Driver(
     val policeClearanceCertificateImg: String?,
     val creditScore: Int,
     val balance: Int,
+    val idCardFullname: String,
     val idCardVerified: Boolean,
     val driverLicenseVerified: Boolean,
     val policeClearanceVerified: Boolean,
@@ -28,6 +29,8 @@ data class Driver(
     val policeClearanceCertificateExpired: String,
     val createdAt: String,
     val updatedAt: String,
+    val policeClearanceCertificateNumber: String,
+    val policeClearanceCertificateFullname: String,
 
     // 🔹 Relasi opsional (bisa kosong / null tergantung endpoint)
     val ratings: List<Rating> = emptyList(),

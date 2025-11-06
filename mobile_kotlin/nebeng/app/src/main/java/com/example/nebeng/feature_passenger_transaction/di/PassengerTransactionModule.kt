@@ -1,0 +1,51 @@
+package com.example.nebeng.feature_passenger_transaction.di
+
+import com.example.nebeng.feature_passenger_transaction.data.remote.api.PassengerTransactionApi
+import com.example.nebeng.feature_passenger_transaction.data.repository.PassengerTransactionRepository
+import com.example.nebeng.feature_passenger_transaction.data.repository.PassengerTransactionRepositoryImpl
+import com.example.nebeng.feature_passenger_transaction.domain.usecase.CreatePassengerTransactionUseCase
+import com.example.nebeng.feature_passenger_transaction.domain.usecase.DeletePassengerTransactionUseCase
+import com.example.nebeng.feature_passenger_transaction.domain.usecase.PassengerTransactionUseCases
+import com.example.nebeng.feature_passenger_transaction.domain.usecase.PatchStatusByIdPassengerTransactionUseCase
+import com.example.nebeng.feature_passenger_transaction.domain.usecase.ReadAllPassengerTransactionUseCase
+import com.example.nebeng.feature_passenger_transaction.domain.usecase.ReadByIdPassengerTransactionUseCase
+import com.example.nebeng.feature_passenger_transaction.domain.usecase.ReadByPassengerRideBookingIdPassengerTransactionUseCase
+import com.example.nebeng.feature_passenger_transaction.domain.usecase.UpdatePassengerTransactionUseCase
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import retrofit2.Retrofit
+import javax.inject.Singleton
+
+@Module
+@InstallIn(SingletonComponent::class)
+object PassengerTransactionModule {
+    @Provides
+    @Singleton
+    fun providePassengerTransactionApi(
+       retrofit: Retrofit
+    ): PassengerTransactionApi = retrofit.create(PassengerTransactionApi::class.java)
+
+    @Provides
+    @Singleton
+    fun providePassengerTransactionRepository(
+        api: PassengerTransactionApi
+    ): PassengerTransactionRepository = PassengerTransactionRepositoryImpl(api)
+
+    @Provides
+    @Singleton
+    fun providePassengerTransactionUseCase(
+        repository: PassengerTransactionRepository
+    ): PassengerTransactionUseCases {
+        return PassengerTransactionUseCases(
+             create                         = CreatePassengerTransactionUseCase(repository),
+             readAll                        = ReadAllPassengerTransactionUseCase(repository),
+             readById                       = ReadByIdPassengerTransactionUseCase(repository),
+             readByPassengerRideBookingId   = ReadByPassengerRideBookingIdPassengerTransactionUseCase(repository),
+             update                         = UpdatePassengerTransactionUseCase(repository),
+             patchStatus                    = PatchStatusByIdPassengerTransactionUseCase(repository),
+             delete                         = DeletePassengerTransactionUseCase(repository)
+        )
+    }
+}

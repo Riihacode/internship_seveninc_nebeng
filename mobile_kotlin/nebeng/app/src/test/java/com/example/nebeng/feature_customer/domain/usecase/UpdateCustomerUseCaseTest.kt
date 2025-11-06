@@ -66,7 +66,9 @@ class UpdateCustomerUseCaseTest {
             idCardFullName = "Updated Riiha",
             idCardBirthdate = "2000-01-01",
             creditAmount = 150_000,
-            user = null
+            user = null,
+            createdAt = "2025-08-01",
+            updatedAt = "2025-08-01"
         )
 
         val flow: Flow<Result<Customer>> = flow {

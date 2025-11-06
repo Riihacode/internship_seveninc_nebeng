@@ -50,7 +50,9 @@ class PatchDeductCreditAmountCustomerUseCaseTest {
             idCardNumber = "123",
             idCardFullName = "Riiha",
             idCardBirthdate = "2000-01-01",
-            creditAmount = 50_000
+            creditAmount = 50_000,
+            createdAt = "2025-08-01",
+            updatedAt = "2025-08-01"
         )
 
         val flow: Flow<Result<Customer>> = flow {

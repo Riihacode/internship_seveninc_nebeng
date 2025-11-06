@@ -1,0 +1,19 @@
+package com.example.nebeng.feature_passenger_transaction.domain.usecase
+
+import com.example.nebeng.core.common.Result
+import com.example.nebeng.feature_passenger_transaction.data.remote.model.request.CreatePassengerTransactionRequest
+import com.example.nebeng.feature_passenger_transaction.data.repository.PassengerTransactionRepository
+import com.example.nebeng.feature_passenger_transaction.domain.model.PassengerTransaction
+import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
+
+class CreatePassengerTransactionUseCase @Inject constructor(
+    private val repository: PassengerTransactionRepository
+) {
+    suspend operator fun invoke(
+        token: String,
+        request: CreatePassengerTransactionRequest
+    ): Flow<Result<PassengerTransaction>> {
+        return repository.createPassengerTransaction(token, request)
+    }
+}

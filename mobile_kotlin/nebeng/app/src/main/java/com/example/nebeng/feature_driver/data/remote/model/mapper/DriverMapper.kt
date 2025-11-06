@@ -7,6 +7,7 @@ import com.example.nebeng.feature_driver.data.remote.model.dto.UserDto
 import com.example.nebeng.feature_driver.domain.model.Driver
 import com.example.nebeng.feature_rating.domain.model.Rating
 import com.example.nebeng.feature_user.domain.model.User
+import kotlin.String
 
 /* ============================================================
    🔹 Mapper untuk DataDto (digunakan oleh endpoint detail/create/update)
@@ -37,6 +38,9 @@ fun DataDto.toDomain(): Driver {
         policeClearanceCertificateExpired = policeClearanceCertificateExpired,
         createdAt = createdAt,
         updatedAt = updatedAt,
+        idCardFullname = idCardFullname,
+        policeClearanceCertificateNumber = policeClearanceCertificateNumber,
+        policeClearanceCertificateFullname = policeClearanceCertificateFullname,
 
         // relasi kosong karena endpoint ini tidak kirim ratings/user
         ratings = emptyList(),
@@ -71,6 +75,9 @@ fun DataItemDto.toDomain(): Driver {
         idCardBirthdate = idCardBirthdate,
         driverLicenseExpired = driverLicenseExpired,
         policeClearanceCertificateExpired = policeClearanceCertificateExpired,
+        idCardFullname = idCardFullname,
+        policeClearanceCertificateNumber = policeClearanceCertificateNumber,
+        policeClearanceCertificateFullname = policeClearanceCertificateFullname,
         createdAt = createdAt,
         updatedAt = updatedAt,
 
@@ -86,8 +93,10 @@ fun DataItemDto.toDomain(): Driver {
 fun RatingsItemDto.toDomain(): Rating {
     return Rating(
         id = id,
-        ratingValue = rating.toDouble(),
-        comment = feedback,
+        driverId = driverId,
+        customerId =  customerId,
+        rating = rating,
+        feedback = feedback,
         createdAt = createdAt
     )
 }

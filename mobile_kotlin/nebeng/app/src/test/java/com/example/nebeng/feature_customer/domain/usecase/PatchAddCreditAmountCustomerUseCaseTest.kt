@@ -16,6 +16,7 @@ import org.mockito.MockitoAnnotations
 import org.mockito.kotlin.whenever
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
+import kotlin.String
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class PatchAddCreditAmountCustomerUseCaseTest {
@@ -50,7 +51,9 @@ class PatchAddCreditAmountCustomerUseCaseTest {
             idCardNumber = "123",
             idCardFullName = "Riiha",
             idCardBirthdate = "2000-01-01",
-            creditAmount = 150_000
+            creditAmount = 150_000,
+            createdAt = "2025-08-01",
+            updatedAt = "2025-08-01"
         )
 
         val flow: Flow<Result<Customer>> = flow {

@@ -48,7 +48,9 @@ class PatchAutoVerifyTrueCustomerUseCaseTest {
             idCardNumber = "123456789",
             idCardFullName = "Riiha",
             idCardBirthdate = "2000-01-01",
-            creditAmount = 100_000
+            creditAmount = 100_000,
+            createdAt = "2025-08-01",
+            updatedAt = "2025-08-01"
         )
 
         val flow: Flow<Result<Customer>> = flow {
