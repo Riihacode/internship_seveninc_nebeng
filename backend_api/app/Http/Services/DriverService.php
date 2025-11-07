@@ -83,6 +83,7 @@ class DriverService
             'profile_img'               => 'nullable|string|max:255',
             'balance'                   => 'nullable|integer|min:0',
             'credit_score'              => 'nullable|integer|min:0',
+            'id_card_rejected_reason'   => 'nullable|string',
 
             // Dokumen verifikasi
             'id_card_verified'          => 'nullable|boolean',
@@ -101,5 +102,42 @@ class DriverService
     public function deleteDriver($id)
     {
         return $this->driverRepository->delete($id);
+    }
+
+    public function verifyDocument($id, $type, $status, $reason = null){
+        $driver = $this->driverRepository->findById($id);
+
+        if(!$driver){
+            return response()->json(['message' => 'Driver not found'], 404);
+        }
+
+        $verifyField = null;
+        $reasonField = null;
+
+        switch($type) {
+            case 'id_card':
+                $verifyField = 'id_card_verified';
+                $reasonField = 'id_card_rejected_reason';
+                break;
+
+            case 'driver_license':
+                $verifyField = 'driver_license_verified';
+                $reasonField = 'driver_license_rejected_reason';
+                break;
+
+            case 'police_clearance':
+                $verifyField = 'police_clearance_verified';
+                $reasonField = 'police_clearance_rejected_reason';
+                break;
+
+        }
+
+        $data = [
+            $verifyField => $status,
+            $reasonField => $reason,
+        ];
+
+        $this->driverRepository->update($id, $data);
+        return response()->json(['message' => 'Document verification updated successfully']);
     }
 }

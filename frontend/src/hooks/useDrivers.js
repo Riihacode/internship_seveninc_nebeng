@@ -46,6 +46,18 @@ export function useDrivers() {
     }
   };
 
+  const verifyDriver = async (id, payload) => {
+    setLoading(true);
+    try {
+      await driverService.verify(id, payload);
+      await fetchDrivers();
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const deleteDriver = async (id) => {
     setLoading(true);
     try {
@@ -69,6 +81,7 @@ export function useDrivers() {
     loading,
     error,
     fetchDrivers,
+    verifyDriver,
     createDriver,
     updateDriver,
     deleteDriver,

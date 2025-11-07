@@ -2,7 +2,7 @@
 
 namespace App\Http\Services;
 
-class OrdersService{
+class AdminOrdersService{
     protected $passengersBookingService;
     protected $goodsBookingService;
 
