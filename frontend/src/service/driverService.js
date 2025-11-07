@@ -51,6 +51,16 @@ const driverService = {
     }
   },
 
+  verify: async (id, data) => {
+    try {
+      const res = await api.patch(`/api/drivers/${id}/verify`, data);
+      return res.data;
+    } catch (error) {
+      handleError(error);
+      return null;
+    }
+  },
+
   remove: async (id) => {
     try {
       const res = await api.delete(`/api/drivers/${id}`);

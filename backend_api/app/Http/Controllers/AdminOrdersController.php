@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Services\OrdersService;
+use App\Http\Services\AdminOrdersService;
 use Illuminate\Http\Request;
 
-class OrdersController extends Controller
+class AdminOrdersController extends Controller
 {
     protected $ordersService;
 
-    public function __construct(OrdersService $service){
+    public function __construct(AdminOrdersService $service){
         $this->ordersService = $service;
     }
     /**

@@ -64,4 +64,19 @@ class DriverController extends Controller
         }
         return response()->json(['message' => 'Driver not found'], 404);
     }
+
+    public function verify(Request $request, $id){
+        $validated = $request->validate([
+            'type' => 'required|in:id_card,driver_license,police_clearance',
+            'status' => 'required',
+            'reason' => 'nullable|string|max:255'
+        ]);
+
+        return $this->driverService->verifyDocument(
+            $id,
+            $validated['type'],
+            $validated['status'],
+            $validated['reason'] ?? null
+        );
+    }
 }
