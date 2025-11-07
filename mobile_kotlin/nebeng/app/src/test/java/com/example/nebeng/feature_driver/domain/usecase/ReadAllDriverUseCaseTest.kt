@@ -72,7 +72,13 @@ class ReadAllDriverUseCaseTest {
                 driverLicenseExpired = "2030-01-01",
                 policeClearanceCertificateExpired = "2030-01-01",
                 createdAt = "2025-01-01",
-                updatedAt = "2025-01-01"
+                updatedAt = "2025-01-01",
+                policeClearanceCertificateNumber = "Tanjiro Kamado",
+                policeClearanceCertificateFullname = "Tanjiro Kamado GG",
+                idCardFullname = "Tanjiro Kamado",
+                totalRating = 3,
+                ratingCount = 3,
+                averageRating = 5.00f
             )
         )
 

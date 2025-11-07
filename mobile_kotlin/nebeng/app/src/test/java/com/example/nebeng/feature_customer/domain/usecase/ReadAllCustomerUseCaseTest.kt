@@ -41,7 +41,9 @@ class ReadAllCustomerUseCaseTest {
                 faceImg = "face.png", faceWithIdImg = "faceid.png",
                 idCardImg = "id.png", idCardNumber = "123",
                 idCardFullName = "Riiha", idCardBirthdate = "2000-01-01",
-                creditAmount = 0
+                creditAmount = 0,
+                createdAt = "2025-08-01",
+                updatedAt = "2025-08-01"
             )
         )
 

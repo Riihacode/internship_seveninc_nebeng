@@ -6,7 +6,7 @@ import com.example.nebeng.feature_passenger_ride_booking.domain.model.PassengerR
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 
-class CreatePassengerRideBookingUseCase @Inject constructor(
+class  CreatePassengerRideBookingUseCase @Inject constructor(
     private val repository: PassengerRideBookingRepository
 ) {
     suspend operator fun invoke(

@@ -31,8 +31,39 @@ class ReadByIdDriverUseCaseTest {
     @Test
     fun `invoke should emit Success when driver found`() = runTest(UnconfinedTestDispatcher()) {
         val token = "token"
-        val driver = Driver(1, 1, "Tanjiro", "0812", "Yogya", null, null, null, null, null, null,
-            90, 10000, true, true, true, "111", "DL123", "A", "2000", "2030", "2030", "", "")
+        val driver = Driver(
+            id = 1,
+            userId = 1,
+            fullName = "Tanjiro",
+            telephone = "0812",
+            fullAddress = "Yogya",
+            profileImg = null,
+            faceImg = null,
+            idCardImg = null,
+            faceWithIdImg = null,
+            driverLicenseImg = null,
+            policeClearanceCertificateImg = null,
+            creditScore = 90,
+            balance = 10000,
+            idCardFullname = "Tanjiro Kamado",
+            idCardVerified = true,
+            driverLicenseVerified = true,
+            policeClearanceVerified = true,
+            idCardNumber = "DL123",
+            driverLicenseNumber = "A",
+            driverLicenseType = "2000",
+            idCardBirthdate = "2030",
+            driverLicenseExpired = "2030",
+            policeClearanceCertificateExpired = "",
+            createdAt = "",
+            updatedAt = "",
+
+            policeClearanceCertificateNumber = "Tanjiro Kamado",
+            policeClearanceCertificateFullname = "Tanjiro Kamado GG",
+            totalRating = 3,
+            ratingCount = 3,
+            averageRating = 5.00f
+        )
 
         val flow: Flow<Result<Driver>> = flow {
             emit(Result.Loading)

@@ -1,0 +1,4 @@
+package com.example.nebeng.feature_passenger_transaction.domain.usecase
+
+class PatchStatusByIdPassengerTransactionUseCaseTest {
+}

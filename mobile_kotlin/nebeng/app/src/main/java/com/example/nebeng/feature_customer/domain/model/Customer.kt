@@ -8,16 +8,21 @@ data class Customer(
     val fullName: String,
     val telephone: String,
     val fullAddress: String,
+
     val profileImg: String?,
     val verified: Boolean,
     val faceImg: String?,
     val faceWithIdImg: String?,
+
     val idCardImg: String?,
     val idCardNumber: String,
     val idCardFullName: String,
     val idCardBirthdate: String,
+
     val creditAmount: Int,
+    val createdAt: String,
+    val updatedAt: String
 
     // Relasi
-    val user: User? = null
+//    val user: User? = null
 )

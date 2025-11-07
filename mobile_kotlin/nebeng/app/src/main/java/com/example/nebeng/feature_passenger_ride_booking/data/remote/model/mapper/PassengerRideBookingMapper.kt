@@ -1,9 +1,11 @@
 package com.example.nebeng.feature_passenger_ride_booking.data.remote.model.mapper
 
-
+import com.example.nebeng.feature_customer.domain.model.Customer
+import com.example.nebeng.feature_driver.domain.model.Driver
 import com.example.nebeng.feature_passenger_ride.domain.model.PassengerRide
 import com.example.nebeng.feature_passenger_ride_booking.data.remote.model.dto.*
 import com.example.nebeng.feature_passenger_ride_booking.domain.model.*
+import com.example.nebeng.feature_passenger_transaction.domain.model.PassengerTransaction
 
 /**
  * ======================================
@@ -75,7 +77,7 @@ fun PassengerTransactionDto.toDomain(): PassengerTransaction {
         id = id,
         passengerRideBookingId = passengerRideBookingId,
         customerId = customerId,
-        paymentMethodId = paymentMethodId,
+        paymentMethod = paymentMethodId,
         transactionDate = transactionDate,
         paymentStatus = paymentStatus,
         totalAmount = totalAmount,
@@ -93,15 +95,19 @@ fun CustomerDto.toDomain(): Customer {
         fullName = fullName,
         telephone = telephone,
         fullAddress = fullAddress,
-        verified = verified,
-        creditAmount = creditAmount,
+
         profileImg = profileImg,
+        verified = verified,
         faceImg = faceImg,
         faceWithIdImg = faceWithIdImg,
+
         idCardImg = idCardImg,
-        idCardFullname = idCardFullname,
         idCardNumber = idCardNumber,
+        idCardFullName = idCardFullname,
         idCardBirthdate = idCardBirthdate,
+
+        creditAmount = creditAmount,
+
         createdAt = createdAt,
         updatedAt = updatedAt
     )
@@ -134,10 +140,11 @@ fun DriverDto.toDomain(): Driver {
         policeClearanceVerified = policeClearanceVerified,
         creditScore = creditScore,
         balance = balance,
-        totalRating = totalRating,
-        averageRating = averageRating,
-        ratingCount = ratingCount,
         createdAt = createdAt,
-        updatedAt = updatedAt
+        updatedAt = updatedAt,
+
+        totalRating = totalRating,
+        ratingCount = ratingCount,
+        averageRating = averageRating
     )
 }

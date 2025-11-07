@@ -1,8 +1,5 @@
 package com.example.nebeng.feature_driver.domain.model
 
-import com.example.nebeng.feature_rating.domain.model.Rating
-import com.example.nebeng.feature_user.domain.model.User
-
 data class Driver(
     val id: Int,
     val userId: Int,
@@ -17,6 +14,7 @@ data class Driver(
     val policeClearanceCertificateImg: String?,
     val creditScore: Int,
     val balance: Int,
+    val idCardFullname: String,
     val idCardVerified: Boolean,
     val driverLicenseVerified: Boolean,
     val policeClearanceVerified: Boolean,
@@ -28,8 +26,16 @@ data class Driver(
     val policeClearanceCertificateExpired: String,
     val createdAt: String,
     val updatedAt: String,
+    val policeClearanceCertificateNumber: String,
+    val policeClearanceCertificateFullname: String,
+    
+    
+    // Ditambahi oleh anggota lain
+    val totalRating: Int?,
+    val ratingCount: Int?,
+    val averageRating: Float?
 
     // 🔹 Relasi opsional (bisa kosong / null tergantung endpoint)
-    val ratings: List<Rating> = emptyList(),
-    val user: User? = null
+//    val ratings: List<Rating> = emptyList(),
+//    val user: User? = null
 )

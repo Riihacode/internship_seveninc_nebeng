@@ -49,7 +49,9 @@ class ReadByUserIdCustomerUseCaseTest {
                 idCardNumber = "123456789",
                 idCardFullName = "Riiha Kamado",
                 idCardBirthdate = "2000-01-01",
-                creditAmount = 100_000
+                creditAmount = 100_000,
+                createdAt = "2025-08-01",
+                updatedAt = "2025-08-01"
             ),
             Customer(
                 id = 2,
@@ -65,7 +67,9 @@ class ReadByUserIdCustomerUseCaseTest {
                 idCardNumber = "987654321",
                 idCardFullName = "Nezuko Kamado",
                 idCardBirthdate = "2002-05-10",
-                creditAmount = 50_000
+                creditAmount = 50_000,
+                createdAt = "2025-08-01",
+                updatedAt = "2025-08-01"
             )
         )
 

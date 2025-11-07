@@ -37,10 +37,17 @@ fun DataDto.toDomain(): Driver {
         policeClearanceCertificateExpired = policeClearanceCertificateExpired,
         createdAt = createdAt,
         updatedAt = updatedAt,
+        idCardFullname = idCardFullname,
+        policeClearanceCertificateNumber = policeClearanceCertificateNumber,
+        policeClearanceCertificateFullname = policeClearanceCertificateFullname,
+
+        totalRating = null,
+        averageRating = null,
+        ratingCount = null
 
         // relasi kosong karena endpoint ini tidak kirim ratings/user
-        ratings = emptyList(),
-        user = null
+//        ratings = emptyList(),
+//        user = null
     )
 }
 
@@ -71,12 +78,18 @@ fun DataItemDto.toDomain(): Driver {
         idCardBirthdate = idCardBirthdate,
         driverLicenseExpired = driverLicenseExpired,
         policeClearanceCertificateExpired = policeClearanceCertificateExpired,
+        idCardFullname = idCardFullname,
+        policeClearanceCertificateNumber = policeClearanceCertificateNumber,
+        policeClearanceCertificateFullname = policeClearanceCertificateFullname,
         createdAt = createdAt,
         updatedAt = updatedAt,
+        totalRating = totalRating,
+        averageRating = averageRating,
+        ratingCount = ratingCount
 
         // 🔹 map nested relasi
-        ratings = ratings.map { it.toDomain() },
-        user = user.toDomain()
+//        ratings = ratings.map { it.toDomain() },
+//        user = user.toDomain()
     )
 }
 
@@ -86,8 +99,10 @@ fun DataItemDto.toDomain(): Driver {
 fun RatingsItemDto.toDomain(): Rating {
     return Rating(
         id = id,
-        ratingValue = rating.toDouble(),
-        comment = feedback,
+        driverId = driverId,
+        customerId =  customerId,
+        rating = rating,
+        feedback = feedback,
         createdAt = createdAt
     )
 }
