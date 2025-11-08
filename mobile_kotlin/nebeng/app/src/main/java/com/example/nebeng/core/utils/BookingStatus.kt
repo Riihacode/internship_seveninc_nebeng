@@ -6,7 +6,7 @@ enum class BookingStatus (val value: String) {
     DITOLAK("Ditolak");
 
     companion object {
-        fun from(value: String?): BookingStatus? =
+        fun fromString(value: String?): BookingStatus? =
             entries.find { it.value.equals(value, ignoreCase = true) }
     }
 }

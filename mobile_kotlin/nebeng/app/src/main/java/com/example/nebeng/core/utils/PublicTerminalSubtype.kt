@@ -7,7 +7,7 @@ enum class PublicTerminalSubtype(val label: String) {
     PELABUHAN("Pelabuhan");
 
     companion object {
-        fun fromLabel(value: String): PublicTerminalSubtype =
+        fun fromString(value: String): PublicTerminalSubtype =
             entries.find { it.label.equals(value, ignoreCase = true) } ?: TERMINAL_BIS
     }
 }
