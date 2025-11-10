@@ -1,6 +1,7 @@
 package com.example.nebeng.core.session.data
 
 import com.example.nebeng.feature_a_auth.domain.model.Auth
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -14,16 +15,26 @@ class UserPreferencesRepository @Inject constructor(
         name: String,
         username: String,
         user_type: String,
-        isLoggedIn: Boolean
+        isLoggedIn: Boolean,
+        token: String = ""
     ) {
         userPrefs.saveUserSession(
             userId,
             name,
             username,
             user_type,
-            isLoggedIn
+            isLoggedIn,
+            token
         )
     }
+
+    // ✅ Aliran token dari DataStore
+    val tokenFLow: Flow<String?> = userPrefs.tokenFlow
+
+    // ✅ Getter / Setter opsional
+    suspend fun getToken(): String? = userPrefs.getToken()
+    suspend fun saveToken(token: String) = userPrefs.saveToken(token)
+
     suspend fun getUser(): Auth? {
         val id = userIdFlow.first()
         val name = nameFlow.first()

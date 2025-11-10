@@ -3,8 +3,6 @@ package com.example.nebeng.feature_a_auth.presentation.profile
 import com.example.nebeng.feature_a_auth.domain.model.Auth
 import com.example.nebeng.core.common.Result
 
-
-
 data class ProfileUiState(
     // ==== User session yang sedang aktif ====
     val currentUser: Auth? = null,

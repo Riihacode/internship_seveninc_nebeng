@@ -149,7 +149,8 @@ class ProfileViewModel @Inject constructor(
                             name = updatedUser.name,
                             username = updatedUser.username,
                             user_type = updatedUser.user_type,
-                            isLoggedIn = true
+                            isLoggedIn = true,
+                            token = ""
                         )
 
                         _uiState.update {

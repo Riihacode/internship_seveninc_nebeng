@@ -26,7 +26,22 @@ class UpdatePassengerRideBookingUseCaseTest {
     @Test
     fun `should update booking successfully`() = runTest {
         val request = UpdatePassengerRideBookingRequest(15000, 2, "Diterima")
-        val updated = PassengerRideBooking(1, "BK001", 10, 5, 2, 15000, "Diterima", "", "", null, null, null, null)
+        val updated = PassengerRideBooking(
+            id = 1,
+            bookingCode = "BK001",
+            passengerRideId = 10,
+            customerId = 5,
+            seatsReserved = 2,
+            totalPrice = 15000,
+            status = "Diterima",
+            createdAt = "",
+            updatedAt = ""
+//            ,
+//            null,
+//            null,
+//            null,
+//            null
+        )
         whenever(repository.updatePassengerRideBooking("token", 1, request)).thenReturn(flowOf(updated))
         val result = useCase("token", 1, request).first()
         assertEquals("Diterima", result.status)

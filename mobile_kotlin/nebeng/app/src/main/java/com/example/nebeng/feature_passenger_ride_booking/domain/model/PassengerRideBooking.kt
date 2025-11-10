@@ -14,10 +14,5 @@ data class PassengerRideBooking(
     val totalPrice: Int,
     val status: String,
     val createdAt: String,
-    val updatedAt: String,
-
-    val passengerRide: PassengerRide?,      // domain model
-    val passengerTransaction: PassengerTransaction?, // domain model
-    val customer: Customer?,                // domain model
-    val driver: Driver?                     // domain model
+    val updatedAt: String
 )

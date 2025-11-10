@@ -24,7 +24,22 @@ class ReadByIdPassengerRideBookingUseCaseTest {
 
     @Test
     fun `should return booking by id`() = runTest {
-        val booking = PassengerRideBooking(1, "BK001", 10, 5, 2, 20000, "Pending", "", "", null, null, null, null)
+        val booking = PassengerRideBooking(
+            id =1,
+            bookingCode = "BK001",
+            passengerRideId = 10,
+            customerId = 5,
+            seatsReserved = 2,
+            totalPrice = 20000,
+            status = "Pending",
+            createdAt = "",
+            updatedAt = ""
+//            ,
+//            null,
+//            null,
+//            null,
+//            null
+        )
         whenever(repository.readById("token", 1)).thenReturn(flowOf(booking))
         val result = useCase("token", 1).first()
         assertEquals("BK001", result.bookingCode)

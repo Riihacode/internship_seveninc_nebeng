@@ -1,6 +1,5 @@
 package com.example.nebeng.feature_passenger_ride_booking.data.remote.api
 
-import com.example.nebeng.feature_passenger_ride_booking.data.remote.model.dto.DataDto
 import com.example.nebeng.feature_passenger_ride_booking.data.remote.model.request.CreatePassengerRideBookingRequest
 import com.example.nebeng.feature_passenger_ride_booking.data.remote.model.request.PatchPassengerRideBookingRequest
 import com.example.nebeng.feature_passenger_ride_booking.data.remote.model.request.UpdatePassengerRideBookingRequest

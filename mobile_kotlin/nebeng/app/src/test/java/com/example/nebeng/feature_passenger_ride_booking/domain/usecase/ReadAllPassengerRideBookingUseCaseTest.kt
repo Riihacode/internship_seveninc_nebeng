@@ -25,8 +25,38 @@ class ReadAllPassengerRideBookingUseCaseTest {
     @Test
     fun `should return list of bookings`() = runTest {
         val bookings = listOf(
-            PassengerRideBooking(1, "BK001", 10, 5, 2, 20000, "Pending", "", "", null, null, null, null),
-            PassengerRideBooking(2, "BK002", 11, 6, 1, 15000, "Diterima", "", "", null, null, null, null)
+            PassengerRideBooking(
+                id =1,
+                bookingCode = "BK001",
+                passengerRideId = 10,
+                customerId = 5,
+                seatsReserved = 2,
+                totalPrice = 20000,
+                status = "Pending",
+                createdAt = "",
+                updatedAt = ""
+//                ,
+//                null,
+//                null,
+//                null,
+//                null
+            ),
+            PassengerRideBooking(
+                id = 2,
+                bookingCode = "BK002",
+                passengerRideId = 11,
+                customerId = 6,
+                seatsReserved = 1,
+                totalPrice = 15000,
+                status = "Diterima",
+                createdAt = "",
+                updatedAt = ""
+//                ,
+//                null,
+//                null,
+//                null,
+//                null
+            )
         )
         whenever(repository.readAll("token")).thenReturn(flowOf(bookings))
         val result = useCase("token").first()

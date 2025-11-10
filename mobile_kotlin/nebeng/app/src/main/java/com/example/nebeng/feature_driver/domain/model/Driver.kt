@@ -4,6 +4,8 @@ data class Driver(
     val id: Int,
     val userId: Int,
     val fullName: String,
+    val balance: Int,
+
     val telephone: String,
     val fullAddress: String,
     val profileImg: String?,
@@ -13,7 +15,6 @@ data class Driver(
     val driverLicenseImg: String?,
     val policeClearanceCertificateImg: String?,
     val creditScore: Int,
-    val balance: Int,
     val idCardFullname: String,
     val idCardVerified: Boolean,
     val driverLicenseVerified: Boolean,
@@ -23,11 +24,11 @@ data class Driver(
     val driverLicenseType: String,
     val idCardBirthdate: String,
     val driverLicenseExpired: String,
-    val policeClearanceCertificateExpired: String,
+    val policeClearanceCertificateExpired: String?,
     val createdAt: String,
     val updatedAt: String,
-    val policeClearanceCertificateNumber: String,
-    val policeClearanceCertificateFullname: String,
+    val policeClearanceCertificateNumber: String?,
+    val policeClearanceCertificateFullname: String?,
     
     
     // Ditambahi oleh anggota lain

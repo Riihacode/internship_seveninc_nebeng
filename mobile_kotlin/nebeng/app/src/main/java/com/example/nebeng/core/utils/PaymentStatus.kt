@@ -7,8 +7,8 @@ enum class PaymentStatus(val value: String) {
     CREDITED("Credited");
 
     companion object {
-        fun fromString(value: String): PaymentStatus? =
-            entries.find { it.value.equals(value, ignoreCase = true) }
+        fun fromString(value: String): PaymentStatus =
+            entries.find { it.value.equals(value, ignoreCase = true) } ?: PENDING
 
     }
 }

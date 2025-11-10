@@ -7,7 +7,18 @@ import com.example.nebeng.feature_passenger_transaction.domain.model.PassengerTr
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class UpdatePassengerTransactionUseCase@Inject constructor(
+//class UpdatePassengerTransactionUseCase@Inject constructor(
+//    private val repository: PassengerTransactionRepository
+//) {
+//    suspend operator fun invoke(
+//        token: String,
+//        id: Int,
+//        request: UpdatePassengerTransactionRequest
+//    ): Flow<Result<PassengerTransaction>> {
+//        return repository.updatePassengerTransactionById(token, id, request)
+//    }
+//}
+class UpdatePassengerTransactionUseCase @Inject constructor(
     private val repository: PassengerTransactionRepository
 ) {
     suspend operator fun invoke(
