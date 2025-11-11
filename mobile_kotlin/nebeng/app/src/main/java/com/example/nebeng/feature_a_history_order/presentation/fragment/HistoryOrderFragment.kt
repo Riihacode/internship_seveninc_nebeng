@@ -1,5 +1,6 @@
 package com.example.nebeng.feature_a_history_order.presentation.fragment
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -10,6 +11,7 @@ import com.example.nebeng.core.session.data.UserPreferencesRepository
 //import com.example.nebeng.feature_a_history_order.domain.mapper.HistoryOrderItemMapper.toDomain
 import com.example.nebeng.feature_a_history_order.presentation.HistoryOrderViewModel
 import com.example.nebeng.feature_a_history_order.presentation.screen_role.customer.HistoryOrderCustomerScreenUi
+import com.example.nebeng.feature_a_history_order.presentation.screen_role.driver.HistoryOrderDriverScreenUi
 //import com.example.nebeng.feature_a_history_order.presentation.screen_role.driver.HistoryOrderDriverScreenUi
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -124,7 +126,10 @@ class HistoryOrderFragment : RoleAwareFragment() {
 
         // Panggil loadHistory hanya saat token valid
         LaunchedEffect(token) {
-            token?.let { viewModel.loadHistory(it) }
+            token?.let {
+                Log.d("HistoryOrderFragment", "Token digunakan: $it")
+                viewModel.loadHistory(it)
+            }
         }
 
         HistoryOrderCustomerScreenUi(
@@ -140,11 +145,26 @@ class HistoryOrderFragment : RoleAwareFragment() {
     @Composable
     override fun DriverUI() {
         val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
+        val token by userPrefsRepo.tokenFLow.collectAsStateWithLifecycle(initialValue = null)
         // Placeholder: nanti diganti dengan UI driver versi final
-        HistoryOrderCustomerScreenUi(
+
+        // Panggil loadHistory hanya saat token valid
+        LaunchedEffect(token) {
+            token?.let {
+                Log.d("HistoryOrderFragment", "Token digunakan: $it")
+                viewModel.loadHistory(it)
+            }
+        }
+
+        HistoryOrderDriverScreenUi(
             uiState = uiState,
             onBack = { requireActivity().onBackPressedDispatcher.onBackPressed() },
-            onChangeSchedule = { viewModel.onChangeSchedule(it) }
+            onRefresh = {
+                token?.let {
+                    Log.d("HistoryOrderFragment", "Token digunakan: $it")
+                    viewModel.loadHistory(it)
+                }
+            }
         )
     }
 }

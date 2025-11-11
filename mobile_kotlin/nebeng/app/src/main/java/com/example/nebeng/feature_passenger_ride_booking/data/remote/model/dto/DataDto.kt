@@ -13,7 +13,7 @@ data class DataDto(
     @field:SerializedName("updated_at") val updatedAt: String,
     @field:SerializedName("created_at") val createdAt: String,
 
-    @field:SerializedName("customer") val customer: CustomerDto,
-    @field:SerializedName("passenger_ride") val passengerRide: PassengerRideDto,
-    @field:SerializedName("passenger_transaction") val passengerTransaction: PassengerTransactionDto
+    @field:SerializedName("customer") val customer: CustomerDto?,
+    @field:SerializedName("passenger_ride") val passengerRide: PassengerRideDto?,
+    @field:SerializedName("passenger_transaction") val passengerTransaction: PassengerTransactionDto?
 )

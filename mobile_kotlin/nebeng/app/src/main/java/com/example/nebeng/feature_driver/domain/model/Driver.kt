@@ -39,4 +39,39 @@ data class Driver(
     // 🔹 Relasi opsional (bisa kosong / null tergantung endpoint)
 //    val ratings: List<Rating> = emptyList(),
 //    val user: User? = null
-)
+) {
+    companion object {
+        fun getEmpty(): Driver = Driver(
+            id = 0,
+            userId = 0,
+            fullName = "",
+            telephone = "",
+            fullAddress = "",
+            profileImg = null,
+            faceImg = null,
+            faceWithIdImg = null,
+            idCardImg = null,
+            idCardFullname = "",
+            idCardNumber = "",
+            idCardBirthdate = "",
+            driverLicenseNumber = "",
+            driverLicenseType = "",
+            driverLicenseExpired = "",
+            driverLicenseImg = null,
+            policeClearanceCertificateNumber = "",
+            policeClearanceCertificateFullname = "",
+            policeClearanceCertificateImg = null,
+            policeClearanceCertificateExpired = "",
+            idCardVerified = false,
+            driverLicenseVerified = false,
+            policeClearanceVerified = false,
+            creditScore = 0,
+            balance = 0,
+            createdAt = "",
+            updatedAt = "",
+            totalRating = 0,
+            ratingCount = 0,
+            averageRating = 0f
+        )
+    }
+}

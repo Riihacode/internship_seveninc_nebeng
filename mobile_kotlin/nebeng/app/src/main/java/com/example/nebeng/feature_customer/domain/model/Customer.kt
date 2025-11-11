@@ -25,4 +25,25 @@ data class Customer(
 
     // Relasi
 //    val user: User? = null
-)
+) {
+    companion object {
+        fun getEmpty(): Customer = Customer(
+            id = 0,
+            userId = 0,
+            fullName = "",
+            telephone = "",
+            fullAddress = "",
+            profileImg = null,
+            verified = false,
+            faceImg = null,
+            faceWithIdImg = null,
+            idCardImg = null,
+            idCardNumber = "",
+            idCardFullName = "",
+            idCardBirthdate = "",
+            creditAmount = 0,
+            createdAt = "",
+            updatedAt = ""
+        )
+    }
+}

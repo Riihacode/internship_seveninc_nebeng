@@ -14,4 +14,20 @@ data class PassengerTransaction(
     val transactionDate: String,
     val createdAt: String,
     val updatedAt: String,
-)
+) {
+    companion object {
+        fun getEmpty(): PassengerTransaction = PassengerTransaction(
+            id = 0,
+            passengerRideBookingId = 0,
+            customerId = 0,
+            paymentMethod = 0,
+            transactionDate = "",
+            paymentStatus = PaymentStatus.PENDING, // ✅ bukan string
+            totalAmount = 0,
+            creditUsed = 0,
+            paymentProofImg = null,
+            createdAt = "",
+            updatedAt = ""
+        )
+    }
+}

@@ -17,4 +17,22 @@ data class PassengerRide(
     val rideStatus: String,              // dari passenger_rides
     val createdAt: String,               // dari passenger_rides
     val updatedAt: String                // dari passenger_rides
-)
+) {
+    companion object {
+        fun getEmpty(): PassengerRide = PassengerRide(
+            id = 0,
+            driverId = 0,
+            departureTerminalId = 0,
+            arrivalTerminalId = 0,
+            vehicleType = "",
+            pricePerSeat = 0,
+            commissionPercentage = 0,
+            seatsAvailable = 0,
+            seatsReserved = 0,
+            rideStatus = "",
+            departureTime = "",
+            createdAt = "",
+            updatedAt = ""
+        )
+    }
+}

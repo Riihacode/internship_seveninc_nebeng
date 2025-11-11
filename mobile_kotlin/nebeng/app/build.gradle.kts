@@ -104,4 +104,10 @@ dependencies {
     testImplementation(libs.mockito.core)
     testImplementation(libs.mockito.kotlin)
     testImplementation(libs.kotlinx.coroutines.test.v152) // For testing suspending functions
+
+    // Swipe Refresh
+    // build.gradle (module)
+    implementation(libs.accompanist.swiperefresh)
+//    implementation(libs.androidx.material.pull.refresh)
+//    implementation(libs.androidx.material3.pullrefresh)
 }
