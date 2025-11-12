@@ -35,7 +35,8 @@ class LoginViewModel @Inject constructor(
                             name = user.name,
                             username = user.username,
                             user_type = user.user_type,
-                            isLoggedIn = true
+                            isLoggedIn = true,
+                            token = user.token  // Simpan JWT token ke DataStore
                         )
                         onSuccess()
                     }

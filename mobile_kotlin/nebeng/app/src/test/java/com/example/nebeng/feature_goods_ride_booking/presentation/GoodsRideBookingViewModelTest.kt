@@ -5,16 +5,11 @@ import com.example.nebeng.feature_goods_ride_booking.data.remote.model.request.C
 import com.example.nebeng.feature_goods_ride_booking.domain.model.GoodsRideBooking
 import com.example.nebeng.feature_goods_ride_booking.domain.usecase.GoodsRideBookingUseCases
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
-import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
-import java.time.LocalDateTime
 import com.example.nebeng.core.common.Result
-import com.example.nebeng.feature_customer.domain.model.Customer
-import com.example.nebeng.feature_goods_ride.domain.model.GoodsRide
 import com.example.nebeng.feature_goods_ride_booking.data.remote.model.request.UpdateGoodsRideBookingRequest
 import com.example.nebeng.feature_goods_ride_booking.domain.model.GoodsRideBookingFull
 import com.example.nebeng.feature_goods_ride_booking.domain.usecase.CreateGoodsRideBookingUseCase
@@ -25,12 +20,9 @@ import com.example.nebeng.feature_goods_ride_booking.domain.usecase.ReadByIdGood
 import com.example.nebeng.feature_goods_ride_booking.domain.usecase.ReadByStatusGoodsRideBookingUseCase
 import com.example.nebeng.feature_goods_ride_booking.domain.usecase.UpdateGoodsRideBookingUseCase
 import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.assertFalse
-import junit.framework.TestCase.assertNull
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -38,7 +30,6 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.mockito.Mock
-import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
 
 @OptIn(ExperimentalCoroutinesApi::class)

@@ -4,12 +4,16 @@ import com.example.nebeng.feature_passenger_ride_booking.data.remote.model.reque
 import com.example.nebeng.feature_passenger_ride_booking.data.remote.model.request.PatchPassengerRideBookingRequest
 import com.example.nebeng.feature_passenger_ride_booking.data.remote.model.request.UpdatePassengerRideBookingRequest
 import com.example.nebeng.feature_passenger_ride_booking.domain.model.PassengerRideBooking
+import com.example.nebeng.feature_passenger_ride_booking.domain.model.PassengerRideBookingFull
 import kotlinx.coroutines.flow.Flow
 
 interface PassengerRideBookingRepository {
     suspend fun readAll(
         token: String
     ): Flow<List<PassengerRideBooking>>
+
+    suspend fun readAllFull(token: String): Flow<List<PassengerRideBookingFull>> // ✅ nested version
+
 
     suspend fun readById(
         token: String,

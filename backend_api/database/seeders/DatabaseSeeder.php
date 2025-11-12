@@ -77,6 +77,9 @@ class DatabaseSeeder extends Seeder
             PassengerTransactionSeeder::class,
             GoodsTransactionSeeder::class,
             RatingSeeder::class,
+
+            VehicleSeeder::class,
+            CreditScoreLogSeeder::class,
         ]);
     }
 }

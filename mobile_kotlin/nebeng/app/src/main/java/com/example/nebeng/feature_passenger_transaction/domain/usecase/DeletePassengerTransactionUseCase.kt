@@ -5,10 +5,20 @@ import com.example.nebeng.feature_passenger_transaction.data.repository.Passenge
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
+//class DeletePassengerTransactionUseCase @Inject constructor(
+//    private val repository: PassengerTransactionRepository
+//) {
+//    suspend operator fun invoke(token: String, id: Int): Flow<Result<Boolean>> {
+//        return repository.deletePassengerTransactionById(token, id)
+//    }
+//}
 class DeletePassengerTransactionUseCase @Inject constructor(
     private val repository: PassengerTransactionRepository
 ) {
-    suspend operator fun invoke(token: String, id: Int): Flow<Result<Boolean>> {
+    suspend operator fun invoke(
+        token: String,
+        id: Int
+    ): Flow<Result<String>> {
         return repository.deletePassengerTransactionById(token, id)
     }
 }

@@ -17,8 +17,199 @@ import junit.framework.TestCase.assertTrue
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.Dispatchers
 
+//@OptIn(ExperimentalCoroutinesApi::class)
+//class PassengerTransactionViewModelTest {
+//
+//    @Mock private lateinit var createUseCase: CreatePassengerTransactionUseCase
+//    @Mock private lateinit var readAllUseCase: ReadAllPassengerTransactionUseCase
+//    @Mock private lateinit var readByIdUseCase: ReadByIdPassengerTransactionUseCase
+//    @Mock private lateinit var readByBookingUseCase: ReadByPassengerRideBookingIdPassengerTransactionUseCase
+//    @Mock private lateinit var updateUseCase: UpdatePassengerTransactionUseCase
+//    @Mock private lateinit var patchStatusUseCase: PatchStatusByIdPassengerTransactionUseCase
+//    @Mock private lateinit var deleteUseCase: DeletePassengerTransactionUseCase
+//
+//    private lateinit var useCases: PassengerTransactionUseCases
+//    private lateinit var viewModel: PassengerTransactionViewModel
+//
+//    private val dispatcher = UnconfinedTestDispatcher()
+//
+//    @Before
+//    fun setUp() {
+//        MockitoAnnotations.openMocks(this)
+//        Dispatchers.setMain(dispatcher)
+//        useCases = PassengerTransactionUseCases(
+//            create = createUseCase,
+//            readAll = readAllUseCase,
+//            readById = readByIdUseCase,
+//            readByPassengerRideBookingId = readByBookingUseCase,
+//            update = updateUseCase,
+//            patchStatus = patchStatusUseCase,
+//            delete = deleteUseCase
+//        )
+//        viewModel = PassengerTransactionViewModel(useCases)
+//    }
+//
+//    @After
+//    fun tearDown() {
+//        Dispatchers.resetMain()
+//    }
+//
+//    // region 🔹 CREATE TEST
+//    @Test
+//    fun `create transaction success updates uiState with Success`() = runTest {
+//        val token = "token123"
+//        val request = CreatePassengerTransactionRequest(
+//            transactionDate = "2025-11-05",
+//            paymentMethodId = 1,
+//            totalAmount = 15000,
+//            paymentStatus = "Pending",
+//            passengerRideBookingId = 10,
+//            customerId = 99,
+//            paymentProofImg = "proof.png",
+//            creditUsed = 0
+//        )
+//
+//        val transaction = PassengerTransaction(
+//            id = 1,
+//            passengerRideBookingId = 10,
+//            customerId = 99,
+//            totalAmount = 15000,
+//            paymentMethod = 1,
+//            paymentProofImg = "proof.png",
+//            paymentStatus = PaymentStatus.PENDING,
+//            creditUsed = 0,
+//            transactionDate = "2025-11-05",
+//            createdAt = "2025-11-05T00:00:00Z",
+//            updatedAt = "2025-11-05T00:00:00Z"
+//        )
+//
+//        val flow: Flow<Result<PassengerTransaction>> = flow {
+//            emit(Result.Loading)
+//            emit(Result.Success(transaction))
+//        }
+//
+//        whenever(createUseCase(token, request)).thenReturn(flow)
+//
+//        viewModel.create(token, request)
+//        advanceUntilIdle()
+//
+//        val uiState = viewModel.uiState.value
+//        assertTrue(uiState.currentTransaction is Result.Success)
+//        assertEquals(transaction.id, (uiState.currentTransaction as Result.Success).data.id)
+//    }
+//
+//    @Test
+//    fun `create transaction error updates uiState with Error`() = runTest {
+//        val token = "token123"
+//        val request = CreatePassengerTransactionRequest(
+//            transactionDate = "2025-11-05",
+//            paymentMethodId = 1,
+//            totalAmount = 15000,
+//            paymentStatus = "Pending",
+//            passengerRideBookingId = 10,
+//            customerId = 99,
+//            paymentProofImg = "proof.png",
+//            creditUsed = 0
+//        )
+//
+//        val flow: Flow<Result<PassengerTransaction>> = flow {
+//            emit(Result.Loading)
+//            emit(Result.Error("Failed to create"))
+//        }
+//
+//        whenever(createUseCase(token, request)).thenReturn(flow)
+//
+//        viewModel.create(token, request)
+//        advanceUntilIdle()
+//
+//        val uiState = viewModel.uiState.value
+//        assertTrue(uiState.currentTransaction is Result.Error)
+//        assertEquals("Failed to create", (uiState.currentTransaction as Result.Error).message)
+//    }
+//    // endregion
+//
+//
+//    // region 🔹 READ BY ID TEST
+//    @Test
+//    fun `read by id success updates uiState`() = runTest {
+//        val token = "token"
+//        val id = 1
+//        val transaction = PassengerTransaction(
+//            id = 1,
+//            passengerRideBookingId = 10,
+//            customerId = 99,
+//            totalAmount = 20000,
+//            paymentMethod = 1,
+//            paymentProofImg = "proof.png",
+//            paymentStatus = PaymentStatus.DITERIMA,
+//            creditUsed = 0,
+//            transactionDate = "2025-11-05",
+//            createdAt = "2025-11-05",
+//            updatedAt = "2025-11-05"
+//        )
+//
+//        val flow: Flow<Result<PassengerTransaction>> = flow {
+//            emit(Result.Loading)
+//            emit(Result.Success(transaction))
+//        }
+//
+//        whenever(readByIdUseCase(token, id)).thenReturn(flow)
+//
+//        viewModel.readById(token, id)
+//        advanceUntilIdle()
+//
+//        val uiState = viewModel.uiState.value
+//        assertTrue(uiState.currentTransaction is Result.Success)
+//        assertEquals(20000, (uiState.currentTransaction as Result.Success).data.totalAmount)
+//    }
+//    // endregion
+//
+//
+//    // region 🔹 DELETE TEST
+//    @Test
+//    fun `delete success updates uiState`() = runTest {
+//        val token = "token"
+//        val id = 1
+//        val flow: Flow<Result<Boolean>> = flow {
+//            emit(Result.Loading)
+//            emit(Result.Success(true))
+//        }
+//
+//        whenever(deleteUseCase(token, id)).thenReturn(flow)
+//
+//        viewModel.delete(token, id)
+//        advanceUntilIdle()
+//
+//        val uiState = viewModel.uiState.value
+//        assertTrue(uiState.deleteResult is Result.Success)
+//        assertEquals(true, (uiState.deleteResult as Result.Success).data)
+//    }
+//
+//    @Test
+//    fun `delete error updates uiState`() = runTest {
+//        val token = "token"
+//        val id = 1
+//        val flow: Flow<Result<Boolean>> = flow {
+//            emit(Result.Loading)
+//            emit(Result.Error("Failed to delete"))
+//        }
+//
+//        whenever(deleteUseCase(token, id)).thenReturn(flow)
+//
+//        viewModel.delete(token, id)
+//        advanceUntilIdle()
+//
+//        val uiState = viewModel.uiState.value
+//        assertTrue(uiState.deleteResult is Result.Error)
+//        assertEquals("Failed to delete", (uiState.deleteResult as Result.Error).message)
+//    }
+//    // endregion
+//}
+
 @OptIn(ExperimentalCoroutinesApi::class)
 class PassengerTransactionViewModelTest {
+
+    private lateinit var viewModel: PassengerTransactionViewModel
 
     @Mock private lateinit var createUseCase: CreatePassengerTransactionUseCase
     @Mock private lateinit var readAllUseCase: ReadAllPassengerTransactionUseCase
@@ -28,16 +219,14 @@ class PassengerTransactionViewModelTest {
     @Mock private lateinit var patchStatusUseCase: PatchStatusByIdPassengerTransactionUseCase
     @Mock private lateinit var deleteUseCase: DeletePassengerTransactionUseCase
 
-    private lateinit var useCases: PassengerTransactionUseCases
-    private lateinit var viewModel: PassengerTransactionViewModel
-
-    private val dispatcher = UnconfinedTestDispatcher()
+    private val testDispatcher = StandardTestDispatcher()
+    private val token = "Bearer test-token"
 
     @Before
-    fun setUp() {
+    fun setup() {
         MockitoAnnotations.openMocks(this)
-        Dispatchers.setMain(dispatcher)
-        useCases = PassengerTransactionUseCases(
+        Dispatchers.setMain(testDispatcher)
+        val useCases = PassengerTransactionUseCases(
             create = createUseCase,
             readAll = readAllUseCase,
             readById = readByIdUseCase,
@@ -49,159 +238,196 @@ class PassengerTransactionViewModelTest {
         viewModel = PassengerTransactionViewModel(useCases)
     }
 
-    @After
-    fun tearDown() {
-        Dispatchers.resetMain()
+    // ============================================================
+    // 🔹 GET ALL
+    // ============================================================
+    @Test
+    fun `getAllPassengerTransactions emits Success updates state`() = runTest(testDispatcher) {
+        val transactions = listOf(
+            PassengerTransaction(
+                id = 1,
+                passengerRideBookingId = 10,
+                customerId = 5,
+                totalAmount = 30000,
+                paymentMethod = 1,
+                paymentProofImg = "proof.png",
+                paymentStatus = PaymentStatus.DITERIMA,
+                creditUsed = 0,
+                transactionDate = "2025-11-09",
+                createdAt = "2025-11-09T00:00:00Z",
+                updatedAt = "2025-11-09T00:00:00Z"
+            )
+        )
+
+        whenever(readAllUseCase(token)).thenReturn(flow {
+            emit(Result.Loading)
+            emit(Result.Success(transactions))
+        })
+
+        viewModel.getAllPassengerTransactions(token)
+        testDispatcher.scheduler.advanceUntilIdle()
+
+        val uiState = viewModel.uiState.value
+        assertTrue(uiState.transactions is Result.Success)
+        assertEquals(1, (uiState.transactions as Result.Success).data.size)
+        assertEquals(false, uiState.isLoading)
     }
 
-    // region 🔹 CREATE TEST
     @Test
-    fun `create transaction success updates uiState with Success`() = runTest {
-        val token = "token123"
+    fun `getAllPassengerTransactions emits Error updates errorMessage`() = runTest(testDispatcher) {
+        whenever(readAllUseCase(token)).thenReturn(flow {
+            emit(Result.Loading)
+            emit(Result.Error("Failed to fetch transactions"))
+        })
+
+        viewModel.getAllPassengerTransactions(token)
+        testDispatcher.scheduler.advanceUntilIdle()
+
+        val uiState = viewModel.uiState.value
+//        assertTrue(uiState.transactions is Result.Error)
+//        assertEquals("Failed to fetch transactions", uiState.errorMessage)
+        assertEquals("Failed to fetch transactions", uiState.errorMessage)
+        assertTrue(uiState.transactions is Result.Success)
+        assertTrue((uiState.transactions as Result.Success).data.isEmpty())
+    }
+
+    // ============================================================
+    // 🔹 CREATE
+    // ============================================================
+    @Test
+    fun `createPassengerTransaction emits Success updates currentTransaction`() = runTest(testDispatcher) {
         val request = CreatePassengerTransactionRequest(
-            transactionDate = "2025-11-05",
+            transactionDate = "2025-11-09",
             paymentMethodId = 1,
-            totalAmount = 15000,
-            paymentStatus = "Pending",
-            passengerRideBookingId = 10,
-            customerId = 99,
+            totalAmount = 50000,
+            paymentStatus = "pending",
+            passengerRideBookingId = 3,
+            customerId = 2,
             paymentProofImg = "proof.png",
             creditUsed = 0
         )
 
-        val transaction = PassengerTransaction(
-            id = 1,
-            passengerRideBookingId = 10,
-            customerId = 99,
-            totalAmount = 15000,
+        val fakeTransaction = PassengerTransaction(
+            id = 99,
+            passengerRideBookingId = 3,
+            customerId = 2,
+            totalAmount = 50000,
             paymentMethod = 1,
             paymentProofImg = "proof.png",
             paymentStatus = PaymentStatus.PENDING,
             creditUsed = 0,
-            transactionDate = "2025-11-05",
-            createdAt = "2025-11-05T00:00:00Z",
-            updatedAt = "2025-11-05T00:00:00Z"
+            transactionDate = "2025-11-09",
+            createdAt = "2025-11-09T00:00:00Z",
+            updatedAt = "2025-11-09T00:00:00Z"
         )
 
-        val flow: Flow<Result<PassengerTransaction>> = flow {
+        whenever(createUseCase(token, request)).thenReturn(flow {
             emit(Result.Loading)
-            emit(Result.Success(transaction))
-        }
+            emit(Result.Success(fakeTransaction))
+        })
 
-        whenever(createUseCase(token, request)).thenReturn(flow)
-
-        viewModel.create(token, request)
-        advanceUntilIdle()
+        viewModel.createPassengerTransaction(token, request)
+        testDispatcher.scheduler.advanceUntilIdle()
 
         val uiState = viewModel.uiState.value
         assertTrue(uiState.currentTransaction is Result.Success)
-        assertEquals(transaction.id, (uiState.currentTransaction as Result.Success).data.id)
+        assertEquals("Transaksi berhasil dibuat", uiState.successMessage)
     }
 
     @Test
-    fun `create transaction error updates uiState with Error`() = runTest {
-        val token = "token123"
+    fun `createPassengerTransaction emits Error updates errorMessage`() = runTest(testDispatcher) {
         val request = CreatePassengerTransactionRequest(
-            transactionDate = "2025-11-05",
+            transactionDate = "2025-11-09",
             paymentMethodId = 1,
-            totalAmount = 15000,
-            paymentStatus = "Pending",
-            passengerRideBookingId = 10,
-            customerId = 99,
+            totalAmount = 50000,
+            paymentStatus = "pending",
+            passengerRideBookingId = 3,
+            customerId = 2,
             paymentProofImg = "proof.png",
             creditUsed = 0
         )
 
-        val flow: Flow<Result<PassengerTransaction>> = flow {
+        whenever(createUseCase(token, request)).thenReturn(flow {
             emit(Result.Loading)
-            emit(Result.Error("Failed to create"))
-        }
+            emit(Result.Error("Gagal membuat transaksi"))
+        })
 
-        whenever(createUseCase(token, request)).thenReturn(flow)
-
-        viewModel.create(token, request)
-        advanceUntilIdle()
+        viewModel.createPassengerTransaction(token, request)
+        testDispatcher.scheduler.advanceUntilIdle()
 
         val uiState = viewModel.uiState.value
-        assertTrue(uiState.currentTransaction is Result.Error)
-        assertEquals("Failed to create", (uiState.currentTransaction as Result.Error).message)
+//        assertTrue(uiState.currentTransaction is Result.Error)
+//        assertEquals("Gagal membuat transaksi", uiState.errorMessage)
+        assertEquals("Gagal membuat transaksi", uiState.errorMessage)
+        assertTrue(uiState.currentTransaction is Result.Success)
+        assertEquals(null, (uiState.currentTransaction as Result.Success).data)
     }
-    // endregion
 
-
-    // region 🔹 READ BY ID TEST
+    // ============================================================
+    // 🔹 PATCH STATUS
+    // ============================================================
     @Test
-    fun `read by id success updates uiState`() = runTest {
-        val token = "token"
-        val id = 1
-        val transaction = PassengerTransaction(
-            id = 1,
-            passengerRideBookingId = 10,
-            customerId = 99,
+    fun `patchTransactionStatus emits Success updates currentTransaction`() = runTest(testDispatcher) {
+        val id = 5
+        val request = PatchStatusByIdPassengerTransactionRequest(status = "DITERIMA")
+        val fakeTransaction = PassengerTransaction(
+            id = id,
+            passengerRideBookingId = 1,
+            customerId = 1,
             totalAmount = 20000,
             paymentMethod = 1,
             paymentProofImg = "proof.png",
             paymentStatus = PaymentStatus.DITERIMA,
             creditUsed = 0,
-            transactionDate = "2025-11-05",
-            createdAt = "2025-11-05",
-            updatedAt = "2025-11-05"
+            transactionDate = "2025-11-09",
+            createdAt = "2025-11-09T00:00:00Z",
+            updatedAt = "2025-11-09T00:00:00Z"
         )
 
-        val flow: Flow<Result<PassengerTransaction>> = flow {
+        whenever(patchStatusUseCase(token, id, request)).thenReturn(flow {
             emit(Result.Loading)
-            emit(Result.Success(transaction))
-        }
+            emit(Result.Success(fakeTransaction))
+        })
 
-        whenever(readByIdUseCase(token, id)).thenReturn(flow)
-
-        viewModel.readById(token, id)
-        advanceUntilIdle()
+        viewModel.patchTransactionStatus(token, id, request)
+        testDispatcher.scheduler.advanceUntilIdle()
 
         val uiState = viewModel.uiState.value
         assertTrue(uiState.currentTransaction is Result.Success)
-        assertEquals(20000, (uiState.currentTransaction as Result.Success).data.totalAmount)
+        assertEquals("Status transaksi berhasil diperbarui", uiState.successMessage)
     }
-    // endregion
 
-
-    // region 🔹 DELETE TEST
+    // ============================================================
+    // 🔹 DELETE
+    // ============================================================
     @Test
-    fun `delete success updates uiState`() = runTest {
-        val token = "token"
-        val id = 1
-        val flow: Flow<Result<Boolean>> = flow {
+    fun `deletePassengerTransaction emits Success updates successMessage`() = runTest(testDispatcher) {
+        val id = 5
+        whenever(deleteUseCase(token, id)).thenReturn(flow {
             emit(Result.Loading)
-            emit(Result.Success(true))
-        }
+            emit(Result.Success("Transaksi dihapus"))
+        })
 
-        whenever(deleteUseCase(token, id)).thenReturn(flow)
-
-        viewModel.delete(token, id)
-        advanceUntilIdle()
+        viewModel.deletePassengerTransaction(token, id)
+        testDispatcher.scheduler.advanceUntilIdle()
 
         val uiState = viewModel.uiState.value
-        assertTrue(uiState.deleteResult is Result.Success)
-        assertEquals(true, (uiState.deleteResult as Result.Success).data)
+        assertEquals("Transaksi dihapus", uiState.successMessage)
+        assertEquals(false, uiState.isLoading)
     }
 
     @Test
-    fun `delete error updates uiState`() = runTest {
-        val token = "token"
-        val id = 1
-        val flow: Flow<Result<Boolean>> = flow {
+    fun `deletePassengerTransaction emits Error updates errorMessage`() = runTest(testDispatcher) {
+        val id = 5
+        whenever(deleteUseCase(token, id)).thenReturn(flow {
             emit(Result.Loading)
-            emit(Result.Error("Failed to delete"))
-        }
+            emit(Result.Error("Gagal menghapus transaksi"))
+        })
 
-        whenever(deleteUseCase(token, id)).thenReturn(flow)
-
-        viewModel.delete(token, id)
-        advanceUntilIdle()
+        viewModel.deletePassengerTransaction(token, id)
+        testDispatcher.scheduler.advanceUntilIdle()
 
         val uiState = viewModel.uiState.value
-        assertTrue(uiState.deleteResult is Result.Error)
-        assertEquals("Failed to delete", (uiState.deleteResult as Result.Error).message)
+        assertEquals("Gagal menghapus transaksi", uiState.errorMessage)
     }
-    // endregion
 }

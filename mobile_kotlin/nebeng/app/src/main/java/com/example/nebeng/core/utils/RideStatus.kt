@@ -7,7 +7,7 @@ enum class RideStatus(val value: String) {
     DIBATALKAN("dibatalkan");
 
     companion object {
-        fun fromString(value: String): RideStatus? =
+        fun fromString(value: String): RideStatus =
             entries.find { it.value.equals(value, ignoreCase = true) } ?: PENDING
     }
 }

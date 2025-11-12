@@ -4,6 +4,8 @@ data class Driver(
     val id: Int,
     val userId: Int,
     val fullName: String,
+    val balance: Int,
+
     val telephone: String,
     val fullAddress: String,
     val profileImg: String?,
@@ -13,7 +15,6 @@ data class Driver(
     val driverLicenseImg: String?,
     val policeClearanceCertificateImg: String?,
     val creditScore: Int,
-    val balance: Int,
     val idCardFullname: String,
     val idCardVerified: Boolean,
     val driverLicenseVerified: Boolean,
@@ -23,11 +24,11 @@ data class Driver(
     val driverLicenseType: String,
     val idCardBirthdate: String,
     val driverLicenseExpired: String,
-    val policeClearanceCertificateExpired: String,
+    val policeClearanceCertificateExpired: String?,
     val createdAt: String,
     val updatedAt: String,
-    val policeClearanceCertificateNumber: String,
-    val policeClearanceCertificateFullname: String,
+    val policeClearanceCertificateNumber: String?,
+    val policeClearanceCertificateFullname: String?,
     
     
     // Ditambahi oleh anggota lain
@@ -38,4 +39,39 @@ data class Driver(
     // 🔹 Relasi opsional (bisa kosong / null tergantung endpoint)
 //    val ratings: List<Rating> = emptyList(),
 //    val user: User? = null
-)
+) {
+    companion object {
+        fun getEmpty(): Driver = Driver(
+            id = 0,
+            userId = 0,
+            fullName = "",
+            telephone = "",
+            fullAddress = "",
+            profileImg = null,
+            faceImg = null,
+            faceWithIdImg = null,
+            idCardImg = null,
+            idCardFullname = "",
+            idCardNumber = "",
+            idCardBirthdate = "",
+            driverLicenseNumber = "",
+            driverLicenseType = "",
+            driverLicenseExpired = "",
+            driverLicenseImg = null,
+            policeClearanceCertificateNumber = "",
+            policeClearanceCertificateFullname = "",
+            policeClearanceCertificateImg = null,
+            policeClearanceCertificateExpired = "",
+            idCardVerified = false,
+            driverLicenseVerified = false,
+            policeClearanceVerified = false,
+            creditScore = 0,
+            balance = 0,
+            createdAt = "",
+            updatedAt = "",
+            totalRating = 0,
+            ratingCount = 0,
+            averageRating = 0f
+        )
+    }
+}

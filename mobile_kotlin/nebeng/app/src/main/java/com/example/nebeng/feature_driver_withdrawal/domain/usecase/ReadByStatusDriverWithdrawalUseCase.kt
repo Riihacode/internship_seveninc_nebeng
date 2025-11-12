@@ -1,0 +1,18 @@
+package com.example.nebeng.feature_driver_withdrawal.domain.usecase
+
+import com.example.nebeng.core.common.Result
+import com.example.nebeng.feature_driver_withdrawal.data.repository.DriverWithdrawalRepository
+import com.example.nebeng.feature_driver_withdrawal.domain.model.DriverWithdrawal
+import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
+
+class ReadByStatusDriverWithdrawalUseCase @Inject constructor(
+    private val repository: DriverWithdrawalRepository
+) {
+    suspend operator fun invoke(
+        token: String,
+        status: String
+    ): Flow<Result<List<DriverWithdrawal>>> {
+        return repository.getDriverWithdrawalsByStatus(token, status)
+    }
+}

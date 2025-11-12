@@ -13,7 +13,7 @@ object ApiClient {
 //    private const val BASE_URL = "http://10.200.21.117:8000/"
 //private const val BASE_URL = "http://10.208.49.51:8000/"
     private const val BASE_URL = "http://192.168.1.14:8000/"
-
+//    private const val BASE_URL = "http://10.154.151.51:8000/"
     // BASE URL untuk wifi public seven inc (harus pakai hotspot smartphone dan php artisan serve ke ip local 0.0.0.0 agar bisa diakses API-Nya (aga beda emang))
 //    private const val BASE_URL = "http://172.26.218.51:8000/"
 

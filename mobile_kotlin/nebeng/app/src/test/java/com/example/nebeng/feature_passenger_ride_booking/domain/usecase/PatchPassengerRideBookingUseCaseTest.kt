@@ -38,11 +38,12 @@ class PatchPassengerRideBookingUseCaseTest {
             totalPrice = 20000,
             status = "Diterima",
             createdAt = "",
-            updatedAt = "",
-            passengerRide = null,
-            passengerTransaction = null,
-            customer = null,
-            driver = null
+            updatedAt = ""
+//            ,
+//            passengerRide = null,
+//            passengerTransaction = null,
+//            customer = null,
+//            driver = null
         )
 
         whenever(repository.patchPassengerRideBooking(

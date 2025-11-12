@@ -1,10 +1,18 @@
 package com.example.nebeng.feature_a_history_order.presentation
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.nebeng.feature_a_history_order.domain.model.HistoryOrderItem
+import com.example.nebeng.feature_a_history_order.domain.usecase.GetHistoryOrdersUseCase
 import com.example.nebeng.feature_a_history_order.presentation.support_for_present.model.HistoryItemData
+import com.example.nebeng.feature_passenger_ride_booking.domain.usecase.PassengerRideBookingUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -48,64 +56,152 @@ import javax.inject.Inject
 //        }
 //    }
 //}
+//@HiltViewModel
+//class HistoryOrderViewModel @Inject constructor() : ViewModel() {
+//
+//    private val _uiState = MutableStateFlow(
+//        HistoryOrderUiState(
+//            historyItems = listOf(
+//                HistoryItemData(
+//                    code = "1",
+//                    category = "Mobil",
+//                    status = "Selesai",
+//                    fromCity = "Yogyakarta",
+//                    toCity = "Purwokerto",
+//                    fromPos = "Pos 1",
+//                    toPos = "Pos 2",
+//                    dayDate = "Senin, 2 September 2024",
+//                    time = "09:00",
+//                    vehicle = "Avanza Veloz",
+//                    plate = "R 2424 MJ",
+//                    pax = 2,
+//                    totalPrice = "Rp120.000"
+//                ),
+//                HistoryItemData(
+//                    code = "2",
+//                    category = "Motor",
+//                    status = "Proses",
+//                    fromCity = "Solo",
+//                    toCity = "Semarang",
+//                    fromPos = "Pos 1",
+//                    toPos = "Pos 2",
+//                    dayDate = "Selasa, 3 September 2024",
+//                    time = "13:00",
+//                    vehicle = "Beat Street",
+//                    plate = "AB 2010 KA",
+//                    pax = 1,
+//                    totalPrice = "Rp90.000"
+//                ),
+//                HistoryItemData(
+//                    code = "3",
+//                    category = "Barang",
+//                    status = "Dibatalkan",
+//                    fromCity = "Yogyakarta",
+//                    toCity = "Magelang",
+//                    fromPos = "Pos 3",
+//                    toPos = "Pos 4",
+//                    dayDate = "Rabu, 4 September 2024",
+//                    time = "08:00",
+//                    vehicle = "Pickup L300",
+//                    plate = "B 1234 XY",
+//                    pax = 1,
+//                    totalPrice = "Rp150.000"
+//                )
+//            )
+//        )
+//    )
+//
+//    val uiState = _uiState.asStateFlow()
+//
+//    fun onChangeSchedule(item: HistoryItemData) {
+//        println("Mengubah jadwal untuk order ${item.code}")
+//    }
+//}
+
+//@HiltViewModel
+//class HistoryOrderViewModel @Inject constructor(
+//    private val getHistoryOrdersUseCase: GetHistoryOrdersUseCase
+//) : ViewModel() {
+//
+//    private val _uiState = MutableStateFlow(HistoryOrderUiState())
+//    val uiState: StateFlow<HistoryOrderUiState> = _uiState
+//
+//    fun loadHistory(token: String) {
+//        viewModelScope.launch {
+//            _uiState.value = _uiState.value.copy(isLoading = true, errorMessage = null)
+//
+//            try {
+//                getHistoryOrdersUseCase(token).collect { items ->
+//                    _uiState.value = HistoryOrderUiState(
+//                        historyItems = items,
+//                        isLoading = false,
+//                        errorMessage = null
+//                    )
+//                }
+//            } catch (e: Exception) {
+//                _uiState.value = HistoryOrderUiState(
+//                    historyItems = emptyList(),
+//                    isLoading = false,
+//                    errorMessage = e.message ?: "Terjadi kesalahan saat memuat riwayat"
+//                )
+//            }
+//        }
+//    }
+//
+//    fun onChangeSchedule(item: HistoryOrderItem) {
+//        // Bisa diarahkan ke detail screen, ubah jadwal, dsb.
+//        println("🗓️ Jadwal diubah untuk: ${item.bookingCode}")
+//        // atau:
+//        // _uiState.value = _uiState.value.copy(selectedItem = item)
+//    }
+//}
+
+
+/**
+ * ============================================================
+ * 🧭 ViewModel: HistoryOrderViewModel
+ * ------------------------------------------------------------
+ * Mengelola UI state untuk screen History Order.
+ * Memanggil use case dan memperbarui state.
+ * ============================================================
+ */
 @HiltViewModel
-class HistoryOrderViewModel @Inject constructor() : ViewModel() {
+class HistoryOrderViewModel @Inject constructor(
+    private val getHistoryOrdersUseCase: GetHistoryOrdersUseCase
+) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(
-        HistoryOrderUiState(
-            historyItems = listOf(
-                HistoryItemData(
-                    code = "1",
-                    category = "Mobil",
-                    status = "Selesai",
-                    fromCity = "Yogyakarta",
-                    toCity = "Purwokerto",
-                    fromPos = "Pos 1",
-                    toPos = "Pos 2",
-                    dayDate = "Senin, 2 September 2024",
-                    time = "09:00",
-                    vehicle = "Avanza Veloz",
-                    plate = "R 2424 MJ",
-                    pax = 2,
-                    totalPrice = "Rp120.000"
-                ),
-                HistoryItemData(
-                    code = "2",
-                    category = "Motor",
-                    status = "Proses",
-                    fromCity = "Solo",
-                    toCity = "Semarang",
-                    fromPos = "Pos 1",
-                    toPos = "Pos 2",
-                    dayDate = "Selasa, 3 September 2024",
-                    time = "13:00",
-                    vehicle = "Beat Street",
-                    plate = "AB 2010 KA",
-                    pax = 1,
-                    totalPrice = "Rp90.000"
-                ),
-                HistoryItemData(
-                    code = "3",
-                    category = "Barang",
-                    status = "Dibatalkan",
-                    fromCity = "Yogyakarta",
-                    toCity = "Magelang",
-                    fromPos = "Pos 3",
-                    toPos = "Pos 4",
-                    dayDate = "Rabu, 4 September 2024",
-                    time = "08:00",
-                    vehicle = "Pickup L300",
-                    plate = "B 1234 XY",
-                    pax = 1,
-                    totalPrice = "Rp150.000"
-                )
-            )
-        )
-    )
+    private val _uiState = MutableStateFlow(HistoryOrderUiState())
+    val uiState: StateFlow<HistoryOrderUiState> = _uiState
 
-    val uiState = _uiState.asStateFlow()
+    /**
+     * Memuat data riwayat berdasarkan token user (JWT).
+     */
+    fun loadHistory(token: String) {
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(isLoading = true, errorMessage = null)
 
-    fun onChangeSchedule(item: HistoryItemData) {
-        println("Mengubah jadwal untuk order ${item.code}")
+            getHistoryOrdersUseCase(token)
+                .catch { e ->
+                    _uiState.value = _uiState.value.copy(
+                        isLoading = false,
+                        errorMessage = e.message ?: "Terjadi kesalahan saat memuat riwayat"
+                    )
+                }
+                .collectLatest { items ->
+                    _uiState.value = _uiState.value.copy(
+                        historyItems = items,
+                        isLoading = false,
+                        errorMessage = null
+                    )
+                }
+        }
+    }
+
+    /**
+     * Dipanggil ketika user menekan kartu history untuk ubah jadwal, dll.
+     */
+    fun onChangeSchedule(item: HistoryOrderItem) {
+        println("🗓️ Jadwal diubah untuk: ${item.bookingCode}")
+        // Implementasi lanjutan: navigasi, dialog, dsb.
     }
 }

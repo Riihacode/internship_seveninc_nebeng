@@ -2,10 +2,12 @@ package com.example.nebeng.feature_passenger_ride_booking.data.repository
 
 import com.example.nebeng.feature_passenger_ride_booking.data.remote.api.PassengerRideBookingApi
 import com.example.nebeng.feature_passenger_ride_booking.data.remote.model.mapper.toDomain
+import com.example.nebeng.feature_passenger_ride_booking.data.remote.model.mapper.toFullDomain
 import com.example.nebeng.feature_passenger_ride_booking.data.remote.model.request.CreatePassengerRideBookingRequest
 import com.example.nebeng.feature_passenger_ride_booking.data.remote.model.request.PatchPassengerRideBookingRequest
 import com.example.nebeng.feature_passenger_ride_booking.data.remote.model.request.UpdatePassengerRideBookingRequest
 import com.example.nebeng.feature_passenger_ride_booking.domain.model.PassengerRideBooking
+import com.example.nebeng.feature_passenger_ride_booking.domain.model.PassengerRideBookingFull
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -105,5 +107,18 @@ class PassengerRideBookingRepositoryImpl @Inject constructor(
     ): Flow<Boolean> = flow {
         val response = api.deletePassengerRideBooking("Bearer $token", id)
         emit(response.isSuccessful)
+    }
+
+    // 🔹 KHUSUS NESTED JSON (History)
+    override suspend fun readAllFull(
+        token: String
+    ): Flow<List<PassengerRideBookingFull>> = flow {
+        val response = api.getAllPassengerRideBookings("Bearer $token")
+        if (response.isSuccessful) {
+            val data = response.body()?.dataDto?.map { it.toFullDomain() } ?: emptyList()
+            emit(data)
+        } else {
+            throw Exception(response.errorBody()?.string() ?: "Failed to fetch nested bookings")
+        }
     }
 }

@@ -7,6 +7,7 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
 val Context.dataStore by preferencesDataStore(name = "user_prefs")
@@ -18,6 +19,8 @@ class UserPreferences(private val context: Context) {
         private val USERNAME = stringPreferencesKey("username")
         private val USER_TYPE = stringPreferencesKey("role")
         private val IS_LOGGED_IN = booleanPreferencesKey("is_logged_in")
+
+        private val TOKEN = stringPreferencesKey("token")
     }
 
     // Simpan data user setelah login
@@ -26,7 +29,8 @@ class UserPreferences(private val context: Context) {
         name: String,
         username: String,
         user_type: String,
-        isLoggedIn: Boolean
+        isLoggedIn: Boolean,
+        token: String
     ) {
         context.dataStore.edit { prefs ->
             prefs[USER_ID] = userId
@@ -34,6 +38,7 @@ class UserPreferences(private val context: Context) {
             prefs[USERNAME] = username
             prefs[USER_TYPE] = user_type
             prefs[IS_LOGGED_IN] = isLoggedIn
+            prefs[TOKEN] = token
         }
     }
 
@@ -43,6 +48,13 @@ class UserPreferences(private val context: Context) {
     val usernameFlow: Flow<String>      = context.dataStore.data.map { it[USERNAME] ?: ""}
     val userTypeFlow: Flow<String>      = context.dataStore.data.map { it[USER_TYPE] ?: ""}
     val isLoggedInFlow: Flow<Boolean>   = context.dataStore.data.map { it[IS_LOGGED_IN] ?: false}
+    val tokenFlow: Flow<String?> = context.dataStore.data.map { it[TOKEN] }
+
+    suspend fun saveToken(token: String) {
+        context.dataStore.edit { it[TOKEN] = token }
+    }
+
+    suspend fun getToken(): String? = context.dataStore.data.first()[TOKEN]
 
     // Hapus session saat logout
     suspend fun clearSession() {

@@ -24,7 +24,25 @@ class ReadByPassengerRideIdPassengerRideBookingUseCaseTest {
 
     @Test
     fun `should return bookings by ride id`() = runTest {
-        val bookings = listOf(PassengerRideBooking(1, "BK001", 10, 5, 2, 20000, "Pending", "", "", null, null, null, null))
+        val bookings = listOf(
+            PassengerRideBooking(
+                id = 1,
+                bookingCode = "BK001",
+                passengerRideId = 10,
+                customerId = 5,
+                seatsReserved = 2,
+                totalPrice = 20000,
+                status = "Pending",
+                createdAt = "",
+                updatedAt = ""
+//                ,
+//                null,
+//                null,
+//                null,
+//                null
+            )
+        )
+
         whenever(repository.readByPassengerRideId("token", 10)).thenReturn(flowOf(bookings))
         val result = useCase("token", 10).first()
         assertEquals(1, result.size)

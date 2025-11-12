@@ -6,10 +6,20 @@ import com.example.nebeng.feature_passenger_transaction.domain.model.PassengerTr
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class ReadByPassengerRideBookingIdPassengerTransactionUseCase@Inject constructor(
+//class ReadByPassengerRideBookingIdPassengerTransactionUseCase@Inject constructor(
+//    private val repository: PassengerTransactionRepository
+//) {
+//    suspend operator fun invoke(token: String, passengerRideBookingId: Int): Flow<Result<PassengerTransaction>> {
+//        return repository.getByPassengerRideBookingId(token, passengerRideBookingId)
+//    }
+//}
+class ReadByPassengerRideBookingIdPassengerTransactionUseCase @Inject constructor(
     private val repository: PassengerTransactionRepository
 ) {
-    suspend operator fun invoke(token: String, passengerRideBookingId: Int): Flow<Result<PassengerTransaction>> {
-        return repository.getByPassengerRideBookingId(token, passengerRideBookingId)
+    suspend operator fun invoke(
+        token: String,
+        passengerRideBookingId: Int
+    ): Flow<Result<PassengerTransaction>> {
+        return repository.getPassengerTransactionByPassengerRideBookingId(token, passengerRideBookingId)
     }
 }

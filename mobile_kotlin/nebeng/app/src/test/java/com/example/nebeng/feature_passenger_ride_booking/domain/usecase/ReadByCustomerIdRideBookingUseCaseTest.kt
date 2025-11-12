@@ -25,7 +25,22 @@ class ReadByCustomerIdRideBookingUseCaseTest {
     @Test
     fun `should return bookings by customer id`() = runTest {
         val bookings = listOf(
-            PassengerRideBooking(1, "BK001", 10, 5, 2, 20000, "Pending", "", "", null, null, null, null)
+            PassengerRideBooking(
+                id = 1,
+                bookingCode = "BK001",
+                passengerRideId = 10,
+                customerId = 5,
+                seatsReserved = 2,
+                totalPrice = 20000,
+                status = "Pending",
+                createdAt = "",
+                updatedAt = ""
+//                ,
+//                null,
+//                null,
+//                null,
+//                null
+            )
         )
         whenever(repository.readByCustomerId("token", 5)).thenReturn(flowOf(bookings))
         val result = useCase("token", 5).first()

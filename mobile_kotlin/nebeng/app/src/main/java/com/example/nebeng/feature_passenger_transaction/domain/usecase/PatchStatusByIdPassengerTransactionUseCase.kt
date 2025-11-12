@@ -7,7 +7,20 @@ import com.example.nebeng.feature_passenger_transaction.domain.model.PassengerTr
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class PatchStatusByIdPassengerTransactionUseCase@Inject constructor(
+//class PatchStatusByIdPassengerTransactionUseCase@Inject constructor(
+//    private val repository: PassengerTransactionRepository
+//) {
+//    suspend operator fun invoke(
+//        token: String,
+//        id: Int,
+//        request: PatchStatusByIdPassengerTransactionRequest
+//    ): Flow<Result<PassengerTransaction>> {
+//        return repository.patchPassengerTransactionStatusById(token, id, request)
+//    }
+//}
+
+
+class PatchStatusByIdPassengerTransactionUseCase @Inject constructor(
     private val repository: PassengerTransactionRepository
 ) {
     suspend operator fun invoke(
@@ -15,6 +28,6 @@ class PatchStatusByIdPassengerTransactionUseCase@Inject constructor(
         id: Int,
         request: PatchStatusByIdPassengerTransactionRequest
     ): Flow<Result<PassengerTransaction>> {
-        return repository.patchPassengerTransactionStatusById(token, id, request)
+        return repository.patchStatusPassengerTransactionById(token, id, request)
     }
 }

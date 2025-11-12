@@ -41,11 +41,13 @@ class CreatePassengerRideBookingUseCaseTest {
             totalPrice = 10000,
             status = "Pending",
             createdAt = "",
-            updatedAt = "",
-            passengerRide = null,
-            passengerTransaction = null,
-            customer = null,
-            driver = null)
+            updatedAt = ""
+//            ,
+//            passengerRide = null,
+//            passengerTransaction = null,
+//            customer = null,
+//            driver = null
+        )
         whenever(repository.createPassengerRideBooking("token", request)).thenReturn(flowOf(fakeBooking))
         val result = useCase("token", request).first()
         assertEquals(fakeBooking, result)
