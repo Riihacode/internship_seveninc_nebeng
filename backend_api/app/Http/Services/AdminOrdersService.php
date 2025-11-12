@@ -2,6 +2,13 @@
 
 namespace App\Http\Services;
 
+use Illuminate\Support\Collection;
+
+/**
+ * @return Collection<int, \App\Models\PassengerRideBooking|\App\Models\GoodsRideBooking>
+ */
+
+
 class AdminOrdersService{
     protected $passengersBookingService;
     protected $goodsBookingService;
@@ -14,7 +21,7 @@ class AdminOrdersService{
         $this->goodsBookingService = $goodsService;
     }
 
-    public function listAllBookings(){
+    public function listAllBookings(): Collection{
 
         $passengerBookings = $this->passengersBookingService->listBookings()->map(function($b){
             $b->booking_type ='Passenger';

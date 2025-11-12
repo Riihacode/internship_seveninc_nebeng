@@ -24,7 +24,14 @@ export default function Login() {
       const response = await loginUser({ userIdentifier, password });
       const { user, token } = response.data;
       login(user, token);
-      navigate("/home");
+
+      if (user.user_type === "admin") {
+        navigate("/home");
+      } else if (user.user_type === "superadmin") {
+        navigate("/sa/dashboard");
+      } else {
+        navigate("/");
+      }
     } catch (error) {
       console.error("Login error :", error);
       alert("Login gagal, periksa kembali email / username dan password");

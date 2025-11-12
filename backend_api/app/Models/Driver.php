@@ -46,12 +46,12 @@ class Driver extends Model
         'driver_license_rejected_reason',
 
         // Police Clearance Certificate (SKCK)
-        'Police_clearance_certificate_number',
-        'Police_clearance_certificate_fullname',
-        'Police_clearance_certificate_expired',
-        'Police_clearance_certificate_img',
-        'Police_clearance_verified',
-        'Police_clearance_rejected_reason',
+        'police_clearance_certificate_number',
+        'police_clearance_certificate_fullname',
+        'police_clearance_certificate_expired',
+        'police_clearance_certificate_img',
+        'police_clearance_verified',
+        'police_clearance_rejected_reason',
     ];
 
     /**

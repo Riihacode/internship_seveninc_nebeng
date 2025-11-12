@@ -1,17 +1,18 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "../context/AuthProvider.jsx";
 import Login from "../pages/Login.jsx";
-import Home from "../pages/Home.jsx";
-import Mitra from "../pages/Mitra.jsx";
+import Home from "../pages/admin/Home.jsx";
+import Mitra from "../pages/shared/Mitra.jsx";
 import ProtectedRoute from "../components/ProtectedRoute.jsx";
-import Customer from "../pages/Customer.jsx";
-import Pesanan from "../pages/Pesanan.jsx";
-import DetailPesanan from "../pages/DetailPasanan.jsx";
-import Refund from "../pages/Refund.jsx";
-import Laporan from "../pages/Laporan.jsx";
-import Pengaturan from "../pages/Pengaturan.jsx";
-import DetailMitra from "../pages/DetailMitra.jsx";
-import DetailCustomer from "../pages/DetailCustomer.jsx";
+import Customer from "../pages/shared/Customer.jsx";
+import Pesanan from "../pages/shared/Pesanan.jsx";
+import DetailPesanan from "../pages/shared/DetailPasanan.jsx";
+import Refund from "../pages/shared/Refund.jsx";
+import Laporan from "../pages/admin/Laporan.jsx";
+import Pengaturan from "../pages/shared/Pengaturan.jsx";
+import DetailMitra from "../pages/shared/DetailMitra.jsx";
+import DetailCustomer from "../pages/shared/DetailCustomer.jsx";
+import Dashboard from "../pages/superAdmin/Dashboard.jsx";
 
 export default function AppRoutes() {
   return (
@@ -30,7 +31,7 @@ export default function AppRoutes() {
           <Route
             path="/mitra"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute requiredRole={["admin", "superadmin"]}>
                 <Mitra />
               </ProtectedRoute>
             }
@@ -38,7 +39,7 @@ export default function AppRoutes() {
           <Route
             path="/mitra/:id"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute requiredRole={["admin", "superadmin"]}>
                 <DetailMitra />
               </ProtectedRoute>
             }
@@ -46,7 +47,7 @@ export default function AppRoutes() {
           <Route
             path="/customer"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute requiredRole={["admin", "superadmin"]}>
                 <Customer />
               </ProtectedRoute>
             }
@@ -54,7 +55,7 @@ export default function AppRoutes() {
           <Route
             path="/customer/:id"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute requiredRole={["admin", "superadmin"]}>
                 <DetailCustomer />
               </ProtectedRoute>
             }
@@ -62,7 +63,7 @@ export default function AppRoutes() {
           <Route
             path="/orders"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute requiredRole={["admin", "superadmin"]}>
                 <Pesanan />
               </ProtectedRoute>
             }
@@ -70,7 +71,7 @@ export default function AppRoutes() {
           <Route
             path="/orders/:booking_type/:id"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute requiredRole={["admin", "superadmin"]}>
                 <DetailPesanan />
               </ProtectedRoute>
             }
@@ -78,7 +79,7 @@ export default function AppRoutes() {
           <Route
             path="/refund"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute requiredRole={["admin", "superadmin"]}>
                 <Refund />
               </ProtectedRoute>
             }
@@ -86,7 +87,7 @@ export default function AppRoutes() {
           <Route
             path="/laporan"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute requiredRole="admin">
                 <Laporan />
               </ProtectedRoute>
             }
@@ -94,8 +95,16 @@ export default function AppRoutes() {
           <Route
             path="/pengaturan"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute requiredRole={["admin", "superadmin"]}>
                 <Pengaturan />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/sa/dashboard"
+            element={
+              <ProtectedRoute requiredRole="superadmin">
+                <Dashboard />
               </ProtectedRoute>
             }
           />

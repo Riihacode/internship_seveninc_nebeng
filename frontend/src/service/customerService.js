@@ -60,9 +60,9 @@ const driverService = {
     }
   },
 
-  verify: async (id) => {
+  verify: async (id, status) => {
     try {
-      const res = await api.patch(`/api/verify/${id}`);
+      const res = await api.patch(`/api/customers/${id}/verify`, { status });
       return res.data;
     } catch (error) {
       handleError(error);

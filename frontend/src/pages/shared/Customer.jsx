@@ -1,7 +1,7 @@
-import Layout from "../components/Layout";
-import { useCustomers } from "../hooks/useCustomers";
-import SearchBar from "../components/SearchBar";
-import Table from "../components/Table";
+import Layout from "../../components/Layout";
+import { useCustomers } from "../../hooks/useCustomers";
+import SearchBar from "../../components/SearchBar";
+import Table from "../../components/Table";
 import { useNavigate } from "react-router-dom";
 
 export default function Customer() {
@@ -46,7 +46,7 @@ export default function Customer() {
       render: (row) => (
         <button
           onClick={() => navigate(`/customer/${row.id}`)}
-          className="text-green-600 hover:text-blue-green dark:text-green-400 dark:hover:text-green-300 font-semibold"
+          className="text-green-600 hover:text-blue-green dark:text-green-400 dark:hover:text-green-300 font-semibold bg-green-200 rounded-2xl px-2 py-1 text-xs"
         >
           Detail
         </button>

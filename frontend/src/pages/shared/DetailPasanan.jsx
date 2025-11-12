@@ -1,10 +1,10 @@
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
-import Layout from "../components/Layout";
-import { useOrders } from "../hooks/useOrders";
-import Input from "../components/Input";
+import Layout from "../../components/Layout";
+import { useOrders } from "../../hooks/useOrders";
+import Input from "../../components/Input";
 import dayjs from "dayjs";
-import { useTransactions } from "../hooks/useTransaction";
+import { useTransactions } from "../../hooks/useTransaction";
 
 export default function DetailPesanan() {
   const { id } = useParams();

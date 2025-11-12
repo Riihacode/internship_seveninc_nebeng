@@ -46,6 +46,18 @@ export function useCustomers() {
     }
   };
 
+  const verifyCustomer = async (id, payload) => {
+    setLoading(true);
+    try {
+      await customerService.verify(id, payload);
+      await fetchCustomers();
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const deleteCustomer = async (id) => {
     setLoading(true);
     try {
@@ -72,5 +84,6 @@ export function useCustomers() {
     createCustomer,
     updateCustomer,
     deleteCustomer,
+    verifyCustomer,
   };
 }

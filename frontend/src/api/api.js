@@ -19,4 +19,21 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+// handle expired token
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      console.warn("Token expired or Unauthorized");
+      const currentToken = localStorage.getItem("token");
+      if (currentToken) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        window.location.href = "/";
+      }
+    }
+    return Promise.reject(error);
+  }
+);
+
 export default api;

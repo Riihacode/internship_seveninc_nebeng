@@ -94,11 +94,17 @@ class CustomerService
     }
 
     // Verifikasi customer
-    public function verifyCustomer($id)
+    public function verifyCustomer($id, $status)
     {
-        return $this->customerRepository->update($id, [
-            'verified' => true,
-        ]);
+        $customer = $this->customerRepository->findById($id);
+
+        if(!$customer){
+            return response()->json(['message' => 'Customer not found'], 404);
+        }
+
+        $data = ['verified' => $status];
+        $this->customerRepository->update($id, $data);
+        return response()->json(['message' => 'Document verification updated successfully']);
     }
 
     // Tambah kredit pelanggan

@@ -66,10 +66,22 @@ class CustomerController extends Controller
     }
 
     // PATCH /api/customers/{id}/verify
-    public function verify($id)
+    public function verify(Request $request,$id)
     {
-        $customer = $this->customerService->verifyCustomer($id);
-        return response()->json(['message' => 'Customer verified successfully', 'data' => $customer], 200);
+        $request->validate([
+            'status' => 'required',
+        ]);
+
+        try {
+            $status = $request->input('status');
+            $customer = $this->customerService->verifyCustomer($id,$status);
+            return response()->json([
+                'message' => 'Status Changed', 'data' => $customer
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json(['errors' => $th->getMessage()], 422);
+        }
+
     }
 
     // PATCH /api/customers/{id}/add-credit
