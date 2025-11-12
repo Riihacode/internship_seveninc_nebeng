@@ -28,13 +28,13 @@ class TerminalRepository {
                 'province',
                 'regency',
                 'district',
-                'departurePassengerRides',
-                'arrivalPassengerRides',
-                'departureGoodsRides',
-                'departurePassengerPricings',
-                'arrivalPassengerPricings',
-                'departureGoodsPricings',
-                'arrivalGoodsPricings',
+                // 'departurePassengerRides',
+                // 'arrivalPassengerRides',
+                // 'departureGoodsRides',
+                // 'departurePassengerPricings',
+                // 'arrivalPassengerPricings',
+                // 'departureGoodsPricings',
+                // 'arrivalGoodsPricings',
             ])
             ->find($id);
     }

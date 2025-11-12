@@ -154,6 +154,7 @@ Route::middleware('auth:api')->group(function() {
         Route::get('/{id}', [CreditScoreLogController::class, 'show']);
         Route::get('/driver/{driver_id}', [CreditScoreLogController::class, 'byDriver']);
         Route::post('/', [CreditScoreLogController::class, 'store']);
+        Route::put('/{id}', [CreditScoreLogController::class, 'update']);
         Route::delete('/{id}', [CreditScoreLogController::class, 'destroy']);
     });
 

@@ -51,6 +51,23 @@ class CreditScoreLogService
         return $this->creditScoreLogRepository->create($data);
     }
 
+    // Update log
+    public function updateLog($id, array $data)
+    {
+        $validator = Validator::make($data, [
+            'action_type' => 'sometimes|string|max:255',
+            'score_change' => 'sometimes|integer',
+            'notes' => 'nullable|string|max:500',
+            'created_at' => 'nullable|date',
+        ]);
+
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
+        }
+
+        return $this->creditScoreLogRepository->update($id, $data);
+    }
+
     // Hapus log
     public function deleteLog($id)
     {

@@ -46,6 +46,14 @@ class CreditScoreLogRepository
         return $this->model->create($data);
     }
 
+    // Update log berdasarkan ID
+    public function update($id, array $data)
+    {
+        $log = $this->model->findOrFail($id);
+        $log->update($data);
+        return $log;
+    }
+
     // Hapus log
     public function delete($id)
     {

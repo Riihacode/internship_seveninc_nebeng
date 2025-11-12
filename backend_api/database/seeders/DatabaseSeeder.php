@@ -80,6 +80,7 @@ class DatabaseSeeder extends Seeder
 
             VehicleSeeder::class,
             CreditScoreLogSeeder::class,
+            DriverWithdrawalSeeder::class,
         ]);
     }
 }

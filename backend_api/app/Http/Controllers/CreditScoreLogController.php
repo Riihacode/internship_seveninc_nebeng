@@ -51,6 +51,32 @@ class CreditScoreLogController extends Controller
         }
     }
 
+    // PUT /api/credit-score-logs/{id}
+    public function update(Request $request, $id)
+    {
+        try {
+            $existing = $this->creditScoreLogService->getLog($id);
+            if (!$existing) {
+                return response()->json(['message' => 'Credit score log not found'], 404);
+            }
+
+            $updated = $this->creditScoreLogService->updateLog($id, $request->all());
+
+            return response()->json([
+                'message' => 'Credit score log updated successfully',
+                'data' => $updated,
+            ], 200);
+
+        } catch (ValidationException $e) {
+            return response()->json(['errors' => $e->errors()], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat mengupdate credit score log',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
     // DELETE /api/credit-score-logs/{id}
     public function destroy($id)
     {
