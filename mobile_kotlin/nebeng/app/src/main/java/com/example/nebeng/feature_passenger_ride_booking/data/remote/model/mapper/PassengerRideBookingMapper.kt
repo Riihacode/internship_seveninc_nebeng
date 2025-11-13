@@ -247,15 +247,6 @@ fun PassengerTransactionDto.toDomain(): PassengerTransaction {
  * ============================================================
  * Khusus dipakai di HISTORY (data lengkap)
  */
-//fun DataDto.toFullDomain(): PassengerRideBookingFull {
-//    return PassengerRideBookingFull(
-//        booking     = this.toDomain(),
-//        customer    = this.customer.toDomain(),
-//        ride        = this.passengerRide.toDomain(),
-//        driver      = this.passengerRide.driver.toDomain(),
-//        transaction = this.passengerTransaction.toDomain()
-//    )
-//}
 fun DataDto.toFullDomain(): PassengerRideBookingFull {
     return PassengerRideBookingFull(
         booking     = this.toDomain(),

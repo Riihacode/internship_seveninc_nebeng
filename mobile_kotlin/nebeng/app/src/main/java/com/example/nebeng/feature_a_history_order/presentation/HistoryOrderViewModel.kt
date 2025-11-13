@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nebeng.feature_a_history_order.domain.model.HistoryOrderItem
 import com.example.nebeng.feature_a_history_order.domain.usecase.GetHistoryOrdersUseCase
+import com.example.nebeng.feature_a_history_order.domain.usecase.HistoryOrderUseCases
 import com.example.nebeng.feature_a_history_order.presentation.support_for_present.model.HistoryItemData
 import com.example.nebeng.feature_passenger_ride_booking.domain.usecase.PassengerRideBookingUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,6 +13,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -167,7 +169,8 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class HistoryOrderViewModel @Inject constructor(
-    private val getHistoryOrdersUseCase: GetHistoryOrdersUseCase
+//    private val getHistoryOrdersUseCase: GetHistoryOrdersUseCase
+    private val historyOrderUseCases: HistoryOrderUseCases
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HistoryOrderUiState())
@@ -178,24 +181,115 @@ class HistoryOrderViewModel @Inject constructor(
      */
     fun loadHistory(token: String) {
         viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(isLoading = true, errorMessage = null)
+            _uiState.value = _uiState.value.copy(isLoading = true)
 
-            getHistoryOrdersUseCase(token)
-                .catch { e ->
-                    _uiState.value = _uiState.value.copy(
-                        isLoading = false,
-                        errorMessage = e.message ?: "Terjadi kesalahan saat memuat riwayat"
+            val bookingsFlow = historyOrderUseCases.getPassengerRideBooking(token)
+            val terminalsFlow = historyOrderUseCases.getTerminal(token)
+
+            combine(bookingsFlow, terminalsFlow) { bookings, terminals ->
+                // join nama terminal berdasarkan id
+                bookings.map{ booking ->
+                    val departureTerminal = terminals.find { it.id == booking.departureTerminalId }
+                    val arrivalTerminal = terminals.find { it.id == booking.arrivalTerminalId }
+
+                    val departureName = departureTerminal?.name ?: "Unknown"
+                    val arrivalName = arrivalTerminal?.name ?: "Unknown"
+
+                    val departureAddress = departureTerminal?.fullAddress ?: "-"
+                    val arrivalAddress = arrivalTerminal?.fullAddress ?: "-"
+
+                    booking.copy(
+                        // extend HistoryOrderItem dengan field baru
+                        departureTerminalName = departureName,
+                        arrivalTerminalName = arrivalName,
+                        departureTerminalDetail = departureAddress,
+                        arrivalTerminalDetail = arrivalAddress
                     )
                 }
-                .collectLatest { items ->
-                    _uiState.value = _uiState.value.copy(
-                        historyItems = items,
-                        isLoading = false,
-                        errorMessage = null
-                    )
-                }
+
+            }.catch { e ->
+                _uiState.value = _uiState.value.copy(
+                    isLoading = false,
+                    errorMessage = e.message ?: "Terjadi kesalahan saat memuat riwayat"
+                )
+            }.collectLatest { joined ->
+                _uiState.value = _uiState.value.copy(
+                    historyItems = joined,
+                    isLoading = false
+                )
+            }
         }
     }
+
+    /**
+     * Memuat data riwayat berdasarkan token user (JWT).
+     * Dipakai jika sudah bisa akses tabel vehicle dari tabel passenger ride
+     */
+//    fun loadHistory(token: String) {
+//        viewModelScope.launch {
+//            _uiState.value = _uiState.value.copy(isLoading = true)
+//
+//            val bookingsFlow = historyOrderUseCases.getPassengerRideBooking(token)
+//            val terminalsFlow = historyOrderUseCases.getTerminal(token)
+//
+//            combine(bookingsFlow, terminalsFlow) { bookings, terminals ->
+//                // join nama terminal berdasarkan id
+//                bookings.map{ booking ->
+//                    val departureTerminal = terminals.find { it.id == booking.departureTerminalId }
+//                    val arrivalTerminal = terminals.find { it.id == booking.arrivalTerminalId }
+//
+//                    val departureName = departureTerminal?.name ?: "Unknown"
+//                    val arrivalName = arrivalTerminal?.name ?: "Unknown"
+//
+//                    val departureAddress = departureTerminal?.fullAddress ?: "-"
+//                    val arrivalAddress = arrivalTerminal?.fullAddress ?: "-"
+//
+//                    booking.copy(
+//                        // extend HistoryOrderItem dengan field baru
+//                        departureTerminalName = departureName,
+//                        arrivalTerminalName = arrivalName,
+//                        departureTerminalDetail = departureAddress,
+//                        arrivalTerminalDetail = arrivalAddress
+//                    )
+//                }
+//
+//            }.catch { e ->
+//                _uiState.value = _uiState.value.copy(
+//                    isLoading = false,
+//                    errorMessage = e.message ?: "Terjadi kesalahan saat memuat riwayat"
+//                )
+//            }.collectLatest { joined ->
+//
+//                // 🔥 Sekarang ambil kendaraan berdasarkan driverId booking pertama
+//                val driverId = joined.firstOrNull()?.driverId
+//
+//                if (driverId != null) {
+//                    historyOrderUseCases.getVehicle(token, driverId).collectLatest { vehicles ->
+//                        val updated = joined.map { booking ->
+//                            val vehicle = vehicles.firstOrNull() { it.driverId == booking.driverId }
+//
+//                            booking.copy(
+//                                vehicleName = vehicle?.vehicleName ?: "-",
+//                                vehicleColor = vehicle?.vehicleColor ?: "-"
+//                            )
+//                        }
+//
+//                        _uiState.value = _uiState.value.copy(
+//                            historyItems = updated,
+//                            isLoading = false
+//                        )
+//                    }
+//                }
+//                else {
+//                    // tidak ada driverId
+//                    _uiState.value = _uiState.value.copy(
+//                        historyItems = joined,
+//                        isLoading = false
+//                    )
+//                }
+//            }
+//        }
+//    }
 
     /**
      * Dipanggil ketika user menekan kartu history untuk ubah jadwal, dll.

@@ -10,6 +10,8 @@ import com.example.nebeng.app.ui.common.RoleAwareFragment
 import com.example.nebeng.core.session.data.UserPreferencesRepository
 //import com.example.nebeng.feature_a_history_order.domain.mapper.HistoryOrderItemMapper.toDomain
 import com.example.nebeng.feature_a_history_order.presentation.HistoryOrderViewModel
+import com.example.nebeng.feature_a_history_order.presentation.navigation.CustomerHistoryNavGraph
+import com.example.nebeng.feature_a_history_order.presentation.navigation.DriverHistoryNavGraph
 import com.example.nebeng.feature_a_history_order.presentation.screen_role.customer.HistoryOrderCustomerScreenUi
 import com.example.nebeng.feature_a_history_order.presentation.screen_role.driver.HistoryOrderDriverScreenUi
 //import com.example.nebeng.feature_a_history_order.presentation.screen_role.driver.HistoryOrderDriverScreenUi
@@ -132,10 +134,14 @@ class HistoryOrderFragment : RoleAwareFragment() {
             }
         }
 
-        HistoryOrderCustomerScreenUi(
-            uiState = uiState,
-            onBack = { requireActivity().onBackPressedDispatcher.onBackPressed() },
-            onChangeSchedule = { viewModel.onChangeSchedule(it) }
+//        HistoryOrderCustomerScreenUi(
+//            uiState = uiState,
+//            onBack = { requireActivity().onBackPressedDispatcher.onBackPressed() },
+//            onChangeSchedule = { viewModel.onChangeSchedule(it) }
+//        )
+        CustomerHistoryNavGraph(
+            viewModel = viewModel,
+            onBack = { requireActivity().onBackPressedDispatcher.onBackPressed() }
         )
     }
 
@@ -156,15 +162,20 @@ class HistoryOrderFragment : RoleAwareFragment() {
             }
         }
 
-        HistoryOrderDriverScreenUi(
-            uiState = uiState,
-            onBack = { requireActivity().onBackPressedDispatcher.onBackPressed() },
-            onRefresh = {
-                token?.let {
-                    Log.d("HistoryOrderFragment", "Token digunakan: $it")
-                    viewModel.loadHistory(it)
-                }
-            }
+//        HistoryOrderDriverScreenUi(
+//            uiState = uiState,
+//            onBack = { requireActivity().onBackPressedDispatcher.onBackPressed() },
+//            onRefresh = {
+//                token?.let {
+//                    Log.d("HistoryOrderFragment", "Token digunakan: $it")
+//                    viewModel.loadHistory(it)
+//                }
+//            }
+//        )
+
+        DriverHistoryNavGraph(
+            viewModel = viewModel,
+            onBack = { requireActivity().onBackPressedDispatcher.onBackPressed() }
         )
     }
 }

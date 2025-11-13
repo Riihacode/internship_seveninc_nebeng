@@ -1,6 +1,8 @@
 package com.example.nebeng.feature_a_history_order.presentation.screen_role.driver
 
+import android.R.attr.onClick
 import android.annotation.SuppressLint
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -10,6 +12,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,6 +21,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -55,11 +59,20 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.SubcomposeLayout
+import androidx.compose.ui.layout.boundsInParent
+import androidx.compose.ui.layout.boundsInRoot
+import androidx.compose.ui.layout.boundsInWindow
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.nebeng.core.utils.BookingStatus
@@ -1025,7 +1038,8 @@ import kotlin.String
 fun HistoryOrderDriverScreenUi(
     uiState: HistoryOrderUiState,
     onBack: () -> Unit = {},
-    onRefresh: () -> Unit = {}
+    onRefresh: () -> Unit = {},
+    onHistoryClick: (Int) -> Unit = {}
 ) {
     var selectedTab by remember { mutableIntStateOf(0) }
     val tabs = listOf("Semua", "Selesai", "Dalam Proses", "Dibatalkan")
@@ -1094,8 +1108,14 @@ fun HistoryOrderDriverScreenUi(
                         }
                     }
                 } else {
+//                    items(filteredOrders) { order ->
+//                        DriverHistoryCard(order)
+//                    }
                     items(filteredOrders) { order ->
-                        DriverHistoryCard(order)
+                        DriverHistoryCard(
+                            order = order,
+                            onClick = { onHistoryClick(order.bookingId) }
+                        )
                     }
                 }
 
@@ -1110,12 +1130,16 @@ fun HistoryOrderDriverScreenUi(
  * ================================================================ */
 @SuppressLint("DefaultLocale")
 @Composable
-private fun DriverHistoryCard(order: HistoryOrderItem) {
+private fun DriverHistoryCard(
+    order: HistoryOrderItem,
+    onClick: (Int) -> Unit = {}
+) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        onClick = { onClick(order.bookingId) }
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             // ====== Header Atas ======
@@ -1135,12 +1159,13 @@ private fun DriverHistoryCard(order: HistoryOrderItem) {
 
             Spacer(Modifier.height(12.dp))
 
+//            // ====== Jalur (Rute) ======
             // ====== Jalur (Rute) ======
             RideRouteItem(
-                from = "Terminal ${order.departureTerminalId}",
-                fromDetail = "Detail Keberangkatan ${order.departureTerminalId}",
-                to = "Terminal ${order.arrivalTerminalId}",
-                toDetail = "Terminal ${order.arrivalTerminalId}"
+                from = order.departureTerminalName.ifBlank { "Terminal A (placeholder)" },
+                fromDetail = order.departureTerminalDetail.ifBlank { "Jl. Contoh No. 123, Kota Placeholder" },
+                to = order.arrivalTerminalName.ifBlank { "Terminal B (placeholder)" },
+                toDetail = order.arrivalTerminalDetail.ifBlank { "Jl. Ujung Timur No. 45, Kota Placeholder" }
             )
 
             Spacer(Modifier.height(16.dp))
@@ -1175,11 +1200,11 @@ private fun DriverHistoryCard(order: HistoryOrderItem) {
 @Composable
 private fun StatusBadge(status: RideStatus?) {
     val (bgColor, textColor, label) = when (status) {
-        RideStatus.SELESAI -> Triple(Color(0xFFE8F5E9), Color(0xFF388E3C), "Selesai")
+        RideStatus.SELESAI          -> Triple(Color(0xFFE8F5E9), Color(0xFF388E3C), "Selesai")
         RideStatus.DALAM_PERJALANAN -> Triple(Color(0xFFE3F2FD), Color(0xFF1565C0), "Dalam Perjalanan")
-        RideStatus.DIBATALKAN -> Triple(Color(0xFFFFEBEE), Color(0xFFD32F2F), "Dibatalkan")
-        RideStatus.PENDING -> Triple(Color(0xFFFFF1E6), Color(0xFFE27A00), "Menunggu")
-        else -> Triple(Color(0xFFF5F5F5), Color.Gray, "Tidak diketahui")
+        RideStatus.DIBATALKAN       -> Triple(Color(0xFFFFEBEE), Color(0xFFD32F2F), "Dibatalkan")
+        RideStatus.PENDING          -> Triple(Color(0xFFFFF1E6), Color(0xFFE27A00), "Menunggu")
+        else                        -> Triple(Color(0xFFF5F5F5), Color.Gray, "Tidak diketahui")
     }
 
     Box(
@@ -1200,6 +1225,111 @@ private fun StatusBadge(status: RideStatus?) {
 /* ================================================================
  * 🔹 Jalur Rute (Yogyakarta → Purwokerto)
  * ================================================================ */
+// [ALMOST]
+//@Composable
+//private fun RideRouteItem(
+//    from: String,
+//    fromDetail: String,
+//    to: String,
+//    toDetail: String
+//) {
+//    val dotSize = 10.dp
+//    val gapBetweenDotAndLine = 2.dp
+//    val lineWidth = 2.dp
+//    val lineColor = Color(0xFFCFD8DC)
+//
+//    Row(
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .height(IntrinsicSize.Min)     // Kunci agar garis mengikuti tinggi teks
+//    ) {
+//
+//        // ===============================
+//        // KOLUMN KIRI (DOT + LINE + DOT)
+//        // ===============================
+//        Box(
+//            modifier = Modifier
+//                .width(24.dp)
+//                .fillMaxHeight(),
+//            contentAlignment = Alignment.TopCenter
+//        ) {
+//
+//            // ---- GARIS VERTIKAL ----
+//            Box(
+//                modifier = Modifier
+//                    .padding(
+//                        top = dotSize + gapBetweenDotAndLine,
+//                        bottom = dotSize + gapBetweenDotAndLine
+//                    )   // 👈 GARIS TIDAK MENYENTUH TITIK
+//                    .width(lineWidth)
+//                    .fillMaxHeight()
+//                    .background(lineColor)
+//            )
+//
+//            // ---- DOT ATAS (biru) ----
+//            Box(
+//                modifier = Modifier
+//                    .size(dotSize)
+//                    .clip(CircleShape)
+//                    .background(Color(0xFF1565C0))
+//            )
+//
+//            // ---- DOT BAWAH (merah) ----
+//            Column(
+//                modifier = Modifier.fillMaxHeight(),
+//                verticalArrangement = Arrangement.Bottom,
+//                horizontalAlignment = Alignment.CenterHorizontally
+//            ) {
+//                Box(
+//                    modifier = Modifier
+//                        .size(dotSize)
+//                        .clip(CircleShape)
+//                        .background(Color(0xFFD32F2F))
+//                )
+//            }
+//        }
+//
+//        Spacer(Modifier.width(8.dp))
+//
+//        // ===============================
+//        // KOLUMN KANAN (TEXT)
+//        // ===============================
+//        Column(modifier = Modifier.weight(1f)) {
+//
+//            // FROM
+//            Text(
+//                text = from,
+//                style = MaterialTheme.typography.bodyMedium.copy(
+//                    fontWeight = FontWeight.Bold,
+//                    color = Color(0xFF0F1C43)
+//                )
+//            )
+//
+//            Text(
+//                text = fromDetail,
+//                style = MaterialTheme.typography.bodySmall.copy(color = Color.Gray)
+//            )
+//
+//            Spacer(modifier = Modifier.height(8.dp))
+//
+//            // TO
+//            Text(
+//                text = to,
+//                style = MaterialTheme.typography.bodyMedium.copy(
+//                    fontWeight = FontWeight.Bold,
+//                    color = Color(0xFF0F1C43)
+//                )
+//            )
+//
+//            Text(
+//                text = toDetail,
+//                style = MaterialTheme.typography.bodySmall.copy(color = Color.Gray)
+//            )
+//        }
+//    }
+//}
+
+//  [ALMOST 95%]
 @Composable
 private fun RideRouteItem(
     from: String,
@@ -1207,130 +1337,128 @@ private fun RideRouteItem(
     to: String,
     toDetail: String
 ) {
-    // Konfigurasi grid
-    val cellHeight = 24.dp        // tinggi 1 baris grid
-    val lineHeight = 36.dp        // tinggi garis vertikal tengah
-    val dotSize = 10.dp           // ukuran titik
+    val dotSize = 10.dp
+    val lineColor = Color(0xFFCFD8DC)
+    val density = LocalDensity.current
 
-    Column(
-        modifier = Modifier.fillMaxWidth()
+    var fromCenterY by remember { mutableStateOf(0f) }   // px
+    var toCenterY by remember { mutableStateOf(0f) }     // px
+    var leftTopY by remember { mutableStateOf(0f) }      // px
+    var containerHeight by remember { mutableStateOf(0f) } // px
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .onGloballyPositioned { coords ->
+                containerHeight = coords.size.height.toFloat()
+                leftTopY = coords.boundsInWindow().top
+            }
     ) {
-        // ============================================================
-        // BARIS 1 — Titik biru | spacer | from
-        // ============================================================
-        Row(verticalAlignment = Alignment.CenterVertically) {
+
+        // ============================
+        // 1) LAYOUT ASLI ANDA
+        // ============================
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(IntrinsicSize.Min)
+        ) {
+
+            // KIRI – tempat rail akan digambar (di canvas)
             Box(
                 modifier = Modifier
-                    .width(20.dp)
-                    .height(cellHeight),
-                contentAlignment = Alignment.Center
-            ) {
-                Box(
-                    modifier = Modifier
-                        .size(dotSize)
-                        .clip(CircleShape)
-                        .background(Color(0xFF1565C0))
-                )
-            }
-            Spacer(modifier = Modifier.width(6.dp))
-            Box(
-                modifier = Modifier.height(cellHeight),
-                contentAlignment = Alignment.CenterStart
-            ) {
+                    .width(24.dp)
+                    .fillMaxHeight()
+                    .onGloballyPositioned { leftCoords ->
+                        leftTopY = leftCoords.boundsInWindow().top
+                    }
+            )
+
+            Spacer(Modifier.width(8.dp))
+
+            // ============================
+            //   KANAN – TEXT
+            // ============================
+            Column(modifier = Modifier.weight(1f)) {
+
+                // ===== FROM =====
                 Text(
                     text = from,
                     style = MaterialTheme.typography.bodyMedium.copy(
                         fontWeight = FontWeight.Bold,
                         color = Color(0xFF0F1C43)
-                    )
+                    ),
+                    modifier = Modifier.onGloballyPositioned { coords ->
+                        fromCenterY = coords.boundsInWindow().center.y
+                    }
                 )
-            }
-        }
 
-        // ============================================================
-        // BARIS 2–3 (merge kiri & tengah) — Garis vertikal + fromDetail
-        // ============================================================
-        Row {
-            // Kolom 1: garis vertikal menyatu
-            Box(
-                modifier = Modifier
-                    .width(20.dp)
-                    .height(lineHeight), // total tinggi baris 2+3
-                contentAlignment = Alignment.TopCenter
-            ) {
-                Box(
-                    modifier = Modifier
-                        .width(2.dp)
-                        .fillMaxHeight()
-                        .background(Color(0xFFCFD8DC))
+                Text(
+                    text = fromDetail,
+                    style = MaterialTheme.typography.bodySmall.copy(color = Color.Gray)
                 )
-            }
 
-            // Kolom 2 — spacer
-            Spacer(modifier = Modifier.width(6.dp))
+                Spacer(modifier = Modifier.height(8.dp))
 
-            // Kolom 3 — fromDetail (baris 2) + ruang kosong (baris 3)
-            Column {
-                Box(
-                    modifier = Modifier.height(cellHeight),
-                    contentAlignment = Alignment.CenterStart
-                ) {
-                    Text(
-                        text = fromDetail,
-                        style = MaterialTheme.typography.bodySmall.copy(color = Color.Gray)
-                    )
-                }
-                Spacer(modifier = Modifier.height(lineHeight - cellHeight)) // baris 3 kosong
-            }
-        }
-
-        // ============================================================
-        // BARIS 4 — Titik merah | spacer | to
-        // ============================================================
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Box(
-                modifier = Modifier
-                    .width(20.dp)
-                    .height(cellHeight),
-                contentAlignment = Alignment.Center
-            ) {
-                Box(
-                    modifier = Modifier
-                        .size(dotSize)
-                        .clip(CircleShape)
-                        .background(Color(0xFFD32F2F))
-                )
-            }
-            Spacer(modifier = Modifier.width(6.dp))
-            Box(
-                modifier = Modifier.height(cellHeight),
-                contentAlignment = Alignment.CenterStart
-            ) {
+                // ===== TO =====
                 Text(
                     text = to,
                     style = MaterialTheme.typography.bodyMedium.copy(
                         fontWeight = FontWeight.Bold,
                         color = Color(0xFF0F1C43)
-                    )
+                    ),
+                    modifier = Modifier.onGloballyPositioned { coords ->
+                        toCenterY = coords.boundsInWindow().center.y
+                    }
                 )
-            }
-        }
 
-        // ============================================================
-        // BARIS 5 — kosong kiri | spacer | toDetail
-        // ============================================================
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Box(Modifier.width(20.dp).height(cellHeight))
-            Spacer(modifier = Modifier.width(6.dp))
-            Box(
-                modifier = Modifier.height(cellHeight),
-                contentAlignment = Alignment.CenterStart
-            ) {
                 Text(
                     text = toDetail,
                     style = MaterialTheme.typography.bodySmall.copy(color = Color.Gray)
                 )
             }
+
+        }
+
+        // ============================
+        // 2) RAIL (DOT + LINE) — CANVAS
+        // ============================
+        Canvas(
+            modifier = Modifier
+                .matchParentSize()
+        ) {
+            // pastikan data sudah siap
+            if (fromCenterY == 0f || toCenterY == 0f) return@Canvas
+
+            // hitung posisi Y relatif terhadap top box kiri
+            val fromY = fromCenterY - leftTopY
+            val toY = toCenterY - leftTopY
+
+            val dotPx = with(density) { dotSize.toPx() }
+            val dotRadius = dotPx / 2
+            val centerX = with(density) { 24.dp.toPx() } / 2f
+
+            // GARIS di antara dot (dengan jarak aman)
+            drawLine(
+                color = lineColor,
+                start = Offset(centerX, fromY + dotRadius + 2),
+                end = Offset(centerX, toY - dotRadius - 2),
+                strokeWidth = with(density) { 2.dp.toPx() }
+            )
+
+            // DOT biru
+            drawCircle(
+                color = Color(0xFF1565C0),
+                radius = dotRadius,
+                center = Offset(centerX, fromY)
+            )
+
+            // DOT merah
+            drawCircle(
+                color = Color(0xFFD32F2F),
+                radius = dotRadius,
+                center = Offset(centerX, toY)
+            )
         }
     }
 }

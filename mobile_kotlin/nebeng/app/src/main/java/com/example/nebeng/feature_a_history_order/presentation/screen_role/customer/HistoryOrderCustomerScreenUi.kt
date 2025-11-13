@@ -73,6 +73,7 @@ import com.example.nebeng.feature_a_auth.domain.model.Auth
 //import com.example.nebeng.feature_a_history_order.data.model.mapper.toPresentation
 import com.example.nebeng.feature_a_history_order.domain.model.HistoryOrderItem
 import com.example.nebeng.feature_a_history_order.presentation.HistoryOrderUiState
+//import com.example.nebeng.feature_a_history_order.presentation.screen_role.driver.RideRouteItem
 //import com.example.nebeng.feature_a_history_order.presentation.support_for_present.component.HistoryItemCard
 import com.example.nebeng.feature_a_history_order.presentation.support_for_present.model.HistoryItemData
 
@@ -2272,12 +2273,31 @@ private fun HistoryItemCard(
 
             Spacer(Modifier.height(8.dp))
 
+//            Text(
+//                text = "${data.departureTerminalName} → ${data.arrivalTerminalName}",
+//                fontWeight = FontWeight.SemiBold,
+//                fontSize = 16.sp,
+//                color = Color.Black
+//            )
             Text(
-                "${data.departureTerminalId} → ${data.arrivalTerminalId}",
+                text = buildString {
+                    append(data.departureTerminalName.ifBlank { "Terminal Keberangkatan" })
+                    append(" → ")
+                    append(data.arrivalTerminalName.ifBlank { "Terminal Tujuan" })
+                },
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 16.sp,
                 color = Color.Black
             )
+
+
+//            // ====== Jalur (Rute) ======
+//            RideRouteItem(
+//                from = order.departureTerminalName,
+//                fromDetail = order.departureTerminalDetail,
+//                to = order.arrivalTerminalName,
+//                toDetail = order.arrivalTerminalDetail
+//            )
 
             Spacer(Modifier.height(6.dp))
 
