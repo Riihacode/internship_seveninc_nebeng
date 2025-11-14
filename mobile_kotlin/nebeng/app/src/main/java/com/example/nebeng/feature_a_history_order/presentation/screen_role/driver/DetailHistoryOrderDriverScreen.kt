@@ -644,6 +644,9 @@ fun PreviewDetailHistoryOrderDriverScreen() {
 //        vehicleName = "Avanza",
 //        vehicleColor = "Putih"
         // tambah field lain jika Anda punya
+        customerName = "Customer 1",
+        customerId = 1,
+        averageRating = 4.5f
     )
 
     val dummyState = HistoryOrderUiState(

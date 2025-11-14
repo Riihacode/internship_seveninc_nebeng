@@ -2352,7 +2352,10 @@ private fun PreviewHistoryOrderCustomerScreenUi() {
                 bookingStatus = BookingStatus.DITERIMA,
                 vehicleType = VehicleType.MOBIL,
                 rideStatus = RideStatus.PENDING,
-                driverName = "Tanjirō"
+                driverName = "Tanjirō",
+                customerId = 1,
+                customerName = "Customer 1",
+                averageRating = 4.5f
             ),
             HistoryOrderItem(
                 bookingId = 2,
@@ -2365,7 +2368,10 @@ private fun PreviewHistoryOrderCustomerScreenUi() {
                 bookingStatus = BookingStatus.PENDING,
                 vehicleType = VehicleType.MOTOR,
                 rideStatus = RideStatus.PENDING,
-                driverName = null
+                driverName = null,
+                customerId = 1,
+                customerName = "Customer 1",
+                averageRating = 4.5f
             )
         )
     )

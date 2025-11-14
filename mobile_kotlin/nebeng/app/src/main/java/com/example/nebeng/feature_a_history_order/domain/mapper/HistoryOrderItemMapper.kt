@@ -217,6 +217,8 @@ object HistoryOrderItemMapper {
         val ride = full.ride
         val driver = full.driver
 
+        val customer = full.customer
+
         val mapped = HistoryOrderItem(
             bookingId = booking.id,
             bookingCode = booking.bookingCode,
@@ -228,7 +230,11 @@ object HistoryOrderItemMapper {
             bookingStatus = BookingStatus.fromString(booking.status),
             vehicleType = VehicleType.fromString(ride.vehicleType),
             rideStatus = RideStatus.fromString(ride.rideStatus),
-            driverName = driver.fullName
+            driverName = driver.fullName,
+
+            customerName = customer.fullName,
+            customerId = customer.id,
+            averageRating = driver.averageRating
         )
 
         // 🔍 Debug log agar mudah melacak data yang tidak lengkap
@@ -239,6 +245,12 @@ object HistoryOrderItemMapper {
             )
         }
 
+        if (customer.fullName.isBlank()) {
+            Log.w(
+                "HistoryOrderItemMapper",
+                "⚠️ Data tidak lengkap: bookingId=${customer.id}, customer=${customer.fullName}"
+            )
+        }
         return mapped
     }
 }

@@ -12,6 +12,8 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 import com.example.nebeng.core.common.Result
 import com.example.nebeng.feature_customer.data.remote.model.mapper.toDomain
+import com.example.nebeng.feature_passenger_ride_booking.data.remote.model.mapper.toFullDomain
+import com.example.nebeng.feature_passenger_ride_booking.domain.model.PassengerRideBookingFull
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
 

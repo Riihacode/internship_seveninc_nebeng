@@ -7,6 +7,7 @@ import com.example.nebeng.feature_customer.data.remote.model.request.UpdateCusto
 import com.example.nebeng.feature_customer.domain.model.Customer
 import kotlinx.coroutines.flow.Flow
 import com.example.nebeng.core.common.Result
+import com.example.nebeng.feature_passenger_ride_booking.domain.model.PassengerRideBookingFull
 
 interface CustomerRepository {
     suspend fun getAllCustomers(token: String): Flow<Result<List<Customer>>>

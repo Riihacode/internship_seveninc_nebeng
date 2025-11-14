@@ -40,12 +40,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.example.nebeng.R
 import com.example.nebeng.feature_a_auth.presentation.profile.ProfileViewModel
+import com.example.nebeng.feature_a_homepage.presentation.screen_role.customer.PassengerRideMotorScreen
 
 //@OptIn(ExperimentalMaterial3Api::class)
 //@Composable
@@ -664,3 +666,15 @@ private fun MenuItemLogout(icon: Int, label: String, onClick: () -> Unit) {
         )
     }
 }
+
+//@Preview(showSystemUi = true, showBackground = true)
+//@Composable
+//fun PreviewProfileCustomerScreenUi() {
+//    ProfileCustomerScreenUi (
+//        historyAddresses = listOf(
+//            "Yogyakarta - Pos 1",
+//            "Yogyakarta - Pos 2",
+//            "Yogyakarta - Pos 3"
+//        )
+//    )
+//}

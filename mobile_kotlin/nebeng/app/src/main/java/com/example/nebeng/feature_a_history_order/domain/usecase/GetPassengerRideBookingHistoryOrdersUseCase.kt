@@ -15,7 +15,7 @@ import javax.inject.Inject
  * dengan autentikasi token dari DataStore.
  * ============================================================
  */
-class GetHistoryOrdersUseCase @Inject constructor(
+class GetPassengerRideBookingHistoryOrdersUseCase @Inject constructor(
     private val repository: PassengerRideBookingRepository
 ) {
     /**

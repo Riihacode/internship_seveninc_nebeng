@@ -3,17 +3,14 @@ package com.example.nebeng.feature_a_history_order.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nebeng.feature_a_history_order.domain.model.HistoryOrderItem
-import com.example.nebeng.feature_a_history_order.domain.usecase.GetHistoryOrdersUseCase
 import com.example.nebeng.feature_a_history_order.domain.usecase.HistoryOrderUseCases
-import com.example.nebeng.feature_a_history_order.presentation.support_for_present.model.HistoryItemData
-import com.example.nebeng.feature_passenger_ride_booking.domain.usecase.PassengerRideBookingUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -297,5 +294,9 @@ class HistoryOrderViewModel @Inject constructor(
     fun onChangeSchedule(item: HistoryOrderItem) {
         println("🗓️ Jadwal diubah untuk: ${item.bookingCode}")
         // Implementasi lanjutan: navigasi, dialog, dsb.
+    }
+
+    fun selectHistoryItem(bookingId: Int) {
+        val selected  = _uiState.value.historyItems.firstOrNull() { it.bookingId == bookingId }
     }
 }

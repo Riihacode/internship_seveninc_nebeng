@@ -32,6 +32,10 @@ data class HistoryOrderItem(
 //    val driverId: Int,
 //    val vehicleName: String = "",
 //    val vehicleColor: String = "",
+    val averageRating: Float?,
+
+    val customerName: String = "",
+    val customerId: Int,
 
     val bookingStatus: BookingStatus?,
     val vehicleType: VehicleType,

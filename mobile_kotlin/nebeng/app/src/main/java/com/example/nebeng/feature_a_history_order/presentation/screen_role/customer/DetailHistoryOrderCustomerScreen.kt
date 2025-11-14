@@ -1,5 +1,6 @@
 package com.example.nebeng.feature_a_history_order.presentation.screen_role.customer
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -19,8 +20,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.Message
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.Message
@@ -216,7 +215,7 @@ fun DriverInfoCard(order: HistoryOrderItem) {
                     fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold
                 )
-                Text("⭐ 5.0  •  R2424MJ", fontSize = 12.sp, color = Color.Gray)
+                Text("⭐ ${order.averageRating}  •  R2424MJ", fontSize = 12.sp, color = Color.Gray)
             }
 
             Spacer(Modifier.weight(1f))
@@ -266,23 +265,25 @@ fun PassengerSection(order: HistoryOrderItem) {
             colors = CardDefaults.cardColors(Color.White)
         ) {
             Row(
-                modifier = Modifier.padding(16.dp),
+                modifier = Modifier
+                    .padding(16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text("Ailsa Nasywa")
+                Text(order.customerName)
                 Spacer(Modifier.weight(1f))
-                Text("Penumpang 1", color = Color.Gray, fontSize = 13.sp)
+                Text("Penumpang ${order.customerId}", color = Color.Gray, fontSize = 13.sp)
             }
         }
     }
 }
 
+@SuppressLint("DefaultLocale")
 @Composable
 fun PriceSummary(order: HistoryOrderItem) {
     Column {
         InfoRow("Harga", "Rp${String.format("%,d", order.totalPrice)}")
         InfoRow("Total Penumpang", order.seatsReserved.toString())
-        Divider(Modifier.padding(vertical = 8.dp))
+        Divider(Modifier.padding(vertical = 8.dp, horizontal = 16.dp))
         InfoRow(
             label = "Total",
             value = "Rp${String.format("%,d", order.totalPrice)}"
@@ -293,7 +294,9 @@ fun PriceSummary(order: HistoryOrderItem) {
 @Composable
 private fun InfoRow(label: String, value: String) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 16.dp, end = 16.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(label, color = Color.Gray)
@@ -453,7 +456,10 @@ fun PreviewDetailHistoryOrderCustomerScreen() {
         departureTerminalDetail = "Senin, 02 September 2024",
         arrivalTerminalName = "Purwokerto Pos 1",
         arrivalTerminalDetail = "Senin, 02 September 2024",
-        driverName = "Jamal"
+        driverName = "Jamal",
+        customerName = "Customer 1",
+        customerId = 1,
+        averageRating = 4.5f
     )
 
     val dummyState = HistoryOrderUiState(
