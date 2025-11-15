@@ -23,8 +23,6 @@ data class Customer(
     val createdAt: String,
     val updatedAt: String
 
-    // Relasi
-//    val user: User? = null
 ) {
     companion object {
         fun getEmpty(): Customer = Customer(

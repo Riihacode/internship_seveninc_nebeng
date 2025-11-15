@@ -861,13 +861,13 @@ fun PassengerRideMotorScreen(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(300.dp)
+                .height(320.dp)
         ) {
             // Background header
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(340.dp)
+                    .height(370.dp)
                     .clip(RoundedCornerShape(bottomStart = 34.dp, bottomEnd = 34.dp))
                     .background(Color(0xFF0F3D82))
             )
@@ -911,7 +911,7 @@ fun PassengerRideMotorScreen(
                     .align(Alignment.BottomCenter)   // karena dipanggil di dalam Box
                     .fillMaxWidth()
                     .padding(horizontal = 20.dp)
-                    .offset(y = 90.dp),             // geser turun dari AppBar
+                    .offset(y = 40.dp),             // geser turun dari AppBar
                 onStartClick = onStartSelect,
                 onEndClick  = onEndSelect,
                 onDateClick = onDateSelect
@@ -919,7 +919,7 @@ fun PassengerRideMotorScreen(
 
         }
 
-        Spacer(Modifier.height(125.dp)) // beri ruang setelah kartu input
+        Spacer(Modifier.height(60.dp)) // beri ruang setelah kartu input
 
         // ================= HISTORI ALAMAT ================
         Text(
@@ -1008,57 +1008,119 @@ fun PassengerRouteCard(
             // =====================
             // LOKASI AWAL & TUJUAN
             // =====================
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(IntrinsicSize.Min),   // <- kunci tinggi dinamis
-                verticalAlignment = Alignment.Top
-            ) {
-
-                // KIRI -> RAIL
-                Column(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .padding(top = 6.dp, bottom = 6.dp)
-                        .width(38.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    // DOT ATAS (HIJAU)
-                    RailDot(color = Color(0xFF2ECC71))
-
-                    // VERTICAL LINE
-                    Box(
-                        modifier = Modifier
-                            .weight(1f)
-                            .width(2.dp)
-                            .background(Color(0xFFBCC6CE))
-                    )
-
-                    // DOT BAWAH (ORANYE)
-                    RailDot(color = Color(0xFFFF6E42))
-                }
-
-                Spacer(Modifier.width(12.dp))
-
-                // KANAN -> LABEL & INPUT
-                Column(modifier = Modifier.weight(1f)) {
-
-                    // Lokasi Awal
-                    Text("Lokasi Aw/alskdn;lanmdkansldja;ndnalnd;naslkndkndadah;adad;dha;dhak.lhjadkahjdkadj.adhakdj.had.jabdh.adh.jah.adadal", fontWeight = FontWeight.SemiBold, fontSize = 17.sp)
+//            Row(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .height(IntrinsicSize.Min),   // <- kunci tinggi dinamis
+//                verticalAlignment = Alignment.Top
+//            ) {
+//
+//                // KIRI -> RAIL
+//                Column(
+//                    modifier = Modifier
+//                        .fillMaxHeight()
+//                        .padding(top = 6.dp, bottom = 6.dp)
+//                        .width(38.dp),
+//                    horizontalAlignment = Alignment.CenterHorizontally
+//                ) {
+//                    // DOT ATAS (HIJAU)
+//                    RailDot(color = Color(0xFF2ECC71))
+//
+//                    // VERTICAL LINE
+//                    Box(
+//                        modifier = Modifier
+//                            .weight(1f)
+//                            .width(2.dp)
+//                            .background(Color(0xFFBCC6CE))
+//                    )
+//
+//                    // DOT BAWAH (ORANYE)
+//                    RailDot(color = Color(0xFFFF6E42))
+//                }
+//
+//                Spacer(Modifier.width(12.dp))
+//
+//                // KANAN -> LABEL & INPUT
+//                Column(modifier = Modifier.weight(1f)) {
+//
+//                    // Lokasi Awal
+//                    Text("Lokasi Awal", fontWeight = FontWeight.SemiBold, fontSize = 17.sp)
 //                    LocationBox("Pilih lokasi awal", onStartClick)
+//
+//                    Divider(
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .padding(vertical = 14.dp),
+//                        color = Color(0xFFE0E0E0)
+//                    )
+//
+//                    // Lokasi Tujuan
+//                    Text("Lokasi Tujuan", fontWeight = FontWeight.SemiBold, fontSize = 17.sp)
+//                }
+//            }
+            Card(
+                shape = RoundedCornerShape(18.dp),
+                colors = CardDefaults.cardColors(Color.White),
+                elevation = CardDefaults.cardElevation(0.dp),
+                border = BorderStroke(1.dp, Color(0xFFE6E6E6)),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column(Modifier.padding(20.dp)) {
 
-                    Divider(
+                    // =====================
+                    // LOKASI AWAL & TUJUAN
+                    // =====================
+                    Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(vertical = 14.dp),
-                        color = Color(0xFFE0E0E0)
-                    )
+                            .height(IntrinsicSize.Min),   // ← kunci agar line vertikal menyesuaikan
+                        verticalAlignment = Alignment.Top
+                    ) {
 
-                    // Lokasi Tujuan
-                    Text("Lokasi Tujuan", fontWeight = FontWeight.SemiBold, fontSize = 17.sp)
-//                    LocationBox("Pilih lokasi tujuan", onEndClick)
+                        // KIRI → RAIL + DOT
+                        Column(
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .padding(top = 4.dp, bottom = 4.dp)
+                                .width(40.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            RailDot(color = Color(0xFF2ECC71)) // dot hijau lokasi awal
+
+                            Box(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .width(2.dp)
+                                    .background(Color(0xFFBCC6CE)) // garis vertical
+                            )
+
+                            RailDot(color = Color(0xFFFF6E42)) // dot oranye lokasi tujuan
+                        }
+
+                        Spacer(Modifier.width(12.dp))
+
+                        // KANAN → LABEL & INPUT
+                        Column(modifier = Modifier.weight(1f)) {
+
+                            // Lokasi Awal
+                            Text("Lokasi Awal", fontWeight = FontWeight.SemiBold, fontSize = 17.sp)
+                            LocationBox("Pilih lokasi awal", onStartClick)
+
+                            Divider(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 14.dp),
+                                color = Color(0xFFE0E0E0)
+                            )
+
+                            // Lokasi Tujuan
+                            Text("Lokasi Tujuan", fontWeight = FontWeight.SemiBold, fontSize = 17.sp)
+                            LocationBox("Pilih lokasi tujuan", onEndClick)
+                        }
+                    }
                 }
             }
+
 
             Spacer(Modifier.height(18.dp))
 
@@ -1099,710 +1161,57 @@ private fun RailDot(color: Color) {
     )
 }
 
-@Composable
-private fun LocationBox(text: String, onClick: () -> Unit) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(48.dp)
-            .border(1.dp, Color(0xFFE0E0E0), RoundedCornerShape(12.dp))
-            .clickable(onClick = onClick)
-            .padding(horizontal = 12.dp),
-        contentAlignment = Alignment.CenterStart
-    ) {
-        Text("aksdbashaldsjblabsdugialdgluashladsadadhaduaddiuhadsdasiahdludahlauiadslidaiudadadsudsadsduadladuadshaduisd", fontSize = 15.sp, color = Color.Gray)
-    }
-}
-
-
-
-@Composable
-fun PassengerMotorInputSection(
-    startLabel: String = "Lokasi Awal",
-    endLabel: String = "Lokasi Tujuan",
-    dateLabel: String = "Tanggal Keberangkatan",
-    onStartClick: () -> Unit = {},
-    onEndClick: () -> Unit = {},
-    onDateClick: () -> Unit = {},
-    modifier: Modifier = Modifier
-) {
-    Column(modifier) {
-
-        // ===================== CARD LOKASI AWAL & TUJUAN =====================
-        Card(
-            shape = RoundedCornerShape(18.dp),
-            border = BorderStroke(1.dp, Color(0xFFE6E6E6)),
-            colors = CardDefaults.cardColors(Color.White),
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Column(Modifier.padding(18.dp)) {
-
-                // Lokasi Awal
-                LocationRow(
-                    color = Color(0xFF2ECC71),
-                    label = startLabel,
-                    onClick = onStartClick
-                )
-
-                Divider(
-                    modifier = Modifier
-                        .padding(vertical = 12.dp)
-                        .fillMaxWidth(0.84f), // lebih pendek dari card
-                    color = Color(0xFFE6E6E6)
-                )
-
-                // Lokasi Tujuan
-                LocationRow(
-                    color = Color(0xFFFF6E42),
-                    label = endLabel,
-                    onClick = onEndClick
-                )
-            }
-        }
-
-        Spacer(Modifier.height(14.dp))
-
-        // ===================== CARD TANGGAL =====================
-        Card(
-            shape = RoundedCornerShape(18.dp),
-            border = BorderStroke(1.dp, Color(0xFFE6E6E6)),
-            colors = CardDefaults.cardColors(Color.White),
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable(onClick = onDateClick)
-        ) {
-            Row(
-                modifier = Modifier.padding(18.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_calendar_24), // icon kalender
-                    contentDescription = null,
-                    tint = Color(0xFF0F3D82),
-                    modifier = Modifier.size(26.dp)
-                )
-                Spacer(Modifier.width(12.dp))
-                Text(
-                    text = dateLabel,
-                    fontSize = 15.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = Color(0xFF2C3E50)
-                )
-            }
-        }
-    }
-}
-@Composable
-private fun LocationRow(
-    color: Color,
-    label: String,
-    onClick: () -> Unit
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(onClick = onClick),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Box(
-            modifier = Modifier
-                .size(20.dp)
-                .clip(CircleShape)
-                .background(color)
-        )
-        Spacer(Modifier.width(14.dp))
-        Text(
-            text = label,
-            fontSize = 16.sp,
-            fontWeight = FontWeight.SemiBold,
-            color = Color(0xFF0F1C43)
-        )
-        Spacer(Modifier.weight(1f))
-        Icon(
-            imageVector = Icons.Default.KeyboardArrowRight,
-            contentDescription = null,
-            tint = Color(0xFF8A8A8A)
-        )
-    }
-}
-
-
 //@Composable
-//fun PassengerMotorRouteCard(
-//    onStartClick: () -> Unit = {},
-//    onEndClick: () -> Unit = {},
-//    onDateClick: () -> Unit = {}
-//) {
-//    Card(
-//        shape = RoundedCornerShape(18.dp),
-//        colors = CardDefaults.cardColors(Color.White),
-//        elevation = CardDefaults.cardElevation(0.dp),
-//        border = BorderStroke(1.dp, Color(0xFFE6E6E6)),
-//        modifier = Modifier.fillMaxWidth()
+//private fun LocationBox(text: String, onClick: () -> Unit) {
+//    Box(
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .height(48.dp)
+////            .border(1.dp, Color(0xFFE0E0E0), RoundedCornerShape(12.dp))
+//            .clickable(onClick = onClick)
+//            .padding(horizontal = 12.dp),
+//        contentAlignment = Alignment.CenterStart
 //    ) {
-//        Column(Modifier.padding(20.dp)) {
-//
-//            // ===================== RUTE (LOKASI AWAL & TUJUAN) =====================
-//            var startY by remember { mutableStateOf(0f) }
-//            var endY by remember { mutableStateOf(0f) }
-//            var topY by remember { mutableStateOf(0f) }
-//
-//            Box(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .onGloballyPositioned { topY = it.boundsInWindow().top }
-//            ) {
-//                Row(Modifier.fillMaxWidth()) {
-//
-//                    Box(
-//                        modifier = Modifier
-//                            .width(36.dp)
-//                            .fillMaxHeight()
-//                    )
-//
-//                    Spacer(Modifier.width(10.dp))
-//
-//                    Column(Modifier.weight(1f)) {
-//
-//                        Row(
-//                            verticalAlignment = Alignment.CenterVertically,
-//                            modifier = Modifier
-//                                .onGloballyPositioned { startY = it.boundsInWindow().center.y }
-//                                .clickable(onClick = onStartClick)
-//                        ) {
-//                            Text("Lokasi Awal", fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
-//                        }
-//
-//                        OutlinedLocationBox("Pilih lokasi awal", onStartClick)
-//
-//                        Spacer(Modifier.height(16.dp))
-//
-//                        Row(
-//                            verticalAlignment = Alignment.CenterVertically,
-//                            modifier = Modifier
-//                                .onGloballyPositioned { endY = it.boundsInWindow().center.y }
-//                                .clickable(onClick = onEndClick)
-//                        ) {
-//                            Text("Lokasi Tujuan", fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
-//                        }
-//
-//                        OutlinedLocationBox("Pilih lokasi tujuan", onEndClick)
-//                    }
-//                }
-//
-//                Canvas(modifier = Modifier.matchParentSize()) {
-//                    if (startY != 0f && endY != 0f) {
-//                        val centerX = with(LocalDensity.current) { 36.dp.toPx() } / 2
-//                        val radius = with(LocalDensity.current) { 8.dp.toPx() }
-//                        val y1 = startY - topY
-//                        val y2 = endY - topY
-//
-//                        drawLine(
-//                            color = Color(0xFFC7D2DA),
-//                            start = Offset(centerX, y1 + radius),
-//                            end = Offset(centerX, y2 - radius),
-//                            strokeWidth = 3f
-//                        )
-//
-//                        drawCircle(Color(0xFF2ECC71), radius, Offset(centerX, y1))
-//                        drawCircle(Color(0xFFFF6E42), radius, Offset(centerX, y2))
-//                    }
-//                }
-//            }
-//
-//            Spacer(Modifier.height(20.dp))
-//
-//            // ===================== TANGGAL KEBERANGKATAN =====================
-//            Card(
-//                shape = RoundedCornerShape(14.dp),
-//                colors = CardDefaults.cardColors(Color.White),
-//                elevation = CardDefaults.cardElevation(0.dp),
-//                border = BorderStroke(1.dp, Color(0xFFE6E6E6)),
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .clickable(onClick = onDateClick)
-//            ) {
-//                Row(
-//                    verticalAlignment = Alignment.CenterVertically,
-//                    modifier = Modifier.padding(16.dp)
-//                ) {
-//                    Icon(
-//                        painter = painterResource(id = R.drawable.ic_calendar_24),
-//                        contentDescription = null,
-//                        tint = Color(0xFF0F3D82)
-//                    )
-//                    Spacer(Modifier.width(12.dp))
-//                    Text("Tanggal Keberangkatan", fontWeight = FontWeight.Medium)
-//                }
-//            }
-//        }
+//        Text("aksdbashaldsjblabsdugialdgluashladsadadhaduaddiuhadsdasiahdludahlauiadslidaiudadadsudsadsduadladuadshaduikjmopknpnpnpn;jn;h;uiophb;jkhuigipgbip;uguiopyguipgbip;ugipfgip;yuv;iyufipyugvio;ufyipfipugipipyughbpuigipyuguipgpuigbuipgpuigipug8ipfgyuipgsd", fontSize = 15.sp, color = Color.Gray)
 //    }
 //}
-@Composable
-fun PassengerMotorRouteCard(
-    onStartClick: () -> Unit = {},
-    onEndClick: () -> Unit = {},
-    onDateClick: () -> Unit = {}
-) {
-    Card(
-        shape = RoundedCornerShape(18.dp),
-        border = BorderStroke(1.dp, Color(0xFFE6E6E6)),
-        elevation = CardDefaults.cardElevation(0.dp),
-        colors = CardDefaults.cardColors(Color.White),
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Column(Modifier.padding(20.dp)) {
-
-            var startY by remember { mutableStateOf(0f) }
-            var endY by remember { mutableStateOf(0f) }
-            var topY by remember { mutableStateOf(0f) }
-
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .onGloballyPositioned { topY = it.boundsInWindow().top }
-            ) {
-                Row(Modifier.fillMaxWidth()) {
-
-                    // Ruang Rail
-                    Box(
-                        modifier = Modifier
-                            .width(34.dp)
-                            .fillMaxHeight()
-                    )
-
-                    Spacer(Modifier.width(10.dp))
-
-                    Column(Modifier.weight(1f)) {
-
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier
-                                .onGloballyPositioned { startY = it.boundsInWindow().center.y }
-                                .clickable { onStartClick() }
-                        ) {
-                            Text("Lokasi Awal", fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
-                        }
-
-                        OutlinedLocationField("Pilih lokasi awal", onStartClick)
-
-                        Spacer(Modifier.height(18.dp))
-
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier
-                                .onGloballyPositioned { endY = it.boundsInWindow().center.y }
-                                .clickable { onEndClick() }
-                        ) {
-                            Text("Lokasi Tujuan", fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
-                        }
-
-                        OutlinedLocationField("Pilih lokasi tujuan", onEndClick)
-                    }
-                }
-
-//                Canvas(modifier = Modifier.matchParentSize()) {
-//                    if (startY > 0 && endY > 0) {
-//                        val density = LocalDensity.current
-//                        val centerX = with(density) { 34.dp.toPx() } / 2
-//                        val radius = with(density) { 9.dp.toPx() }
-//                        val y1 = startY - topY
-//                        val y2 = endY - topY
-//
-//                        drawLine(
-//                            color = Color(0xFFC7D2DA),
-//                            start = Offset(centerX, y1 + radius),
-//                            end = Offset(centerX, y2 - radius),
-//                            strokeWidth = 3f
-//                        )
-//                        drawCircle(Color(0xFF2ECC71), radius, Offset(centerX, y1))
-//                        drawCircle(Color(0xFFFF6E42), radius, Offset(centerX, y2))
-//                    }
-//                }
-                val density = LocalDensity.current     // <-- boleh di sini
-
-                Canvas(modifier = Modifier.matchParentSize()) {
-                    if (startY > 0 && endY > 0) {
-
-                        val centerX = with(density) { 34.dp.toPx() } / 2
-                        val radius = with(density) { 9.dp.toPx() }
-                        val y1 = startY - topY
-                        val y2 = endY - topY
-
-                        drawLine(
-                            color = Color(0xFFC7D2DA),
-                            start = Offset(centerX, y1 + radius),
-                            end = Offset(centerX, y2 - radius),
-                            strokeWidth = 3f
-                        )
-
-                        drawCircle(Color(0xFF2ECC71), radius, Offset(centerX, y1))
-                        drawCircle(Color(0xFFFF6E42), radius, Offset(centerX, y2))
-                    }
-                }
-
-            }
-
-            Spacer(Modifier.height(22.dp))
-
-            Card(
-                shape = RoundedCornerShape(14.dp),
-                border = BorderStroke(1.dp, Color(0xFFE6E6E6)),
-                elevation = CardDefaults.cardElevation(0.dp),
-                colors = CardDefaults.cardColors(Color.White),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { onDateClick() }
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(16.dp)
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_calendar_24),
-                        contentDescription = null,
-                        tint = Color(0xFF0F3D82),
-                        modifier = Modifier.size(24.dp)
-                    )
-                    Spacer(Modifier.width(12.dp))
-                    Text("Tanggal Keberangkatan", fontWeight = FontWeight.Medium)
-                }
-            }
-        }
-    }
-}
 
 @Composable
-fun OutlinedLocationField(
+fun LocationBox(
     placeholder: String,
     onClick: () -> Unit
 ) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(48.dp)
+            .clip(RoundedCornerShape(12.dp))
             .border(1.dp, Color(0xFFE0E0E0), RoundedCornerShape(12.dp))
             .clickable(onClick = onClick)
-            .padding(horizontal = 12.dp),
-        contentAlignment = Alignment.CenterStart
-    ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Text("aksdakdsbjasiudhabdasbajlsbdasbsadjldasladsladsbadsaddbsdsajbldakjabsdoab dabodgadadadoagodgaodadgagsdgaoddsag", fontSize = 15.sp, color = Color.Gray, modifier = Modifier.weight(1f))
-            Icon(Icons.Default.KeyboardArrowRight, contentDescription = null, tint = Color.Gray)
-        }
-    }
-}
-
-
-@Composable
-private fun OutlinedLocationBox(text: String, onClick: () -> Unit) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(48.dp)
-            .border(1.dp, Color(0xFFE6E6E6), RoundedCornerShape(10.dp))
-            .clickable(onClick = onClick)
-            .padding(horizontal = 12.dp),
-        contentAlignment = Alignment.CenterStart
-    ) {
-        Text(text, fontSize = 15.sp, color = Color.Gray)
-    }
-}
-
-@Composable
-fun MotorRouteSelectorInputCard(
-    startTitle: String,
-    startDetail: String,
-    endTitle: String,
-    endDetail: String,
-    onStartClick: () -> Unit = {},
-    onEndClick: () -> Unit = {}
-) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(Color.White),
-        border = BorderStroke(1.dp, Color(0xFFE6E6E6))
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(18.dp)
-        ) {
-
-            var startCenterY by remember { mutableStateOf(0f) }
-            var endCenterY by remember { mutableStateOf(0f) }
-            var topRef by remember { mutableStateOf(0f) }
-            val density = LocalDensity.current
-            val dotSize = 14.dp
-
-            // ==== Bagian layout kanan (judul & detail) ====
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .onGloballyPositioned { topRef = it.boundsInWindow().top }
-            ) {
-
-                // Area kosong kiri untuk rail
-                Box(modifier = Modifier.width(34.dp))
-
-                Spacer(Modifier.width(10.dp))
-
-                Column(modifier = Modifier.weight(1f)) {
-
-                    // Lokasi Awal
-                    Text(
-                        startTitle,
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = 15.sp,
-                        color = Color(0xFF0F1C43),
-                        modifier = Modifier.onGloballyPositioned {
-                            startCenterY = it.boundsInWindow().center.y
-                        }
-                    )
-                    Text(
-                        startDetail,
-                        fontSize = 13.sp,
-                        color = Color.Gray,
-                        modifier = Modifier
-                            .clickable { onStartClick() }   // klik keseluruhan text
-                    )
-
-                    Spacer(Modifier.height(12.dp))
-
-                    // Lokasi Tujuan
-                    Text(
-                        endTitle,
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = 15.sp,
-                        color = Color(0xFF0F1C43),
-                        modifier = Modifier.onGloballyPositioned {
-                            endCenterY = it.boundsInWindow().center.y
-                        }
-                    )
-                    Text(
-                        endDetail,
-                        fontSize = 13.sp,
-                        color = Color.Gray,
-                        modifier = Modifier
-                            .clickable { onEndClick() }
-                    )
-                }
-            }
-
-            // ==== Canvas Rail Dinamis ====
-            Canvas(modifier = Modifier.matchParentSize()) {
-                if (startCenterY != 0f && endCenterY != 0f) {
-
-                    val pxRadius = with(density) { dotSize.toPx() / 2 }
-                    val centerX = with(density) { 34.dp.toPx() } / 2
-                    val y1 = startCenterY - topRef
-                    val y2 = endCenterY - topRef
-
-                    drawLine(
-                        color = Color(0xFFCFD8DC),
-                        start = Offset(centerX, y1 + pxRadius + 2),
-                        end = Offset(centerX, y2 - pxRadius - 2),
-                        strokeWidth = with(density) { 2.dp.toPx() }
-                    )
-
-                    drawCircle(Color(0xFF1565C0), pxRadius, Offset(centerX, y1))
-                    drawCircle(Color(0xFFD32F2F), pxRadius, Offset(centerX, y2))
-                }
-            }
-        }
-    }
-}
-
-
-//@Composable
-//fun PassengerMotorRouteCard(
-//    onStartClick: () -> Unit = {},
-//    onEndClick: () -> Unit = {},
-//    onDateClick: () -> Unit = {}
-//) {
-//    Card(
-//        shape = RoundedCornerShape(18.dp),
-//        colors = CardDefaults.cardColors(Color.White),
-//        modifier = Modifier.fillMaxWidth()
-//    ) {
-//        Column(modifier = Modifier.padding(18.dp)) {
-//
-//            // ======================================================
-//            // LOKASI AWAL & TUJUAN (RAIL DINAMIS)
-//            // ======================================================
-//            RouteSelector(
-//                startLabel = "Lokasi Awal",
-//                endLabel = "Lokasi Tujuan",
-//                onStartClick = onStartClick,
-//                onEndClick = onEndClick
-//            )
-//
-//            Spacer(Modifier.height(16.dp))
-//
-//            // ======================================================
-//            // TANGGAL KEBERANGKATAN (CARD TANPA ELEVATION)
-//            // ======================================================
-//            Card(
-//                shape = RoundedCornerShape(14.dp),
-//                colors = CardDefaults.cardColors(Color.White),
-//                border = BorderStroke(1.dp, Color(0xFFDFE4EA)),
-//                elevation = CardDefaults.cardElevation(0.dp),
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .clickable { onDateClick() }
-//            ) {
-//                Row(
-//                    verticalAlignment = Alignment.CenterVertically,
-//                    modifier = Modifier.padding(14.dp)
-//                ) {
-//                    Icon(
-//                        painter = painterResource(id = R.drawable.ic_calendar_24),
-//                        contentDescription = null,
-//                        tint = Color(0xFF003F8A),
-//                        modifier = Modifier.size(24.dp)
-//                    )
-//                    Spacer(Modifier.width(12.dp))
-//                    Text(
-//                        "Tanggal Keberangkatan",
-//                        fontWeight = FontWeight.Medium,
-//                        fontSize = 15.sp,
-//                        color = Color(0xFF003F8A)
-//                    )
-//                }
-//            }
-//        }
-//    }
-//}
-
-
-@Composable
-private fun RouteSelector(
-    startLabel: String,
-    endLabel: String,
-    onStartClick: () -> Unit,
-    onEndClick: () -> Unit
-) {
-    val iconSize = 26.dp
-    val railColor = Color(0xFFD0D6DD)
-    val density = LocalDensity.current
-
-    var startCenterY by remember { mutableStateOf(0f) }
-    var endCenterY by remember { mutableStateOf(0f) }
-    var topY by remember { mutableStateOf(0f) }
-
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .onGloballyPositioned { topY = it.boundsInWindow().top }
+            .padding(horizontal = 14.dp, vertical = 10.dp), // vertical lebih fleksibel
+        contentAlignment = Alignment.TopStart
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.Top
         ) {
-            // AREA RAIL ICONS
-            Box(
-                modifier = Modifier
-                    .width(34.dp)
-                    .fillMaxHeight()
-            )
-
-            Spacer(Modifier.width(8.dp))
-
-            // AREA LABELS
-            Column(modifier = Modifier.weight(1f)) {
-
-                // Lokasi awal
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.onGloballyPositioned { startCenterY = it.boundsInWindow().center.y }
-                        .clickable { onStartClick() }
-                ) {
-                    Text(startLabel, fontWeight = FontWeight.SemiBold, fontSize = 18.sp)
-                }
-
-                Spacer(Modifier.height(12.dp))
-
-                // Lokasi tujuan
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.onGloballyPositioned { endCenterY = it.boundsInWindow().center.y }
-                        .clickable { onEndClick() }
-                ) {
-                    Text(endLabel, fontWeight = FontWeight.SemiBold, fontSize = 18.sp)
-                }
-            }
-        }
-
-        // RAIL CANVAS
-        Canvas(modifier = Modifier.matchParentSize()) {
-            if (startCenterY == 0f || endCenterY == 0f) return@Canvas
-
-            val startY = startCenterY - topY
-            val endY = endCenterY - topY
-            val centerX = with(density) { 34.dp.toPx() } / 2
-
-            // garis
-            drawLine(
-                color = railColor,
-                start = Offset(centerX, startY + with(density) { iconSize.toPx() / 2 }),
-                end = Offset(centerX, endY - with(density) { iconSize.toPx() / 2 }),
-                strokeWidth = with(density) { 2.dp.toPx() }
-            )
-
-            // icon atas (hijau)
-            drawCircle(
-                color = Color(0xFF27AE60),
-                radius = with(density) { iconSize.toPx() / 2 },
-                center = Offset(centerX, startY)
-            )
-
-            // icon bawah (oranye)
-            drawCircle(
-                color = Color(0xFFE67E22),
-                radius = with(density) { iconSize.toPx() / 2 },
-                center = Offset(centerX, endY)
-            )
-        }
-    }
-}
-
-
-
-@Composable
-fun HistoryAddressItem(address: String, onClick: () -> Unit) {
-    val GrayLabel = Color(0xFF6B7280)
-
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onClick() }
-            .padding(horizontal = 18.dp)
-    ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_location_24),
-                contentDescription = null,
-                tint = Color(0xFF1E4DA2)
-            )
-            Spacer(Modifier.width(10.dp))
+            // Text otomatis multiline
             Text(
-                text = address,
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 14.sp
+                text = placeholder,
+                fontSize = 15.sp,
+                color = Color.Gray,
+                modifier = Modifier.weight(1f)
+            )
+
+            Icon(
+                imageVector = Icons.Default.KeyboardArrowRight,
+                contentDescription = null,
+                tint = Color.Gray,
+                modifier = Modifier.padding(start = 6.dp, top = 2.dp)
             )
         }
-        Spacer(Modifier.height(4.dp))
-        Text(
-            text = "Patehan, Kecamatan Kraton, Kota Yogyakarta 55133",
-            color = GrayLabel,
-            fontSize = 12.sp,
-            modifier = Modifier.padding(start = 34.dp)
-        )
-        Spacer(Modifier.height(6.dp))
-        Divider(Modifier.fillMaxWidth(), color = Color(0xFFE8E8E8))
     }
 }
+
 
 @Preview(showSystemUi = true, showBackground = true)
 @Composable

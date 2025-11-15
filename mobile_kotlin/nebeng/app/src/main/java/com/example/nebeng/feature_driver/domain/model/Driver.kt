@@ -30,15 +30,10 @@ data class Driver(
     val policeClearanceCertificateNumber: String?,
     val policeClearanceCertificateFullname: String?,
     
-    
     // Ditambahi oleh anggota lain
     val totalRating: Int?,
     val ratingCount: Int?,
     val averageRating: Float?
-
-    // 🔹 Relasi opsional (bisa kosong / null tergantung endpoint)
-//    val ratings: List<Rating> = emptyList(),
-//    val user: User? = null
 ) {
     companion object {
         fun getEmpty(): Driver = Driver(

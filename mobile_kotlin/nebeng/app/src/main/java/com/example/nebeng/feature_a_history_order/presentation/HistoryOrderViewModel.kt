@@ -166,7 +166,6 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class HistoryOrderViewModel @Inject constructor(
-//    private val getHistoryOrdersUseCase: GetHistoryOrdersUseCase
     private val historyOrderUseCases: HistoryOrderUseCases
 ) : ViewModel() {
 
@@ -218,73 +217,22 @@ class HistoryOrderViewModel @Inject constructor(
         }
     }
 
-    /**
-     * Memuat data riwayat berdasarkan token user (JWT).
-     * Dipakai jika sudah bisa akses tabel vehicle dari tabel passenger ride
-     */
-//    fun loadHistory(token: String) {
+//    fun loadTerminals(token: String) {
 //        viewModelScope.launch {
-//            _uiState.value = _uiState.value.copy(isLoading = true)
-//
-//            val bookingsFlow = historyOrderUseCases.getPassengerRideBooking(token)
-//            val terminalsFlow = historyOrderUseCases.getTerminal(token)
-//
-//            combine(bookingsFlow, terminalsFlow) { bookings, terminals ->
-//                // join nama terminal berdasarkan id
-//                bookings.map{ booking ->
-//                    val departureTerminal = terminals.find { it.id == booking.departureTerminalId }
-//                    val arrivalTerminal = terminals.find { it.id == booking.arrivalTerminalId }
-//
-//                    val departureName = departureTerminal?.name ?: "Unknown"
-//                    val arrivalName = arrivalTerminal?.name ?: "Unknown"
-//
-//                    val departureAddress = departureTerminal?.fullAddress ?: "-"
-//                    val arrivalAddress = arrivalTerminal?.fullAddress ?: "-"
-//
-//                    booking.copy(
-//                        // extend HistoryOrderItem dengan field baru
-//                        departureTerminalName = departureName,
-//                        arrivalTerminalName = arrivalName,
-//                        departureTerminalDetail = departureAddress,
-//                        arrivalTerminalDetail = arrivalAddress
-//                    )
+//            historyOrderUseCases.getTerminal(token)
+//                .catch { e ->
+//                    _uiState.update {
+//                        it.copy(errorMessage = e.message ?: "Gagal memuat terminal")
+//                    }
 //                }
-//
-//            }.catch { e ->
-//                _uiState.value = _uiState.value.copy(
-//                    isLoading = false,
-//                    errorMessage = e.message ?: "Terjadi kesalahan saat memuat riwayat"
-//                )
-//            }.collectLatest { joined ->
-//
-//                // 🔥 Sekarang ambil kendaraan berdasarkan driverId booking pertama
-//                val driverId = joined.firstOrNull()?.driverId
-//
-//                if (driverId != null) {
-//                    historyOrderUseCases.getVehicle(token, driverId).collectLatest { vehicles ->
-//                        val updated = joined.map { booking ->
-//                            val vehicle = vehicles.firstOrNull() { it.driverId == booking.driverId }
-//
-//                            booking.copy(
-//                                vehicleName = vehicle?.vehicleName ?: "-",
-//                                vehicleColor = vehicle?.vehicleColor ?: "-"
-//                            )
-//                        }
-//
-//                        _uiState.value = _uiState.value.copy(
-//                            historyItems = updated,
-//                            isLoading = false
+//                .collect { terminalList ->
+//                    _uiState.update {
+//                        it.copy(
+//                            terminals = terminalList,
+//                            errorMessage = null
 //                        )
 //                    }
 //                }
-//                else {
-//                    // tidak ada driverId
-//                    _uiState.value = _uiState.value.copy(
-//                        historyItems = joined,
-//                        isLoading = false
-//                    )
-//                }
-//            }
 //        }
 //    }
 
@@ -294,9 +242,5 @@ class HistoryOrderViewModel @Inject constructor(
     fun onChangeSchedule(item: HistoryOrderItem) {
         println("🗓️ Jadwal diubah untuk: ${item.bookingCode}")
         // Implementasi lanjutan: navigasi, dialog, dsb.
-    }
-
-    fun selectHistoryItem(bookingId: Int) {
-        val selected  = _uiState.value.historyItems.firstOrNull() { it.bookingId == bookingId }
     }
 }
