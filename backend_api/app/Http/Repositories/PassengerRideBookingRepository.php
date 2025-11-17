@@ -49,7 +49,7 @@ class PassengerRideBookingRepository
     {
         return $this->model
             ->where('customer_id', $customerId)
-            ->with(['passengerRide', 'passengerTransaction'])
+            ->with(['passengerRide.driver', 'passengerTransaction'])
             ->orderBy('created_at', 'DESC')
             ->get();
     }

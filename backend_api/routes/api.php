@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\AdministratorController;
-use App\Http\Controllers\RideController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\RideController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\RegencyController;
@@ -13,6 +13,9 @@ use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\TerminalController;
 use App\Http\Controllers\GoodsRideController;
+use App\Http\Controllers\AdminOrdersController;
+use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\AdministratorController;
 use App\Http\Controllers\PassengerRideController;
 use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\CreditScoreLogController;
@@ -20,10 +23,8 @@ use App\Http\Controllers\DriverCommissionController;
 use App\Http\Controllers\DriverWithdrawalController;
 use App\Http\Controllers\GoodsRideBookingController;
 use App\Http\Controllers\GoodsTransactionController;
-use App\Http\Controllers\AdminOrdersController;
 use App\Http\Controllers\PassengerRideBookingController;
 use App\Http\Controllers\PassengerTransactionController;
-use App\Http\Controllers\TransactionController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -104,7 +105,6 @@ Route::middleware('auth:api')->group(function() {
     // ######################################################################################
     // ######################################################################################
     // ######################################################################################
-
 
     // [ DRIVER ]
     Route::prefix('drivers')->group(function () {
@@ -271,5 +271,17 @@ Route::middleware('auth:api')->group(function() {
         Route::delete('/{id}', [AdministratorController::class, 'destroy']);
     });
 
+    // ######################################################################################
+    // ######################################################################################
+    // ######################################################################################
+    // ######################################################################################
+    // ######################################################################################
+    Route::prefix('users')->group(function () {
+        Route::get('/', [UserController::class, 'index']);
+        Route::get('/{id}', [UserController::class, 'show']);
+        Route::post('/', [UserController::class, 'store']);
+        Route::put('/{id}', [UserController::class, 'update']);
+        Route::delete('/{id}', [UserController::class, 'destroy']);
+    });
 });
 
