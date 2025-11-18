@@ -12,6 +12,7 @@ import com.example.nebeng.feature_passenger_ride_booking.domain.usecase.ReadByCu
 import com.example.nebeng.feature_passenger_ride_booking.domain.usecase.ReadByIdPassengerRideBookingUseCase
 import com.example.nebeng.feature_passenger_ride_booking.domain.usecase.ReadByPassengerRideIdPassengerRideBookingUseCase
 import com.example.nebeng.feature_passenger_ride_booking.domain.usecase.UpdatePassengerRideBookingUseCase
+//import com.example.nebeng.feature_passenger_ride_booking.domain.usecase.feature_a_history_order.GetPassengerRideBookingSummaryByCustomerIdUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -52,6 +53,9 @@ object PassengerRideBookingModule {
             update                  = UpdatePassengerRideBookingUseCase(repository),
             patch                   = PatchPassengerRideBookingUseCase(repository),
             delete                  = DeletePassengerRideBookingUseCase(repository)
+
+            // Aggregator feature_a_history_order
+//            getHistorySummaryByCustomerId = GetPassengerRideBookingSummaryByCustomerIdUseCase(repository)
         )
     }
 }

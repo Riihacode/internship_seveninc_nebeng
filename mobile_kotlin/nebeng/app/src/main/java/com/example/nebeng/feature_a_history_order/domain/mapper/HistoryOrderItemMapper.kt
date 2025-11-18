@@ -1,12 +1,12 @@
 package com.example.nebeng.feature_a_history_order.domain.mapper
 
-import android.util.Log
 import com.example.nebeng.core.utils.BookingStatus
 import com.example.nebeng.core.utils.RideStatus
 import com.example.nebeng.core.utils.VehicleType
 import com.example.nebeng.feature_a_history_order.domain.model.HistoryOrderItem
-import com.example.nebeng.feature_a_history_order.presentation.support_for_present.model.HistoryItemData
-import com.example.nebeng.feature_passenger_ride_booking.domain.model.PassengerRideBookingFull
+import com.example.nebeng.feature_customer.data.remote.model.dto.DataItemDto
+import com.example.nebeng.feature_customer.domain.model.UserCustomerSummary
+import com.example.nebeng.feature_passenger_ride_booking.domain.model.feature_a_history_order.PassengerRideBookingSummary
 
 /**
  * ============================================================
@@ -206,51 +206,80 @@ import com.example.nebeng.feature_passenger_ride_booking.domain.model.PassengerR
  * - Ke HistoryOrderItem (feature history order)
  * ============================================================
  */
-object HistoryOrderItemMapper {
+//object HistoryOrderItemMapper {
+//
+//    /**
+//     * Mengubah model booking lengkap menjadi item riwayat.
+//     * Digunakan di use case GetHistoryOrdersUseCase.
+//     */
+////    fun fromFull(full: PassengerRideBookingFull): HistoryOrderItem {
+////        val booking = full.booking
+////        val ride = full.ride
+////        val driver = full.driver
+////
+////        val customer = full.customer
+////
+////        val mapped = HistoryOrderItem(
+////            bookingId = booking.id,
+////            bookingCode = booking.bookingCode,
+////            createdAt = booking.createdAt,
+////            departureTerminalId = ride.departureTerminalId,
+////            arrivalTerminalId = ride.arrivalTerminalId,
+////            seatsReserved = booking.seatsReserved,
+////            totalPrice = booking.totalPrice,
+////            bookingStatus = BookingStatus.fromString(booking.status),
+////            vehicleType = VehicleType.fromString(ride.vehicleType),
+////            rideStatus = RideStatus.fromString(ride.rideStatus),
+////            driverName = driver.fullName,
+////
+////            customerName = customer.fullName,
+////            customerId = customer.id,
+////            averageRating = driver.averageRating
+////        )
+////
+////        // 🔍 Debug log agar mudah melacak data yang tidak lengkap
+////        if (driver.fullName.isBlank() || ride.vehicleType.isBlank()) {
+////            Log.w(
+////                "HistoryOrderItemMapper",
+////                "⚠️ Data tidak lengkap: bookingId=${booking.id}, driver=${driver.fullName}, vehicle=${ride.vehicleType}"
+////            )
+////        }
+////
+////        if (customer.fullName.isBlank()) {
+////            Log.w(
+////                "HistoryOrderItemMapper",
+////                "⚠️ Data tidak lengkap: bookingId=${customer.id}, customer=${customer.fullName}"
+////            )
+////        }
+////        return mapped
+////    }
+//}
 
-    /**
-     * Mengubah model booking lengkap menjadi item riwayat.
-     * Digunakan di use case GetHistoryOrdersUseCase.
-     */
-    fun fromFull(full: PassengerRideBookingFull): HistoryOrderItem {
-        val booking = full.booking
-        val ride = full.ride
-        val driver = full.driver
+fun PassengerRideBookingSummary.toHistoryOrderItem(): HistoryOrderItem {
+    return HistoryOrderItem(
+        bookingId = bookingId,
+        bookingCode = bookingCode,
+        createdAt = createdAt,
 
-        val customer = full.customer
+        departureTerminalId = ride.departureTerminalId,
+        arrivalTerminalId = ride.arrivalTerminalId,
+        seatsReserved = ride.seatsReserved,
+        totalPrice = transaction.totalAmount,
 
-        val mapped = HistoryOrderItem(
-            bookingId = booking.id,
-            bookingCode = booking.bookingCode,
-            createdAt = booking.createdAt,
-            departureTerminalId = ride.departureTerminalId,
-            arrivalTerminalId = ride.arrivalTerminalId,
-            seatsReserved = booking.seatsReserved,
-            totalPrice = booking.totalPrice,
-            bookingStatus = BookingStatus.fromString(booking.status),
-            vehicleType = VehicleType.fromString(ride.vehicleType),
-            rideStatus = RideStatus.fromString(ride.rideStatus),
-            driverName = driver.fullName,
+        averageRating = driver.averageRating,
+        customerName = customer.fullName,
+        customerId = customer.id,
 
-            customerName = customer.fullName,
-            customerId = customer.id,
-            averageRating = driver.averageRating
-        )
+        bookingStatus = BookingStatus.fromString(status),                 // 👈 enum 1
+        vehicleType = VehicleType.fromString(ride.vehicleType),           // 👈 enum 2
+        rideStatus = RideStatus.fromString(ride.rideStatus),              // 👈 enum 3
+        driverName = driver.fullName
+    )
+}
 
-        // 🔍 Debug log agar mudah melacak data yang tidak lengkap
-        if (driver.fullName.isBlank() || ride.vehicleType.isBlank()) {
-            Log.w(
-                "HistoryOrderItemMapper",
-                "⚠️ Data tidak lengkap: bookingId=${booking.id}, driver=${driver.fullName}, vehicle=${ride.vehicleType}"
-            )
-        }
-
-        if (customer.fullName.isBlank()) {
-            Log.w(
-                "HistoryOrderItemMapper",
-                "⚠️ Data tidak lengkap: bookingId=${customer.id}, customer=${customer.fullName}"
-            )
-        }
-        return mapped
-    }
+fun HistoryOrderItem.withCustomerInfo(summary: UserCustomerSummary): HistoryOrderItem {
+    return this.copy(
+        customerId = summary.customerId,
+        customerName = summary.customerName
+    )
 }

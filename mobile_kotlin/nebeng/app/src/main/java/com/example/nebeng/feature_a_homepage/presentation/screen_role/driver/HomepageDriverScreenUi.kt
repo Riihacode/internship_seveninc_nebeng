@@ -39,7 +39,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.nebeng.R
-import com.example.nebeng.feature_a_auth.domain.model.Auth
+import com.example.nebeng.feature_auth.domain.model.Auth
 import com.example.nebeng.feature_a_history_order.presentation.support_for_present.model.HistoryItemData
 import com.example.nebeng.feature_a_homepage.presentation.HomepageUiState
 

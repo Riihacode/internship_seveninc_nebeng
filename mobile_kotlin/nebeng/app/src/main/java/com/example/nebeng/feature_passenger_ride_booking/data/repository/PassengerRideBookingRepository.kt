@@ -5,14 +5,16 @@ import com.example.nebeng.feature_passenger_ride_booking.data.remote.model.reque
 import com.example.nebeng.feature_passenger_ride_booking.data.remote.model.request.UpdatePassengerRideBookingRequest
 import com.example.nebeng.feature_passenger_ride_booking.domain.model.PassengerRideBooking
 import com.example.nebeng.feature_passenger_ride_booking.domain.model.PassengerRideBookingFull
+import com.example.nebeng.feature_passenger_ride_booking.domain.model.feature_a_history_order.PassengerRideBookingSummary
 import kotlinx.coroutines.flow.Flow
+import com.example.nebeng.core.common.Result
 
 interface PassengerRideBookingRepository {
     suspend fun readAll(
         token: String
     ): Flow<List<PassengerRideBooking>>
 
-    suspend fun readAllFull(token: String): Flow<List<PassengerRideBookingFull>> // ✅ nested version
+//    suspend fun readAllFull(token: String): Flow<List<PassengerRideBookingFull>> // ✅ nested version
 
 
     suspend fun readById(
@@ -51,4 +53,12 @@ interface PassengerRideBookingRepository {
         token: String,
         id: Int
     ): Flow<Boolean>
+
+    // Aggregator cross feature di feature_a_history_order
+//    suspend fun getPassengerRideBookingSummary(token: String): Flow<Result<List<>>>
+    suspend fun readHistorySummaryByCustomerId(
+        token: String,
+        customerId: Int
+    ): Flow<Result<List<PassengerRideBookingSummary>>>
+
 }

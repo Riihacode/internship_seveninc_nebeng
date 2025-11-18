@@ -17,6 +17,7 @@ fun CustomerHistoryNavGraph(
     onBack: () -> Unit
 ) {
     val navController = rememberNavController()
+    val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
 
     NavHost(
         navController = navController,
@@ -27,7 +28,7 @@ fun CustomerHistoryNavGraph(
         // 1) LIST SCREEN (History Customer)
         // ======================================================
         composable("history_customer_screen") {
-            val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
+
 
             HistoryOrderCustomerScreenUi(
                 uiState = uiState,
@@ -49,7 +50,7 @@ fun CustomerHistoryNavGraph(
         ) { entry ->
 
             val orderId = entry.arguments?.getInt("orderId") ?: 0
-            val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
+//            val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
 
             DetailHistoryOrderCustomerScreen(
                 orderId = orderId,

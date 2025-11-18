@@ -72,7 +72,7 @@ class CustomerViewModel @Inject constructor(
                 when (result) {
                     is Result.Loading -> _uiState.update { it.copy(isLoading = true, errorMessage = null) }
                     is Result.Success -> _uiState.update {
-                        it.copy(isLoading = false, customers = result.data, errorMessage = null)
+                        it.copy(isLoading = false, currentCustomer = result.data, errorMessage = null)
                     }
                     is Result.Error -> _uiState.update {
                         it.copy(isLoading = false, errorMessage = result.message)

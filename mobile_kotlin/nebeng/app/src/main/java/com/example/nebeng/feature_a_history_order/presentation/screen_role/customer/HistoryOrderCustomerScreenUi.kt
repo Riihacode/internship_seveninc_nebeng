@@ -69,7 +69,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import com.example.nebeng.core.utils.BookingStatus
 import com.example.nebeng.core.utils.RideStatus
 import com.example.nebeng.core.utils.VehicleType
-import com.example.nebeng.feature_a_auth.domain.model.Auth
+import com.example.nebeng.feature_auth.domain.model.Auth
 //import com.example.nebeng.feature_a_history_order.data.model.mapper.toPresentation
 import com.example.nebeng.feature_a_history_order.domain.model.HistoryOrderItem
 import com.example.nebeng.feature_a_history_order.presentation.HistoryOrderUiState
@@ -2246,7 +2246,7 @@ private fun HistoryItemCard(
                     )
                     Spacer(Modifier.width(6.dp))
                     Text(
-                        "Nebeng ${data.vehicleType.value}",
+                        text = "Nebeng ${data.vehicleType.value}",
                         color = NebengBlue,
                         fontWeight = FontWeight.SemiBold,
                         fontSize = 14.sp
@@ -2273,12 +2273,6 @@ private fun HistoryItemCard(
 
             Spacer(Modifier.height(8.dp))
 
-//            Text(
-//                text = "${data.departureTerminalName} → ${data.arrivalTerminalName}",
-//                fontWeight = FontWeight.SemiBold,
-//                fontSize = 16.sp,
-//                color = Color.Black
-//            )
             Text(
                 text = buildString {
                     append(data.departureTerminalName.ifBlank { "Terminal Keberangkatan" })
@@ -2290,15 +2284,7 @@ private fun HistoryItemCard(
                 color = Color.Black
             )
 
-
-//            // ====== Jalur (Rute) ======
-//            RideRouteItem(
-//                from = order.departureTerminalName,
-//                fromDetail = order.departureTerminalDetail,
-//                to = order.arrivalTerminalName,
-//                toDetail = order.arrivalTerminalDetail
-//            )
-
+            // ====== Jalur (Rute) ======
             Spacer(Modifier.height(6.dp))
 
             Text("${data.createdAt.take(10)} • ${data.createdAt.takeLast(8)}", color = Color.Gray, fontSize = 13.sp)

@@ -1,0 +1,18 @@
+package com.example.nebeng.feature_a_authentication.domain.usecase
+
+import com.example.nebeng.feature_auth.data.repository.AuthRepository
+import com.example.nebeng.feature_auth.domain.model.Auth
+import com.example.nebeng.core.common.Result
+import javax.inject.Inject
+
+//class UpdateAuthUseCase @Inject constructor(
+//    private val repository: AuthRepository
+//) {
+//    suspend operator fun invoke(user: Auth): Result<Unit>{
+//        return try {
+//            repository.updateUser(user)
+//        } catch (e: Exception) {
+//            Result.Error(e.message ?: "Terjadi kesalahan saat update profil")
+//        }
+//    }
+//}

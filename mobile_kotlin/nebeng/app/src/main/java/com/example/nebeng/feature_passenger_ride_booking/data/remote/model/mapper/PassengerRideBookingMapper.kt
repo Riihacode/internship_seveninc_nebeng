@@ -5,6 +5,11 @@ import com.example.nebeng.feature_driver.domain.model.Driver
 import com.example.nebeng.feature_passenger_ride.domain.model.PassengerRide
 import com.example.nebeng.feature_passenger_ride_booking.data.remote.model.dto.*
 import com.example.nebeng.feature_passenger_ride_booking.domain.model.*
+import com.example.nebeng.feature_passenger_ride_booking.domain.model.feature_a_history_order.BookingCustomerSummary
+import com.example.nebeng.feature_passenger_ride_booking.domain.model.feature_a_history_order.BookingDriverSummary
+import com.example.nebeng.feature_passenger_ride_booking.domain.model.feature_a_history_order.BookingRideSummary
+import com.example.nebeng.feature_passenger_ride_booking.domain.model.feature_a_history_order.BookingTransactionSummary
+import com.example.nebeng.feature_passenger_ride_booking.domain.model.feature_a_history_order.PassengerRideBookingSummary
 import com.example.nebeng.feature_passenger_transaction.domain.model.PassengerTransaction
 
 /**
@@ -127,12 +132,47 @@ fun PassengerTransactionDto.toDomain(): PassengerTransaction {
  * ============================================================
  * Khusus dipakai di HISTORY (data lengkap)
  */
-fun DataDto.toFullDomain(): PassengerRideBookingFull {
-    return PassengerRideBookingFull(
-        booking     = this.toDomain(),
-        customer    = this.customer?.toDomain() ?: Customer.getEmpty(),
-        ride        = this.passengerRide?.toDomain() ?: PassengerRide.getEmpty(),
-        driver      = this.passengerRide?.driver?.toDomain() ?: Driver.getEmpty(),
-        transaction = this.passengerTransaction?.toDomain() ?: PassengerTransaction.getEmpty()
+//fun DataDto.toFullDomain(): PassengerRideBookingFull {
+//    return PassengerRideBookingFull(
+//        booking     = this.toDomain(),
+//        customer    = this.customer?.toDomain() ?: Customer.getEmpty(),
+//        ride        = this.passengerRide?.toDomain() ?: PassengerRide.getEmpty(),
+//        driver      = this.passengerRide?.driver?.toDomain() ?: Driver.getEmpty(),
+//        transaction = this.passengerTransaction?.toDomain() ?: PassengerTransaction.getEmpty()
+//    )
+//}
+
+fun DataDto.toSummary(): PassengerRideBookingSummary {
+    return PassengerRideBookingSummary(
+        bookingId = id,
+        bookingCode = bookingCode,
+        createdAt = createdAt,
+        customer = BookingCustomerSummary(
+            id = customer?.id ?: 0,
+            fullName = customer?.fullName.orEmpty(),
+            telephone = customer?.telephone.orEmpty(),
+        ),
+        driver = BookingDriverSummary(
+            id = passengerRide?.driver?.id ?: 0,
+            fullName = passengerRide?.driver?.fullName.orEmpty(),
+            averageRating = passengerRide?.driver?.averageRating
+        ),
+        ride = BookingRideSummary(
+            id = passengerRide?.id ?: 0,
+            departureTerminalId = passengerRide?.departureTerminalId ?: 0,
+            arrivalTerminalId = passengerRide?.arrivalTerminalId ?: 0,
+            vehicleType = passengerRide?.vehicleType.orEmpty(),
+            departureTime = passengerRide?.departureTime.orEmpty(),
+            seatsReserved = seatsReserved,
+            pricePerSeat = passengerRide?.pricePerSeat ?: 0,
+            rideStatus = passengerRide?.rideStatus.orEmpty()
+        ),
+        transaction = BookingTransactionSummary(
+            id = passengerTransaction?.id ?: 0,
+            totalAmount = passengerTransaction?.totalAmount ?: 0,
+            paymentStatus = passengerTransaction?.paymentStatus?.name,
+            creditUsed = passengerTransaction?.creditUsed ?: 0
+        ),
+        status = status
     )
 }

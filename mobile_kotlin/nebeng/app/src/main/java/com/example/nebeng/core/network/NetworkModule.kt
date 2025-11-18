@@ -1,6 +1,6 @@
 package com.example.nebeng.core.network
 
-import com.example.nebeng.feature_a_auth.data.remote.api.AuthApi
+import com.example.nebeng.feature_auth.data.remote.api.AuthApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

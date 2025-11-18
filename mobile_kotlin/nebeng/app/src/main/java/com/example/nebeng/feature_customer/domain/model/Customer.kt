@@ -1,7 +1,5 @@
 package com.example.nebeng.feature_customer.domain.model
 
-import com.example.nebeng.feature_user.domain.model.User
-
 data class Customer(
     val id: Int,
     val userId: Int,

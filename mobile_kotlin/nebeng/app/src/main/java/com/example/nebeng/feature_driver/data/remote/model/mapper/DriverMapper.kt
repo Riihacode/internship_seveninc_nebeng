@@ -1,5 +1,6 @@
 package com.example.nebeng.feature_driver.data.remote.model.mapper
 
+import com.example.nebeng.core.utils.UserType
 import com.example.nebeng.feature_driver.data.remote.model.dto.DataDto
 import com.example.nebeng.feature_driver.data.remote.model.dto.DataItemDto
 import com.example.nebeng.feature_driver.data.remote.model.dto.RatingsItemDto
@@ -116,6 +117,9 @@ fun UserDto.toDomain(): User {
         name = name,
         username = username,
         email = email,
-        userType = userType
+        userType = UserType.fromString(userType),
+        banned = banned == 1,
+        createdAt = createdAt,
+        updatedAt = updatedAt
     )
 }

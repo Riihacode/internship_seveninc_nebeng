@@ -12,7 +12,9 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 import com.example.nebeng.core.common.Result
 import com.example.nebeng.feature_customer.data.remote.model.mapper.toDomain
-import com.example.nebeng.feature_passenger_ride_booking.data.remote.model.mapper.toFullDomain
+import com.example.nebeng.feature_customer.data.remote.model.mapper.toSummary
+import com.example.nebeng.feature_customer.domain.model.UserCustomerSummary
+//import com.example.nebeng.feature_passenger_ride_booking.data.remote.model.mapper.toFullDomain
 import com.example.nebeng.feature_passenger_ride_booking.domain.model.PassengerRideBookingFull
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
@@ -57,22 +59,88 @@ class CustomerRepositoryImpl @Inject constructor(
         }
     }.flowOn(Dispatchers.IO)
 
+//    override suspend fun getCustomerByUserId(
+//        token: String,
+//        userId: Int,
+//    ): Flow<Result<List<Customer>>> = flow {
+//        emit(Result.Loading)
+//        try {
+//            val response = api.getCustomerByUserId("Bearer $token", userId)
+//            if (response.isSuccessful) {
+//                val customers = response.body()?.data?.map { it.toDomain() }.orEmpty()
+//                emit(Result.Success(customers))
+//                Log.d("CustomerRepo", "✅ getCustomerByUserId: ${customers.size} found for user=$userId")
+//            } else {
+//                emit(Result.Error(response.errorBody()?.string() ?: "Failed to fetch by userId"))
+//            }
+//        } catch (e: Exception) {
+//            emit(Result.Error(e.message ?: "Unknown error while fetching customer by userId"))
+//        }
+//    }.flowOn(Dispatchers.IO)
+//    override suspend fun getCustomerByUserId(
+//        token: String,
+//        userId: Int
+//    ): Flow<Result<Customer>> = flow {
+//        emit(Result.Loading)
+//        try {
+//            val response = api.getCustomerByUserId("Bearer $token", userId)
+//
+//            if (response.isSuccessful) {
+//                val dto = response.body()?.data?.toDomain()
+//                if (dto != null) {
+//                    emit(Result.Success(dto))
+//                } else {
+//                    emit(Result.Error("Customer null"))
+//                }
+//            } else {
+//                emit(Result.Error(response.errorBody()?.string() ?: "Unknown error"))
+//            }
+//        } catch (e: Exception) {
+//            emit(Result.Error(e.message ?: "Unknown exception"))
+//        }
+//    }.flowOn(Dispatchers.IO)
+//    override suspend fun getCustomerByUserId(
+//        token: String,
+//        userId: Int
+//    ): Flow<Result<Customer>> = flow {
+//        emit(Result.Loading)
+//        try {
+//            val response = api.getCustomerByUserId("Bearer $token", userId)
+//
+//            if (response.isSuccessful) {
+//                val list = response.body()?.data ?: emptyList()
+//                val dto = list.firstOrNull()?.toDomain()
+//
+//                if (dto != null) emit(Result.Success(dto))
+//                else emit(Result.Error("Customer not found"))
+//            } else {
+//                emit(Result.Error(response.errorBody()?.string() ?: "Unknown error"))
+//            }
+//        } catch (e: Exception) {
+//            emit(Result.Error(e.message ?: "Unknown exception"))
+//        }
+//    }.flowOn(Dispatchers.IO)
     override suspend fun getCustomerByUserId(
         token: String,
         userId: Int,
-    ): Flow<Result<List<Customer>>> = flow {
+    ): Flow<Result<Customer>> = flow {
         emit(Result.Loading)
         try {
             val response = api.getCustomerByUserId("Bearer $token", userId)
-            if (response.isSuccessful) {
-                val customers = response.body()?.data?.map { it.toDomain() }.orEmpty()
-                emit(Result.Success(customers))
-                Log.d("CustomerRepo", "✅ getCustomerByUserId: ${customers.size} found for user=$userId")
-            } else {
-                emit(Result.Error(response.errorBody()?.string() ?: "Failed to fetch by userId"))
+
+            if (!response.isSuccessful) {
+                emit(Result.Error(response.errorBody()?.string() ?: "Unknown error"))
+                return@flow
             }
+
+            val dto = response.body()?.data?.toDomain()   // <-- langsung object, bukan array
+
+            if (dto != null) emit(Result.Success(dto))
+            else emit(Result.Error("Customer not found"))
+
         } catch (e: Exception) {
-            emit(Result.Error(e.message ?: "Unknown error while fetching customer by userId"))
+            Log.e("LOGIN_USECASE", "getCustomerByUserIdSummary ERROR: ${e.message}")
+            emit(Result.Error(e.message ?: "Unknown exception"))
         }
     }.flowOn(Dispatchers.IO)
 
@@ -201,4 +269,78 @@ class CustomerRepositoryImpl @Inject constructor(
             emit(Result.Error(e.message ?: "Unknown error while deleting customer"))
         }
     }.flowOn(Dispatchers.IO)
+
+//    override suspend fun getCustomerByUserIdSummary(
+//        token: String,
+//        userId: Int,
+//    ): Flow<Result<UserCustomerSummary>>  = flow {
+//        emit(Result.Loading)
+//        try {
+//            val response = api.getCustomerByUserId("Bearer $token", userId)
+//
+//            if (response.isSuccessful) {
+//                val list = response.body()?.data ?: emptyList()
+//                val dto = list.firstOrNull()?.toSummary()
+//
+//                if (dto != null) emit(Result.Success(dto))
+//                else emit(Result.Error("Customer not found"))
+//            } else {
+//                emit(Result.Error(response.errorBody()?.string() ?: "Unknown error"))
+//            }
+//        } catch (e: Exception) {
+//            emit(Result.Error(e.message ?: "Unknown exception"))
+//        }
+//    }.flowOn(Dispatchers.IO)
+//    override suspend fun getCustomerByUserIdSummary(
+//        token: String,
+//        userId: Int,
+//    ): Flow<Result<UserCustomerSummary>>  = flow {
+//        emit(Result.Loading)
+//        try {
+//            val response = api.getCustomerByUserId("Bearer $token", userId)
+//            android.util.Log.d("CustomerRepo", "getCustomerByUserIdSummary code=${response.code()}")
+//
+//            if (response.isSuccessful) {
+//                val list = response.body()?.data ?: emptyList()
+//                android.util.Log.d("CustomerRepo", "getCustomerByUserIdSummary size=${list.size}")
+//
+//                val dto = list.firstOrNull()?.toSummary()
+//
+//                if (dto != null) {
+//                    android.util.Log.d("CustomerRepo", "getCustomerByUserIdSummary dto: id=${dto.customerId}, name=${dto.customerName}")
+//                    emit(Result.Success(dto))
+//                } else {
+//                    emit(Result.Error("Customer not found"))
+//                }
+//            } else {
+//                emit(Result.Error(response.errorBody()?.string() ?: "Unknown error"))
+//            }
+//        } catch (e: Exception) {
+//            emit(Result.Error(e.message ?: "Unknown exception"))
+//        }
+//    }.flowOn(Dispatchers.IO)
+    override suspend fun getCustomerByUserIdSummary(
+        token: String,
+        userId: Int,
+    ): Flow<Result<UserCustomerSummary>> = flow {
+        emit(Result.Loading)
+        try {
+            val response = api.getCustomerByUserId("Bearer $token", userId)
+
+            if (!response.isSuccessful) {
+                emit(Result.Error(response.errorBody()?.string() ?: "Unknown error"))
+                return@flow
+            }
+
+            val dto = response.body()?.data?.toSummary()   // <-- langsung object, bukan array
+
+            if (dto != null) emit(Result.Success(dto))
+            else emit(Result.Error("Customer not found"))
+
+        } catch (e: Exception) {
+            Log.e("LOGIN_USECASE", "getCustomerByUserIdSummary ERROR: ${e.message}")
+            emit(Result.Error(e.message ?: "Unknown exception"))
+        }
+    }.flowOn(Dispatchers.IO)
+
 }

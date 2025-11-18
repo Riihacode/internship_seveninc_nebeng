@@ -4,7 +4,7 @@ import com.example.nebeng.feature_customer.data.remote.model.dto.DataItemDto
 import com.google.gson.annotations.SerializedName
 
 data class ReadByUserIdCustomerResponse(
-	@field:SerializedName("data") val data: List<DataItemDto>
+	@field:SerializedName("data") val data: DataItemDto
 )
 
 //data class User(

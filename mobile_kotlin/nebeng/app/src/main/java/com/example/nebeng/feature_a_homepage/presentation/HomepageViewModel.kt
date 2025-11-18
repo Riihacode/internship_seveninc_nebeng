@@ -3,7 +3,7 @@ package com.example.nebeng.feature_a_homepage.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nebeng.core.session.data.UserPreferencesRepository
-import com.example.nebeng.feature_a_auth.domain.model.Auth
+import com.example.nebeng.feature_auth.domain.model.Auth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted

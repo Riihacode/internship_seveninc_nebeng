@@ -78,7 +78,7 @@ import androidx.compose.ui.unit.sp
 import com.example.nebeng.core.utils.BookingStatus
 import com.example.nebeng.core.utils.RideStatus
 import com.example.nebeng.core.utils.VehicleType
-import com.example.nebeng.feature_a_auth.domain.model.Auth
+import com.example.nebeng.feature_auth.domain.model.Auth
 import com.example.nebeng.feature_a_history_order.domain.model.HistoryOrderItem
 import com.example.nebeng.feature_a_history_order.presentation.HistoryOrderUiState
 import com.example.nebeng.feature_a_history_order.presentation.support_for_present.model.HistoryItemData
