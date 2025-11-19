@@ -23,6 +23,7 @@ use App\Http\Controllers\DriverCommissionController;
 use App\Http\Controllers\DriverWithdrawalController;
 use App\Http\Controllers\GoodsRideBookingController;
 use App\Http\Controllers\GoodsTransactionController;
+use App\Http\Controllers\PassengerPricingController;
 use App\Http\Controllers\PassengerRideBookingController;
 use App\Http\Controllers\PassengerTransactionController;
 
@@ -282,6 +283,14 @@ Route::middleware('auth:api')->group(function() {
         Route::post('/', [UserController::class, 'store']);
         Route::put('/{id}', [UserController::class, 'update']);
         Route::delete('/{id}', [UserController::class, 'destroy']);
+    });
+
+    Route::prefix('passenger-pricings')->group(function() {
+        Route::get('/', [PassengerPricingController::class, 'index']);
+        Route::get('/{id}', [PassengerPricingController::class, 'show']);
+        Route::post('/', [PassengerPricingController::class, 'store']);
+        Route::put('/{id}', [PassengerPricingController::class, 'update']);
+        Route::delete('/{id}', [PassengerPricingController::class, 'destroy']);
     });
 });
 

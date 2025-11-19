@@ -59,7 +59,8 @@ return new class extends Migration
                 'admin',
                 'finance',
                 'customer',
-                'driver'
+                'driver',
+                'terminal'
             ]);
             $table->boolean('banned')->default(false);
             $table->timestamps();

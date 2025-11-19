@@ -27,7 +27,7 @@ class AuthController extends Controller
                 'email' => 'required|string|email|max:255|unique:users',
                 'password' => 'required|string|min:8|confirmed',
                 // 'role' => 'required|in:admin,superadmin,customer,driver,terminal',
-                'user_type' => 'required|in:admin,superadmin,customer,driver,terminal',
+                'user_type' => 'required|in:admin,superadmin,customer,driver,terminal,finance',
             ]);
 
             $data = $this->authService->register($valiated);
