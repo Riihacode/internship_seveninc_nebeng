@@ -1,11 +1,11 @@
-package com.example.nebeng.feature_a_homepage.presentation.screen_role.customer
+package com.example.nebeng.feature_a_homepage.presentation.screen_role.customer.nebeng_motor.page_01
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -18,22 +18,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.ArrowForward
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowForward
-import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -43,10 +34,6 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -59,788 +46,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.boundsInWindow
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.nebeng.R
+import com.example.nebeng.feature_a_homepage.presentation.screen_role.customer.nebeng_motor.page_01.bottom_sheet.LocationUiModel
+import com.example.nebeng.feature_a_homepage.presentation.screen_role.customer.nebeng_motor.page_01.bottom_sheet.SelectLocationBottomSheet
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
-//@OptIn(ExperimentalMaterial3Api::class)
-//@Composable
-//fun PassengerRideMotorScreen(
-//    onBack: () -> Unit = {},
-//    onStartSelect: () -> Unit = {},
-//    onEndSelect: () -> Unit = {},
-//    onDateSelect: () -> Unit = {},
-//    onHistoryClick: (String) -> Unit = {},
-//    onNext: () -> Unit = {}
-//) {
-//    Column(
-//        modifier = Modifier
-//            .fillMaxSize()
-//            .background(Color(0xFFF8F9FD))
-//    ) {
-//
-//        // =============================================================
-//        // HEADER BIRU + TOP APP BAR + INPUT CARD
-//        // =============================================================
-//        Box(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .height(330.dp)
-//        ) {
-//            Box(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .height(360.dp)
-//                    .clip(RoundedCornerShape(bottomStart = 26.dp, bottomEnd = 26.dp))
-//                    .background(Color(0xFF0F3D82))
-//            )
-//
-//            TopAppBar(
-//                title = { Text("Nebeng Motor", color = Color.White, fontWeight = FontWeight.SemiBold) },
-//                navigationIcon = {
-//                    IconButton(onClick = onBack) {
-//                        Icon(Icons.Default.ArrowBack, null, tint = Color.White)
-//                    }
-//                },
-//                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
-//                modifier = Modifier.padding(top = 10.dp)
-//            )
-//
-//            Card(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(horizontal = 20.dp)
-//                    .offset(y = 55.dp)
-//                    .align(Alignment.BottomCenter),
-//                shape = RoundedCornerShape(18.dp),
-//                elevation = CardDefaults.cardElevation(8.dp)
-//            ) {
-//                PassengerMotorInputSection(
-//                    startLocation = "",
-//                    endLocation = "",
-//                    selectedDate = "",
-//                    onStartChange = onStartSelect,
-//                    onEndChange = onEndSelect,
-//                    onDateClick = onDateSelect,
-//                    modifier = Modifier.padding(16.dp)
-//                )
-//            }
-//        }
-//
-//        Spacer(Modifier.height(75.dp))
-//
-//        Text(
-//            text = "Histori Alamat",
-//            fontSize = 18.sp,
-//            fontWeight = FontWeight.SemiBold,
-//            modifier = Modifier.padding(start = 20.dp, bottom = 12.dp)
-//        )
-//
-//        // =============================================================
-//        // HANYA BAGIAN HISTORI YANG BISA DISCROLL
-//        // =============================================================
-//        val historyLocations = listOf(
-//            "Yogyakarta · Pos 1" to "Patehan, Kecamatan Kraton, Kota Yogyakarta 55133",
-//            "Yogyakarta · Pos 2" to "Patehan, Kecamatan Kraton, Kota Yogyakarta 55133",
-//            "Yogyakarta · Pos 3" to "Patehan, Kecamatan Kraton, Kota Yogyakarta 55133",
-//            "Yogyakarta · Pos 1" to "Patehan, Kecamatan Kraton, Kota Yogyakarta 55133",
-//            "Yogyakarta · Pos 2" to "Patehan, Kecamatan Kraton, Kota Yogyakarta 55133",
-//            "Yogyakarta · Pos 3" to "Patehan, Kecamatan Kraton, Kota Yogyakarta 55133",
-//            "Yogyakarta · Pos 1" to "Patehan, Kecamatan Kraton, Kota Yogyakarta 55133",
-//            "Yogyakarta · Pos 2" to "Patehan, Kecamatan Kraton, Kota Yogyakarta 55133",
-//            "Yogyakarta · Pos 3" to "Patehan, Kecamatan Kraton, Kota Yogyakarta 55133",
-//            "Yogyakarta · Pos 1" to "Patehan, Kecamatan Kraton, Kota Yogyakarta 55133",
-//            "Yogyakarta · Pos 2" to "Patehan, Kecamatan Kraton, Kota Yogyakarta 55133",
-//            "Yogyakarta · Pos 3" to "Patehan, Kecamatan Kraton, Kota Yogyakarta 55133",
-//            "Yogyakarta · Pos 1" to "Patehan, Kecamatan Kraton, Kota Yogyakarta 55133",
-//            "Yogyakarta · Pos 2" to "Patehan, Kecamatan Kraton, Kota Yogyakarta 55133",
-//            "Yogyakarta · Pos 3" to "Patehan, Kecamatan Kraton, Kota Yogyakarta 55133"
-//        )
-//
-//        LazyColumn(
-//            modifier = Modifier
-//                .weight(1f) // area scroll fleksibel
-//                .fillMaxWidth()
-//        ) {
-//            itemsIndexed(historyLocations) { index, (title, detail) ->
-//
-//                Row(
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .clickable { onHistoryClick(title) }
-//                        .padding(horizontal = 20.dp, vertical = 10.dp),
-//                    verticalAlignment = Alignment.CenterVertically
-//                ) {
-//                    Icon(
-//                        painter = painterResource(id = R.drawable.ic_location_24),
-//                        contentDescription = null,
-//                        tint = Color(0xFF1A47B8),
-//                        modifier = Modifier.size(30.dp)
-//                    )
-//                    Spacer(Modifier.width(12.dp))
-//                    Column(Modifier.weight(1f)) {
-//                        Text(title, fontWeight = FontWeight.Bold, fontSize = 15.sp)
-//                        Text(detail, fontSize = 13.sp, color = Color.Gray)
-//                    }
-//                }
-//
-//                if (index != historyLocations.lastIndex) {
-//                    Divider(
-//                        Modifier
-//                            .fillMaxWidth()
-//                            .padding(horizontal = 20.dp),
-//                        color = Color(0xFFE0E0E0)
-//                    )
-//                }
-//            }
-//
-//            item { Spacer(Modifier.height(24.dp)) }
-//        }
-//
-//        // =============================================================
-//        // BUTTON SELANJUTNYA — SELALU DI BAWAH SCREEN
-//        // =============================================================
-//        Button(
-//            onClick = onNext,
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .padding(horizontal = 20.dp, vertical = 12.dp)
-//                .height(54.dp),
-//            colors = ButtonDefaults.buttonColors(
-//                containerColor = Color(0xFF0F3D82)
-//            ),
-//            shape = RoundedCornerShape(12.dp)
-//        ) {
-//            Text("Selanjutnya", fontSize = 17.sp, fontWeight = FontWeight.SemiBold)
-//        }
-//    }
-//}
-//@OptIn(ExperimentalMaterial3Api::class)
-//@Composable
-//fun PassengerRideMotorScreen(
-//    onBack: () -> Unit = {},
-//    onStartSelect: () -> Unit = {},
-//    onEndSelect: () -> Unit = {},
-//    onDateSelect: () -> Unit = {},
-//    onHistoryClick: (String) -> Unit = {},
-//    onNext: () -> Unit = {}
-//) {
-//    Column(
-//        modifier = Modifier
-//            .fillMaxSize()
-//            .background(Color(0xFFF8F9FD))
-//    ) {
-//
-//        // ================= HEADER BIRU ==================
-//        Box(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .height(300.dp)
-//        ) {
-//            Box(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .height(340.dp)
-//                    .clip(RoundedCornerShape(bottomStart = 34.dp, bottomEnd = 34.dp))
-//                    .background(Color(0xFF0F3D82))
-//            )
-//
-//            TopAppBar(
-//                title = {
-//                    Text("Nebeng Motor", color = Color.White, fontWeight = FontWeight.SemiBold)
-//                },
-//                navigationIcon = {
-//                    IconButton(onClick = onBack) {
-//                        Icon(Icons.Default.ArrowBack, contentDescription = null, tint = Color.White)
-//                    }
-//                },
-//                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
-//                modifier = Modifier.padding(top = 6.dp)
-//            )
-//
-//            // ========= CARD INPUT =============
-//            Card(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(horizontal = 20.dp)
-//                    .padding()
-//                    .offset(y = 100.dp)    // ini yang pas agar tidak menutupi TopAppBar
-//                    .align(Alignment.BottomCenter),
-//                shape = RoundedCornerShape(18.dp),
-//                elevation = CardDefaults.cardElevation(6.dp),
-//                colors = CardDefaults.cardColors(Color.White)
-//            ) {
-//                PassengerMotorInputSection(
-//                    modifier = Modifier.padding(18.dp),
-//                    onStartChange = onStartSelect,
-//                    onEndChange = onEndSelect,
-//                    onDateClick = onDateSelect,
-//                )
-//            }
-//        }
-//
-//        Spacer(Modifier.height(85.dp)) // ruang antara card dan daftar histori
-//
-//        // ================= HISTORI ALAMAT ================
-//        Text(
-//            text = "Histori Alamat",
-//            fontSize = 18.sp,
-//            fontWeight = FontWeight.SemiBold,
-//            modifier = Modifier.padding(horizontal = 20.dp)
-//                .padding(top =  32.dp)
-//        )
-//
-//        Spacer(Modifier.height(10.dp))
-//
-//        val history = (1..10).map {
-//            "Yogyakarta · Pos $it" to "Patehan, Kecamatan Kraton, Kota Yogyakarta 55133"
-//        }
-//
-//        LazyColumn(
-//            modifier = Modifier
-//                .weight(1f)
-//                .fillMaxWidth()
-//        ) {
-//            itemsIndexed(history) { index, (title, detail) ->
-//                Row(
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .clickable { onHistoryClick(title) }
-//                        .padding(horizontal = 20.dp, vertical = 10.dp),
-//                    verticalAlignment = Alignment.CenterVertically
-//                ) {
-//                    Icon(
-//                        painter = painterResource(id = R.drawable.ic_location_24),
-//                        contentDescription = null,
-//                        tint = Color(0xFF1A47B8),
-//                        modifier = Modifier.size(30.dp)
-//                    )
-//                    Spacer(Modifier.width(12.dp))
-//                    Column(Modifier.weight(1f)) {
-//                        Text(title, fontWeight = FontWeight.Bold)
-//                        Text(detail, color = Color.Gray, fontSize = 13.sp)
-//                    }
-//                }
-//                if (index != history.lastIndex) {
-//                    Divider(
-//                        Modifier
-//                            .fillMaxWidth()
-//                            .padding(horizontal = 20.dp),
-//                        color = Color(0xFFE0E0E0)
-//                    )
-//                }
-//            }
-//        }
-//
-//        // ===== BUTTON SELANJUTNYA (fix ke bawah) =====
-//        Button(
-//            onClick = onNext,
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .padding(horizontal = 20.dp, vertical = 16.dp)
-//                .height(52.dp),
-//            colors = ButtonDefaults.buttonColors(Color(0xFF0F3D82)),
-//            shape = RoundedCornerShape(12.dp)
-//        ) {
-//            Text("Selanjutnya", fontSize = 17.sp, fontWeight = FontWeight.SemiBold)
-//        }
-//    }
-//}
-//
-//
-//
-//
-////@Composable
-////fun PassengerMotorInputSection(
-////    startLocation: String,
-////    endLocation: String,
-////    selectedDate: String,
-////    onStartChange: () -> Unit,
-////    onEndChange: () -> Unit,
-////    onDateClick: () -> Unit,
-////    modifier: Modifier = Modifier
-////) {
-////    Column(modifier = modifier) {
-////
-////        Text("Lokasi Awal", fontWeight = FontWeight.SemiBold)
-////        Spacer(Modifier.height(6.dp))
-////
-////        OutlinedTextField(
-////            value = startLocation,
-////            onValueChange = { },
-////            placeholder = { Text("Pilih lokasi awal") },
-////            readOnly = true,
-////            trailingIcon = { Icon(Icons.Default.KeyboardArrowRight, null) },
-////            modifier = Modifier
-////                .fillMaxWidth()
-////                .clickable { onStartChange() }
-////        )
-////
-////        Spacer(Modifier.height(18.dp))
-////        Text("Lokasi Tujuan", fontWeight = FontWeight.SemiBold)
-////        Spacer(Modifier.height(6.dp))
-////
-////        OutlinedTextField(
-////            value = endLocation,
-////            onValueChange = { },
-////            placeholder = { Text("Pilih lokasi tujuan") },
-////            readOnly = true,
-////            trailingIcon = { Icon(Icons.Default.KeyboardArrowRight, null) },
-////            modifier = Modifier
-////                .fillMaxWidth()
-////                .clickable { onEndChange() }
-////        )
-////
-////        Spacer(Modifier.height(18.dp))
-////        OutlinedTextField(
-////            value = selectedDate,
-////            onValueChange = { },
-////            placeholder = { Text("Tanggal Keberangkatan") },
-////            readOnly = true,
-////            leadingIcon = {
-////                Icon(
-////                    painter = painterResource(id = R.drawable.ic_calendar_24),
-////                    contentDescription = null
-////                )
-////            },
-////            modifier = Modifier
-////                .fillMaxWidth()
-////                .clickable { onDateClick() }
-////        )
-////    }
-////}
-//@Composable
-//fun PassengerMotorInputSection(
-//    modifier: Modifier = Modifier,
-//    onStartChange: () -> Unit = {},
-//    onEndChange: () -> Unit = {},
-//    onDateClick: () -> Unit = {},
-//) {
-//    Column(modifier) {
-//
-//        // Card lokasi awal + tujuan
-//        Card(
-//            shape = RoundedCornerShape(16.dp),
-//            border = BorderStroke(1.dp, Color(0xFFE6E6E6)),
-//            colors = CardDefaults.cardColors(Color.White)
-//        ) {
-//            Column(Modifier.padding(16.dp)) {
-//
-//                RideLocationRow(
-//                    iconColor = Color(0xFF2ECC71),
-//                    label = "Lokasi Awal",
-//                    placeholder = "Pilih lokasi awal",
-//                    onClick = onStartChange
-//                )
-//
-//                RideLocationDivider() // garis penghubung dinamis
-//
-//                RideLocationRow(
-//                    iconColor = Color(0xFFFF6E42),
-//                    label = "Lokasi Tujuan",
-//                    placeholder = "Pilih lokasi tujuan",
-//                    onClick = onEndChange
-//                )
-//            }
-//        }
-//
-//        Spacer(Modifier.height(14.dp))
-//
-//        // Card Tanggal Keberangkatan
-//        Card(
-//            shape = RoundedCornerShape(16.dp),
-//            border = BorderStroke(1.dp, Color(0xFFE6E6E6)),
-//            colors = CardDefaults.cardColors(Color.White)
-//        ) {
-//            Row(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .clickable(onClick = onDateClick)
-//                    .padding(16.dp),
-//                verticalAlignment = Alignment.CenterVertically
-//            ) {
-//                Icon(
-//                    painter = painterResource(id = R.drawable.ic_calendar_24),
-//                    contentDescription = null,
-//                    tint = Color(0xFF0F3D82),
-//                    modifier = Modifier.size(26.dp)
-//                )
-//                Spacer(Modifier.width(12.dp))
-//                Text("Tanggal Keberangkatan", fontWeight = FontWeight.Medium)
-//            }
-//        }
-//    }
-//}
-//
-//@Composable
-//fun RideLocationRow(
-//    iconColor: Color,
-//    label: String,
-//    placeholder: String,
-//    onClick: () -> Unit
-//) {
-//    Column(
-//        modifier = Modifier
-//            .fillMaxWidth()
-//    ) {
-//        // ===== LABEL =====
-////        Row(verticalAlignment = Alignment.CenterVertically) {
-////            Canvas(
-////                modifier = Modifier
-////                    .size(18.dp)
-////            ) {
-////                drawCircle(color = iconColor)
-////            }
-////
-////            Spacer(Modifier.width(10.dp))
-////
-////            Text(
-////                text = label,
-////                fontWeight = FontWeight.SemiBold,
-////                fontSize = 16.sp,
-////                color = Color(0xFF0F1C43)
-////            )
-////        }
-//
-//        Spacer(Modifier.height(8.dp))
-//
-//        // ===== BOX SELECTOR (KLIKABLE) =====
-//        Box(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .height(48.dp)
-//                .clickable(onClick = onClick)
-//                .padding(horizontal = 12.dp),
-//            contentAlignment = Alignment.CenterStart
-//        ) {
-//            Row(
-//                modifier = Modifier.fillMaxWidth(),
-//                verticalAlignment = Alignment.CenterVertically
-//            ) {
-//                Canvas(
-//                    modifier = Modifier
-//                        .size(18.dp)
-//                ) {
-//                    drawCircle(color = iconColor)
-//                }
-//
-//                Spacer(Modifier.width(16.dp))
-//                Text(
-//                    text = placeholder,
-//                    fontSize = 15.sp,
-//                    color = Color.Gray,
-//                    modifier = Modifier.weight(1f)
-//                )
-//
-//                Icon(
-//                    imageVector = Icons.Default.ArrowForward,
-//                    contentDescription = null,
-//                    tint = Color.Gray
-//                )
-//            }
-//        }
-//    }
-//}
-//
-//
-//@Composable
-//private fun RideLocationDivider() {
-//    Divider(
-//        modifier = Modifier
-//            .fillMaxWidth()
-//            .padding(vertical = 10.dp),
-//        color = Color(0xFFE6E6E6),
-//        thickness = 1.dp
-//    )
-//}
-
-//@OptIn(ExperimentalMaterial3Api::class)
-//@Composable
-//fun PassengerRideMotorScreen(
-//    onBack: () -> Unit = {},
-//    onStartSelect: () -> Unit = {},
-//    onEndSelect: () -> Unit = {},
-//    onDateSelect: () -> Unit = {},
-//    onHistoryClick: (String) -> Unit = {},
-//    onNext: () -> Unit = {}
-//) {
-//    Column(
-//        modifier = Modifier
-//            .fillMaxSize()
-//            .background(Color(0xFFF8F9FD))
-//    ) {
-////        Box(
-////            modifier = Modifier
-////                .fillMaxWidth()
-////                .height(300.dp)
-////        ) {
-////            Box(
-////                modifier = Modifier
-////                    .fillMaxWidth()
-////                    .height(340.dp)
-////                    .clip(RoundedCornerShape(bottomStart = 34.dp, bottomEnd = 34.dp))
-////                    .background(Color(0xFF0F3D82))
-////            )
-////
-////            TopAppBar(
-////                title = { Text("Nebeng Motor", color = Color.White) },
-////                navigationIcon = {
-////                    IconButton(onClick = onBack) {
-////                        Icon(Icons.Default.ArrowBack, null, tint = Color.White)
-////                    }
-////                },
-////                colors = TopAppBarDefaults.topAppBarColors(Color.Transparent)
-////            )
-////
-////            PassengerMotorRouteCard(
-////                onStartClick = onStartSelect,
-////                onEndClick = onEndSelect,
-////                onDateClick = onDateSelect,
-////            )
-////                .let {
-////                    Card(
-////                        modifier = Modifier
-////                            .fillMaxWidth()
-////                            .padding(horizontal = 20.dp)
-////                            .offset(y = 90.dp)
-////                            .align(Alignment.BottomCenter)
-////                    ) { it() }
-////                }
-////        }
-//        Box(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .height(300.dp)
-//        ) {
-//            Box(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .height(340.dp)
-//                    .clip(RoundedCornerShape(bottomStart = 34.dp, bottomEnd = 34.dp))
-//                    .background(Color(0xFF0F3D82))
-//            )
-//
-//            TopAppBar(
-//                title = { Text("Nebeng Motor", color = Color.White) },
-//                navigationIcon = {
-//                    IconButton(onClick = onBack) {
-//                        Icon(Icons.Default.ArrowBack, contentDescription = null, tint = Color.White)
-//                    }
-//                },
-//                colors = TopAppBarDefaults.topAppBarColors(Color.Transparent)
-//            )
-//
-//            Card(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(horizontal = 20.dp)
-//                    .offset(y = 90.dp)
-//                    .align(Alignment.BottomCenter),
-//                shape = RoundedCornerShape(18.dp),
-//                elevation = CardDefaults.cardElevation(6.dp),
-//                colors = CardDefaults.cardColors(Color.White)
-//            ) {
-////                PassengerMotorRouteCard(
-////                    onStartClick = onStartSelect,
-////                    onEndClick = onEndSelect,
-////                    onDateClick = onDateSelect
-////                )
-//                MotorRouteSelectorInputCard(
-//                    startTitle = "Lokasi Awal",
-//                    startDetail = "Pilih lokasi awal",
-//                    endTitle = "Lokasi Tujuan",
-//                    endDetail = "Pilih lokasi tujuan",
-//                    onStartClick = onStartSelect,
-//                    onEndClick = onEndSelect
-//                )
-//
-//            }
-//        }
-//
-//
-//        Spacer(Modifier.height(100.dp))
-//
-//        Text(
-//            "Histori Alamat",
-//            fontSize = 18.sp,
-//            fontWeight = FontWeight.SemiBold,
-//            modifier = Modifier.padding(horizontal = 20.dp)
-//        )
-//
-//        val history = (1..10).map { "Yogyakarta · Pos $it" }
-//
-//        LazyColumn(
-//            modifier = Modifier
-//                .weight(1f)
-//                .padding(top = 12.dp)
-//        ) {
-//            items(history) {
-//                HistoryAddressItem(address = it) { onHistoryClick(it) }
-//            }
-//            item { Spacer(Modifier.height(8.dp)) }
-//        }
-//
-//        Button(
-//            onClick = onNext,
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .padding(20.dp)
-//                .height(52.dp),
-//            colors = ButtonDefaults.buttonColors(Color(0xFF0F3D82)),
-//            shape = RoundedCornerShape(12.dp)
-//        ) {
-//            Text("Selanjutnya", fontWeight = FontWeight.SemiBold, fontSize = 17.sp)
-//        }
-//    }
-//}
-//@OptIn(ExperimentalMaterial3Api::class)
-//@Composable
-//fun PassengerRideMotorScreen(
-//    onBack: () -> Unit = {},
-//    onStartSelect: () -> Unit = {},
-//    onEndSelect: () -> Unit = {},
-//    onDateSelect: () -> Unit = {},
-//    onHistoryClick: (String) -> Unit = {},
-//    onNext: () -> Unit = {}
-//) {
-//    Column(
-//        modifier = Modifier
-//            .fillMaxSize()
-//            .background(Color(0xFFF8F9FD))
-//    ) {
-//
-//        // ========= HEADER BIRU =========
-//        Box(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .height(300.dp)
-//        ) {
-//            Box(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .height(340.dp)
-//                    .clip(RoundedCornerShape(bottomStart = 34.dp, bottomEnd = 34.dp))
-//                    .background(Color(0xFF0F3D82))
-//            )
-//
-//            TopAppBar(
-//                title = {
-//                    Text(
-//                        "Nebeng Motor",
-//                        color = Color.White,
-//                        fontWeight = FontWeight.SemiBold,
-//                        fontSize = 20.sp
-//                    )
-//                },
-//                navigationIcon = {
-//                    IconButton(onClick = onBack) {
-//                        Icon(
-//                            Icons.Default.ArrowBack,
-//                            contentDescription = null,
-//                            tint = Color.White
-//                        )
-//                    }
-//                },
-//                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
-//                modifier = Modifier.padding(top = 6.dp)
-//            )
-//
-//            // ========= CARD INPUT =========
-//            Card(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(horizontal = 20.dp)
-//                    .offset(y = 60.dp) // Posisi tepat agar tidak menutupi AppBar
-//                    .align(Alignment.BottomCenter),
-//                shape = RoundedCornerShape(22.dp),
-//                elevation = CardDefaults.cardElevation(8.dp),
-//                colors = CardDefaults.cardColors(Color.White)
-//            ) {
-//                PassengerMotorInputSection(
-//                    modifier = Modifier.padding(18.dp),
-//                    onStartClick = onStartSelect,
-//                    onEndClick = onEndSelect,
-//                    onDateClick = onDateSelect
-//                )
-//            }
-//        }
-//
-//        Spacer(Modifier.height(100.dp))
-//
-//        // ========= LIST HISTORI ALAMAT =========
-//        Text(
-//            text = "Histori Alamat",
-//            fontSize = 18.sp,
-//            fontWeight = FontWeight.SemiBold,
-//            modifier = Modifier.padding(horizontal = 20.dp)
-//        )
-//
-//        Spacer(Modifier.height(10.dp))
-//
-//        val history = (1..10).map {
-//            "Yogyakarta · Pos $it" to
-//                    "Patehan, Kecamatan Kraton, Kota Yogyakarta 55133"
-//        }
-//
-//        LazyColumn(
-//            modifier = Modifier
-//                .weight(1f)
-//                .fillMaxWidth()
-//        ) {
-//            itemsIndexed(history) { index, (title, detail) ->
-//                Row(
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .clickable { onHistoryClick(title) }
-//                        .padding(horizontal = 20.dp, vertical = 10.dp),
-//                    verticalAlignment = Alignment.CenterVertically
-//                ) {
-//                    Icon(
-//                        painter = painterResource(id = R.drawable.ic_location_24),
-//                        contentDescription = null,
-//                        tint = Color(0xFF1A47B8),
-//                        modifier = Modifier.size(30.dp)
-//                    )
-//                    Spacer(Modifier.width(12.dp))
-//                    Column(Modifier.weight(1f)) {
-//                        Text(title, fontWeight = FontWeight.Bold)
-//                        Text(detail, color = Color.Gray, fontSize = 13.sp)
-//                    }
-//                }
-//                if (index != history.lastIndex) {
-//                    Divider(
-//                        Modifier
-//                            .fillMaxWidth()
-//                            .padding(horizontal = 20.dp),
-//                        color = Color(0xFFE0E0E0)
-//                    )
-//                }
-//            }
-//        }
-//
-//        // ========= BUTTON BOTTOM =========
-//        Button(
-//            onClick = onNext,
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .padding(horizontal = 20.dp, vertical = 16.dp)
-//                .height(52.dp),
-//            colors = ButtonDefaults.buttonColors(Color(0xFF0F3D82)),
-//            shape = RoundedCornerShape(12.dp)
-//        ) {
-//            Text("Selanjutnya", fontSize = 17.sp, fontWeight = FontWeight.SemiBold)
-//        }
-//    }
-//}
-
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PassengerRideMotorScreen(
@@ -851,10 +69,20 @@ fun PassengerRideMotorScreen(
     onHistoryClick: (String) -> Unit = {},
     onNext: () -> Unit = {}
 ) {
+    var showBottomSheet by remember { mutableStateOf(false) }
+    var isSelectingStart by remember { mutableStateOf(true) }
+
+    var startLocation by remember { mutableStateOf<LocationUiModel?>(null) }
+    var endLocation by remember { mutableStateOf<LocationUiModel?>(null) }
+
+    var showCalendarSheet by remember { mutableStateOf(false) }
+    var selectedDate by remember { mutableStateOf<LocalDate?>(null) }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFFF8F9FD))
+            .padding(bottom = 56.dp)
     ) {
 
         // ================= HEADER BIRU ==================
@@ -895,28 +123,31 @@ fun PassengerRideMotorScreen(
 
             // ========= CARD INPUT (ROUTE + DATE) =============
 //            PassengerRouteCard(
+//                modifier = Modifier
+//                    .align(Alignment.BottomCenter)   // karena dipanggil di dalam Box
+//                    .fillMaxWidth()
+//                    .padding(horizontal = 20.dp)
+//                    .offset(y = 40.dp),             // geser turun dari AppBar
 //                onStartClick = onStartSelect,
-//                onEndClick = onEndSelect,
+//                onEndClick  = onEndSelect,
 //                onDateClick = onDateSelect
-//            ).modifier(
-//                    Modifier
-//                        .fillMaxWidth()
-//                        .padding(horizontal = 20.dp)
-//                        .offset(y = 110.dp) // posisi sempurna agar tidak menutup TopBar
-//                        .align(Alignment.BottomCenter)
-//                )
-            // ========= CARD INPUT (ROUTE + DATE) =============
+//            )
             PassengerRouteCard(
                 modifier = Modifier
-                    .align(Alignment.BottomCenter)   // karena dipanggil di dalam Box
+                    .align(Alignment.BottomCenter)
                     .fillMaxWidth()
                     .padding(horizontal = 20.dp)
-                    .offset(y = 40.dp),             // geser turun dari AppBar
-                onStartClick = onStartSelect,
-                onEndClick  = onEndSelect,
-                onDateClick = onDateSelect
+                    .offset(y = 40.dp),
+                onStartClick = { isSelectingStart = true; showBottomSheet = true },
+                onEndClick  = { isSelectingStart = false; showBottomSheet = true },
+//                onDateClick = onDateSelect,
+                onDateClick = { showCalendarSheet = true },
+                startDisplay = startLocation?.title ?: "Lokasi Awal",
+                startDetail = startLocation?.detail ?: "Pilih lokasi awal",
+                endDisplay = endLocation?.title ?: "Lokasi Tujuan",
+                endDetail = endLocation?.detail ?: "Pilih lokasi tujuan",
+                dateDisplay = selectedDate?.format(DateTimeFormatter.ofPattern("dd / MM / yyyy")) ?: "Tanggal Keberangkatan"
             )
-
         }
 
         Spacer(Modifier.height(60.dp)) // beri ruang setelah kartu input
@@ -956,8 +187,8 @@ fun PassengerRideMotorScreen(
                     )
                     Spacer(Modifier.width(12.dp))
                     Column(Modifier.weight(1f)) {
-                        Text(title, fontWeight = FontWeight.Bold)
-                        Text(detail, color = Color.Gray, fontSize = 13.sp)
+                        Text(title, fontWeight = FontWeight.Bold, fontSize = 11.sp)
+                        Text(detail, color = Color.Gray, fontSize = 11.sp)
                     }
                 }
                 if (index != history.lastIndex) {
@@ -978,6 +209,7 @@ fun PassengerRideMotorScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp, vertical = 16.dp)
+//                .padding(bottom = 48.dp)
                 .height(52.dp),
             shape = RoundedCornerShape(12.dp),
             colors = ButtonDefaults.buttonColors(Color(0xFF0F3D82))
@@ -985,15 +217,44 @@ fun PassengerRideMotorScreen(
             Text("Selanjutnya", fontSize = 17.sp, fontWeight = FontWeight.SemiBold)
         }
     }
+
+    if (showBottomSheet) {
+        SelectLocationBottomSheet(
+            title = if (isSelectingStart) "Pilih Lokasi Awal" else "Pilih Lokasi Tujuan",
+            locations = SAMPLE_LOCATIONS, // sementara static dulu
+            onSelect = { selected ->
+                if (isSelectingStart) startLocation = selected else endLocation = selected
+                showBottomSheet = false
+            },
+            onDismiss = { showBottomSheet = false }
+        )
+    }
+
+    if (showCalendarSheet) {
+        DatePicker(
+            selectedDate = selectedDate,
+            onDateSelected = {
+                selectedDate = it
+                showCalendarSheet = false
+            },
+            onDismiss = { showCalendarSheet = false }
+        )
+    }
+
 }
 
 
 @Composable
-fun PassengerRouteCard(
+private fun PassengerRouteCard(
     modifier: Modifier = Modifier,
     onStartClick: () -> Unit,
     onEndClick: () -> Unit,
-    onDateClick: () -> Unit
+    onDateClick: () -> Unit,
+    startDisplay: String,
+    startDetail: String,
+    endDisplay: String,
+    endDetail: String,
+    dateDisplay: String
 ) {
     Card(
         modifier = modifier,
@@ -1008,56 +269,6 @@ fun PassengerRouteCard(
             // =====================
             // LOKASI AWAL & TUJUAN
             // =====================
-//            Row(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .height(IntrinsicSize.Min),   // <- kunci tinggi dinamis
-//                verticalAlignment = Alignment.Top
-//            ) {
-//
-//                // KIRI -> RAIL
-//                Column(
-//                    modifier = Modifier
-//                        .fillMaxHeight()
-//                        .padding(top = 6.dp, bottom = 6.dp)
-//                        .width(38.dp),
-//                    horizontalAlignment = Alignment.CenterHorizontally
-//                ) {
-//                    // DOT ATAS (HIJAU)
-//                    RailDot(color = Color(0xFF2ECC71))
-//
-//                    // VERTICAL LINE
-//                    Box(
-//                        modifier = Modifier
-//                            .weight(1f)
-//                            .width(2.dp)
-//                            .background(Color(0xFFBCC6CE))
-//                    )
-//
-//                    // DOT BAWAH (ORANYE)
-//                    RailDot(color = Color(0xFFFF6E42))
-//                }
-//
-//                Spacer(Modifier.width(12.dp))
-//
-//                // KANAN -> LABEL & INPUT
-//                Column(modifier = Modifier.weight(1f)) {
-//
-//                    // Lokasi Awal
-//                    Text("Lokasi Awal", fontWeight = FontWeight.SemiBold, fontSize = 17.sp)
-//                    LocationBox("Pilih lokasi awal", onStartClick)
-//
-//                    Divider(
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .padding(vertical = 14.dp),
-//                        color = Color(0xFFE0E0E0)
-//                    )
-//
-//                    // Lokasi Tujuan
-//                    Text("Lokasi Tujuan", fontWeight = FontWeight.SemiBold, fontSize = 17.sp)
-//                }
-//            }
             Card(
                 shape = RoundedCornerShape(18.dp),
                 colors = CardDefaults.cardColors(Color.White),
@@ -1103,8 +314,11 @@ fun PassengerRouteCard(
                         Column(modifier = Modifier.weight(1f)) {
 
                             // Lokasi Awal
-                            Text("Lokasi Awal", fontWeight = FontWeight.SemiBold, fontSize = 17.sp)
-                            LocationBox("Pilih lokasi awal", onStartClick)
+//                            Text("Lokasi Awal", fontWeight = FontWeight.SemiBold, fontSize = 17.sp)
+//                            LocationBox("Pilih lokasi awal", onStartClick)
+                            // Lokasi Awal
+                            Text(startDisplay, fontWeight = FontWeight.SemiBold, fontSize = 13.sp)
+                            LocationBox(startDetail, onStartClick)
 
                             Divider(
                                 modifier = Modifier
@@ -1114,8 +328,11 @@ fun PassengerRouteCard(
                             )
 
                             // Lokasi Tujuan
-                            Text("Lokasi Tujuan", fontWeight = FontWeight.SemiBold, fontSize = 17.sp)
-                            LocationBox("Pilih lokasi tujuan", onEndClick)
+//                            Text("Lokasi Tujuan", fontWeight = FontWeight.SemiBold, fontSize = 17.sp)
+//                            LocationBox("Pilih lokasi tujuan", onEndClick)
+                            // Lokasi Tujuan
+                            Text(endDisplay, fontWeight = FontWeight.SemiBold, fontSize = 13.sp)
+                            LocationBox(endDetail, onEndClick)
                         }
                     }
                 }
@@ -1144,7 +361,8 @@ fun PassengerRouteCard(
                         modifier = Modifier.size(26.dp)
                     )
                     Spacer(Modifier.width(14.dp))
-                    Text("Tanggal Keberangkatan", fontWeight = FontWeight.Medium)
+//                    Text("Tanggal Keberangkatan", fontWeight = FontWeight.Medium)
+                    Text(dateDisplay, fontWeight = FontWeight.Medium, fontSize = 12.sp)
                 }
             }
         }
@@ -1161,23 +379,8 @@ private fun RailDot(color: Color) {
     )
 }
 
-//@Composable
-//private fun LocationBox(text: String, onClick: () -> Unit) {
-//    Box(
-//        modifier = Modifier
-//            .fillMaxWidth()
-//            .height(48.dp)
-////            .border(1.dp, Color(0xFFE0E0E0), RoundedCornerShape(12.dp))
-//            .clickable(onClick = onClick)
-//            .padding(horizontal = 12.dp),
-//        contentAlignment = Alignment.CenterStart
-//    ) {
-//        Text("aksdbashaldsjblabsdugialdgluashladsadadhaduaddiuhadsdasiahdludahlauiadslidaiudadadsudsadsduadladuadshaduikjmopknpnpnpn;jn;h;uiophb;jkhuigipgbip;uguiopyguipgbip;ugipfgip;yuv;iyufipyugvio;ufyipfipugipipyughbpuigipyuguipgpuigbuipgpuigipug8ipfgyuipgsd", fontSize = 15.sp, color = Color.Gray)
-//    }
-//}
-
 @Composable
-fun LocationBox(
+private fun LocationBox(
     placeholder: String,
     onClick: () -> Unit
 ) {
@@ -1197,7 +400,7 @@ fun LocationBox(
             // Text otomatis multiline
             Text(
                 text = placeholder,
-                fontSize = 15.sp,
+                fontSize = 12.sp,
                 color = Color.Gray,
                 modifier = Modifier.weight(1f)
             )
@@ -1212,7 +415,14 @@ fun LocationBox(
     }
 }
 
+private val SAMPLE_LOCATIONS = listOf(
+    LocationUiModel("Yogyakarta · Pos 1", "Patehan, Kecamatan Kraton, Kota Yogyakarta 55133"),
+    LocationUiModel("Yogyakarta · Pos 2", "Patehan, Kecamatan Kraton, Kota Yogyakarta 55133"),
+    LocationUiModel("Yogyakarta · Pos 3", "Patehan, Kecamatan Kraton, Kota Yogyakarta 55133"),
+)
 
+
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun PreviewPassengerRideMotorScreen() {

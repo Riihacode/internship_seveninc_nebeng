@@ -1,6 +1,6 @@
 package com.example.nebeng.feature_auth.di
 
-import com.example.nebeng.core.session.data.SessionRepositoryImpl
+import com.example.nebeng.core.session.domain.SessionRepositoryImpl
 import com.example.nebeng.core.session.data.UserPreferencesRepository
 import com.example.nebeng.core.session.domain.SessionRepository
 import com.example.nebeng.feature_auth.domain.usecase.AuthUseCases
