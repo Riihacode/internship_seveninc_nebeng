@@ -110,4 +110,8 @@ dependencies {
     implementation(libs.accompanist.swiperefresh)
 //    implementation(libs.androidx.material.pull.refresh)
 //    implementation(libs.androidx.material3.pullrefresh)
+
+    // MAPLIBRE (OpenStreetMap)
+    implementation(libs.android.sdk)
+    implementation(libs.compose.extension)
 }
