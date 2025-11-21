@@ -15,10 +15,17 @@ function handleError(error) {
 }
 
 const driverService = {
-  getAll: async () => {
+  getAll: async ({ page = 1, search = "", status = "" }) => {
     try {
-      const res = await api.get("/api/drivers");
-      return res.data?.data;
+      const params = new URLSearchParams();
+
+      params.append("page", page);
+
+      if (search) params.append("search", search);
+      if (status) params.append("status", status);
+
+      const res = await api.get(`/api/admin/drivers?${params.toString()}`);
+      return res.data;
     } catch (error) {
       handleError(error);
     }
@@ -26,7 +33,8 @@ const driverService = {
 
   getById: async (id) => {
     try {
-      const res = await api.get(`/api/drivers/${id}`);
+      const res = await api.get(`/api/admin/drivers/${id}`);
+      console.log("Data get driver by id dari service", res);
       return res.data;
     } catch (error) {
       handleError(error);
@@ -35,7 +43,7 @@ const driverService = {
 
   create: async (data) => {
     try {
-      const res = await api.post("/api/drivers", data);
+      const res = await api.post("/api/admin/drivers", data);
       return res.data;
     } catch (error) {
       handleError(error);
@@ -44,7 +52,7 @@ const driverService = {
 
   update: async (id, data) => {
     try {
-      const res = await api.put(`/api/drivers/${id}`, data);
+      const res = await api.put(`/api/admin/drivers/${id}`, data);
       return res.data;
     } catch (error) {
       handleError(error);
@@ -53,7 +61,7 @@ const driverService = {
 
   verify: async (id, data) => {
     try {
-      const res = await api.patch(`/api/drivers/${id}/verify`, data);
+      const res = await api.patch(`/api/admin/drivers/${id}/verify`, data);
       return res.data;
     } catch (error) {
       handleError(error);
@@ -63,7 +71,7 @@ const driverService = {
 
   remove: async (id) => {
     try {
-      const res = await api.delete(`/api/drivers/${id}`);
+      const res = await api.delete(`/api/admin/drivers/${id}`);
       return res.data;
     } catch (error) {
       handleError(error);

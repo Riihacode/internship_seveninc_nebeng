@@ -61,7 +61,7 @@ export default function AppRoutes() {
             }
           />
           <Route
-            path="/orders"
+            path="/pesanan"
             element={
               <ProtectedRoute requiredRole={["admin", "superadmin"]}>
                 <Pesanan />

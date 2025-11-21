@@ -78,7 +78,10 @@ class DriverSeeder extends Seeder
                     // ID Card
                     'id_card_number'          => 'ID' . rand(10000000, 99999999),
                     'id_card_fullname'        => $data['full_name'],
-                    'id_card_birthdate'       => Carbon::now()->subYears(rand(25, 45))->subDays(rand(0, 365)),
+                    'id_card_birthdate' => Carbon::today()
+                        ->subYears(rand(20, 50))
+                        ->subDays(rand(0, 365))
+                        ->toDateString(),
                     'id_card_verified'        => rand(0, 1),
                     'id_card_rejected_reason' => null,
                     'id_card_img'             => null,

@@ -131,7 +131,7 @@ class Driver extends Model
     protected $casts = [
         'id_card_verified' => 'boolean',
         'driver_license_verified' => 'boolean',
-        'Police_clearance_verified' => 'boolean',
+        'police_clearance_verified' => 'boolean',
         'balance' => 'integer',
         'credit_score' => 'integer',
     ];
@@ -166,7 +166,7 @@ class Driver extends Model
 
     public function isPoliceClearanceVerified(): bool
     {
-        return $this->Police_clearance_verified === true;
+        return $this->police_clearance_verified === true;
     }
 
     /**
@@ -177,7 +177,7 @@ class Driver extends Model
         return collect([
             $this->id_card_verified,
             $this->driver_license_verified,
-            $this->Police_clearance_verified,
+            $this->police_clearance_verified,
         ])->filter(fn ($v) => $v === true)->count();
     }
 
@@ -189,7 +189,7 @@ class Driver extends Model
         return [
             'id_card' => $this->id_card_verified ? 'Verified' : 'Not Verified',
             'driver_license' => $this->driver_license_verified ? 'Verified' : 'Not Verified',
-            'police_clearance' => $this->Police_clearance_verified ? 'Verified' : 'Not Verified',
+            'police_clearance' => $this->police_clearance_verified ? 'Verified' : 'Not Verified',
         ];
     }
 }

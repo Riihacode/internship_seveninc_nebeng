@@ -1,4 +1,5 @@
 export default function Table({ columns, data, loading, error }) {
+  console.log("Table render", { dataLength: data.length });
   return (
     <table className="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
       <thead>

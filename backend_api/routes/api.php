@@ -21,6 +21,8 @@ use App\Http\Controllers\DriverWithdrawalController;
 use App\Http\Controllers\GoodsRideBookingController;
 use App\Http\Controllers\GoodsTransactionController;
 use App\Http\Controllers\AdminOrdersController;
+use App\Http\Controllers\CustomerAdminController;
+use App\Http\Controllers\DriverAdminController;
 use App\Http\Controllers\PassengerRideBookingController;
 use App\Http\Controllers\PassengerTransactionController;
 use App\Http\Controllers\TransactionController;
@@ -268,6 +270,37 @@ Route::middleware('auth:api')->group(function() {
         //Route::post('/', [AdministratorController::class, 'store']);
         Route::put('/{id}', [AdministratorController::class, 'update']);
         Route::delete('/{id}', [AdministratorController::class, 'destroy']);
+    });
+
+    // ######################################################################################
+    // ######################################################################################
+    // ######################################################################################
+    // ######################################################################################
+    // ######################################################################################
+
+    // [ API ADMIN PAGINATION]
+
+    // [ CUSTOMERS ADMIN ]
+    Route::prefix('admin/customers')->group(function () {
+        Route::get('/', [CustomerAdminController::class, 'index']);
+        Route::get('/{id}', [CustomerAdminController::class, 'show']);
+        Route::get('/user/{user_id}', [CustomerAdminController::class, 'byUser']);
+        Route::post('/', [CustomerAdminController::class, 'store']);
+        Route::put('/{id}', [CustomerAdminController::class, 'update']);
+        Route::patch('/{id}/verify', [CustomerAdminController::class, 'verify']);
+        Route::patch('/{id}/add-credit', [CustomerAdminController::class, 'addCredit']);
+        Route::patch('/{id}/deduct-credit', [CustomerAdminController::class, 'deductCredit']);
+        Route::delete('/{id}', [CustomerAdminController::class, 'destroy']);
+    });
+
+    // [ DRIVER ADMIN ]
+    Route::prefix('admin/drivers')->group(function () {
+        Route::get('/', [DriverAdminController::class, 'index']);
+        Route::get('/{id}', [DriverAdminController::class, 'show']);
+        Route::post('/', [DriverAdminController::class, 'store']);
+        Route::put('/{id}', [DriverAdminController::class, 'update']);
+        Route::patch('{id}/verify', [DriverAdminController::class, 'verify']);
+        Route::delete('/{id}', [DriverAdminController::class, 'destroy']);
     });
 
 });

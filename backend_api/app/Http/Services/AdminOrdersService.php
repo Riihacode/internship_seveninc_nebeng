@@ -2,6 +2,11 @@
 
 namespace App\Http\Services;
 
+use App\Http\Resources\GoodsBookingResource;
+use App\Http\Resources\PassengerBookingResource;
+use App\Http\Resources\PassenggerBookingResource;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
 /**
@@ -21,56 +26,75 @@ class AdminOrdersService{
         $this->goodsBookingService = $goodsService;
     }
 
-    public function listAllBookings(): Collection{
+    public function listAllBookings($perPage = 10, $filters = []){
 
-        $passengerBookings = $this->passengersBookingService->listBookings()->map(function($b){
-            $b->booking_type ='Passenger';
-            $b->layanan = $b->passengerRide->vehicle_type ?? null;
-            $b->driver_name = $b->passengerRide->driver->full_name ?? '-';
-            $b->customer_name = $b->customer->full_name ?? '-';
-            $b->driver_phone = $b->passengerRide->driver->telephone ?? '-';
-            $b->terminal_keberangkatan = $b->passengerRide->departureTerminal->name ?? '-';
-            $b->terminal_tujuan = $b->passengerRide->arrivalTerminal->name ?? '-';
-            $b->kota_tujuan = $b->passengerRide->departureTerminal->regency->name ?? '-';
-            $b->kota_awal = $b->passengerRide->arrivalTerminal->regency->name ?? '-';
-            $b->booking_id = $b->id;
-            return $b;
-        });
+        $passenger = $this->passengersBookingService->listBookings($filters);
+        $goods = $this->goodsBookingService->listBookings($filters);
 
-        $goodsBookings = $this->goodsBookingService->listBookings()->map(function($b){
-            $b->booking_type ='Goods';
-            $b->layanan = $b->goodsRide->transport_type ?? null;
-            $b->driver_name = $b->goodsRide->driver->full_name ?? '-';
-            $b->customer_name = $b->customer->full_name ?? '-';
-            $b->driver_phone = $b->goodsRide->driver->telephone;
-            $b->terminal_keberangkatan = $b->goodsRide->departureTerminal->name ?? '-';
-            $b->terminal_tujuan = $b->goodsRide->arrivalTerminal->name?? '-';
-            $b->kota_tujuan = $b->goodsRide->arrivalTerminal->regency->name ?? '-';
-            $b->kota_awal = $b->goodsRide->departureTerminal->regency->name ?? '-';
-            $b->booking_id = $b->id;
-            return $b;
-        });
+        if($passenger instanceof Builder){
+            $passenger = $passenger->get();
+        }
+        if ($goods instanceof Builder){
+            $goods = $goods->get();
+        }
 
-        $merged = $goodsBookings->concat($passengerBookings);
+        // sambung ke resource
+        $passengerData = PassengerBookingResource::collection($passenger)->toArray(request());
+        $goodsData = GoodsBookingResource::collection($goods)->toArray(request());
 
-        return $merged->sortByDesc('created_at')->values();
+        $merged = collect()
+            ->merge($passengerData)
+            ->merge($goodsData)
+            ->sortByDesc('created_at')
+            ->values();
+
+        $page = request('page', 1);
+        $total = $merged->count();
+        $paginated = new LengthAwarePaginator(
+            $merged->slice(($page - 1) * $perPage, $perPage)->values(),
+            $total,
+            $perPage,
+            $page,
+        [
+                    'path' => request()->url(),
+                    'query' => request()->query()
+                 ]
+        );
+
+        return $paginated;
     }
 
     public function getBookingDetail($type, $id){
         if($type === 'Passenger'){
-            return $this->passengersBookingService->getBooking($id);
+            $data = $this->passengersBookingService->getBooking($id);
+            if(!$data){
+                throw new \Exception('Passenger booking not found');
+            }
+            return new PassengerBookingResource($data);
         } else if ($type === 'Goods') {
-            return $this->goodsBookingService->getBooking($id);
+            $data = $this->goodsBookingService->getBooking($id);
+            if (!$data){
+                throw new \Exception('Goods booking not found');
+            }
+            return new GoodsBookingResource($data);
         }
 
         throw new \InvalidArgumentException('Invalid bookings type');
     }
 
     public function getDetailByCode($type, string $code)  {
-        if ($type === 'Pasengger'){
-            return $this->passengersBookingService->getByCode($code);
+        if ($type === 'Passenger'){
+            $data = $this->passengersBookingService->getByCode($code);
+            if(!$data){
+                throw new \Exception('Passenger booking not found');
+            }
+            return new PassengerBookingResource($data);
         } else if ( $type === 'Goods'){
-            return $this->goodsBookingService->getByCode($code);
+            $data =  $this->goodsBookingService->getByCode($code);
+            if (!$data){
+                throw new \Exception('Goods booking not found');
+            }
+            return new GoodsBookingResource($data);
         }
         throw new \InvalidArgumentException('Invalid Code');
     }

@@ -15,10 +15,36 @@ class AdminOrdersController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $orders = $this->ordersService->listAllBookings();
-        return response()->json(['data' => $orders], 200);
+        // $orders = $this->ordersService->listAllBookings();
+        // return response()->json(['data' => $orders], 200);
+
+        $perPage = $request->input('perPage', 10);
+        $filters = [
+            'status' => $request->query('status'),
+            'search' => $request->query('search'),
+        ];
+
+        $data = $this->ordersService->listAllBookings($perPage, $filters);
+
+        return response()->json([
+            'success' => true,
+            'data' => $data->items(),
+            'meta' => [
+            'current_page' => $data->currentPage(),
+            'last_page' => $data->lastPage(),
+            'per_page' => $data->perPage(),
+            'total' => $data->total(),
+            ],
+            'links' => [
+                'next_page_url' => $data->nextPageUrl(),
+                'prev_page_url' => $data->previousPageUrl(),
+                'first' => $data->url(1),
+                'last' => $data->url($data->lastPage()),
+            ],
+
+    ]);
     }
 
     /**

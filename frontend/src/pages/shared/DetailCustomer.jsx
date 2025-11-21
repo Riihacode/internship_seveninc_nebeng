@@ -4,22 +4,34 @@ import { useCustomers } from "../../hooks/useCustomers";
 import Input from "../../components/Input";
 import dayjs from "dayjs";
 import Swal from "sweetalert2";
+import { useState, useEffect } from "react";
 
 export default function DetailCustomer() {
   const { id } = useParams();
-  const { customers, loading, error, verifyCustomer } = useCustomers();
+  const { getCustomerById, verifyCustomer, isLoadingDetail } = useCustomers();
   const formatTanggal = (tanggal) =>
     tanggal ? dayjs(tanggal).format("DD MMMM YYYY") : "-";
 
-  const cst = Array.isArray(customers)
-    ? customers?.find((d) => d.id === parseInt(id))
-    : null;
-  console.log(cst);
+  const [customer, setCustomer] = useState(null);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const res = await getCustomerById(id);
+        setCustomer(res.data);
+      } catch (err) {
+        setError(err.message);
+      }
+    };
+
+    load();
+  }, [id, getCustomerById]);
 
   const handleVerify = async (status) => {
-    if (!cst) return;
+    if (!customer) return;
     try {
-      await verifyCustomer(cst.id, status);
+      await verifyCustomer(customer.id, status);
       Swal.fire(
         status === true ? "Terverifikasi" : "Diblokir",
         `Customer berhasil ${status === true ? "diverifikasi" : "diblock"}!`,
@@ -31,7 +43,7 @@ export default function DetailCustomer() {
     }
   };
 
-  if (loading)
+  if (isLoadingDetail)
     return (
       <Layout>
         <svg
@@ -57,7 +69,7 @@ export default function DetailCustomer() {
       </Layout>
     );
 
-  if (error || !cst)
+  if (error || !customer)
     return (
       <Layout>
         <h1 className="text-center py-4 text-gray-500 dark:text-neutral-400">
@@ -77,16 +89,16 @@ export default function DetailCustomer() {
           <div className="m-5">
             <img
               className="rounded-full"
-              src={cst.profile_img || "https://placehold.co/200x200"}
+              src={customer.profile_img || "https://placehold.co/200x200"}
               alt="SIM"
             />
           </div>
           <div className="flex flex-col justify-center justify-items-center m-3">
-            <h1 className="font-semibold">{cst.full_name}</h1>
-            <p className="text-gray-600">{cst.user?.email}</p>
-            <p className="text-gray-600">{cst.telephone}</p>
+            <h1 className="font-semibold">{customer.full_name}</h1>
+            <p className="text-gray-600">{customer.user?.email}</p>
+            <p className="text-gray-600">{customer.telephone}</p>
             <span>
-              {cst.verified === true ? (
+              {customer.verified === true ? (
                 <span className="inline-flex items-center gap-x-1.5 rounded-full bg-green-800 px-2 py-1 text-xs font-medium text-white">
                   <svg
                     className="h-1.5 w-1.5 fill-green-500"
@@ -116,18 +128,18 @@ export default function DetailCustomer() {
         <div className="m-3 flex justify-baseline w-full">
           {/* Sisi Kiri */}
           <div className="flex flex-col min-w-lg">
-            <Input label="ID Customer" value={cst.id} />
-            <Input label="Nama Lengkap" value={cst.full_name} />
-            <Input label="Username" value={cst.user?.username} />
+            <Input label="ID Customer" value={customer.id} />
+            <Input label="Nama Lengkap" value={customer.full_name} />
+            <Input label="Username" value={customer.user?.username} />
           </div>
           {/* Sisi Kanan */}
           <div className="flex flex-col">
-            <Input label="Email" value={cst.user?.email} />
+            <Input label="Email" value={customer.user?.email} />
             <Input
               label="Tanggal Bergabung"
-              value={formatTanggal(cst.user?.created_at)}
+              value={formatTanggal(customer.user?.created_at)}
             />
-            <Input label="No.Tlp" value={cst.telephone} />
+            <Input label="No.Tlp" value={customer.telephone} />
           </div>
         </div>
         <br />
@@ -137,16 +149,16 @@ export default function DetailCustomer() {
           <div className="flex flex-col min-w-lg">
             <Input
               label="Nama Lengkap Sesuai KTP"
-              value={cst.id_card_fullname}
+              value={customer.id_card_fullname}
             />
             <Input
               label="Tanggal Lahir"
-              value={formatTanggal(cst.id_card_birthdate)}
+              value={formatTanggal(customer.id_card_birthdate)}
             />
           </div>
           {/* Sisi Kanan */}
           <div className="flex flex-col">
-            <Input label="NIK" value={cst.id_card_number} />
+            <Input label="NIK" value={customer.id_card_number} />
           </div>
         </div>
         <br />
@@ -154,21 +166,23 @@ export default function DetailCustomer() {
           <div className="rounded-2xl p-3 flex-col">
             <p className="font-semibold text-center">Foto Wajah</p>
             <img
-              src={cst.face_img || "https://placehold.co/300x200"}
+              src={customer.face_img || "https://placehold.co/300x200"}
               alt="face img"
             />
           </div>
           <div className="rounded-2xl p-3 flex-col">
             <p className="font-semibold text-center">Foto Wajah Dengan KTP</p>
             <img
-              src={cst.face_with_id_image || "https://placehold.co/300x200"}
+              src={
+                customer.face_with_id_image || "https://placehold.co/300x200"
+              }
               alt="face with ktp"
             />
           </div>
           <div className="rounded-2xl p-3 flex-col">
             <p className="font-semibold text-center">Foto KTP</p>
             <img
-              src={cst.id_card_img || "https://placehold.co/300x200"}
+              src={customer.id_card_img || "https://placehold.co/300x200"}
               alt="ktp"
             />
           </div>
@@ -189,7 +203,7 @@ export default function DetailCustomer() {
                 handleVerify(true);
               }
             }}
-            disabled={loading}
+            disabled={isLoadingDetail}
           >
             Verifikasi Customer
           </button>
@@ -208,7 +222,7 @@ export default function DetailCustomer() {
                 handleVerify(false);
               }
             }}
-            disabled={loading}
+            disabled={isLoadingDetail}
           >
             Blokir Customer
           </button>

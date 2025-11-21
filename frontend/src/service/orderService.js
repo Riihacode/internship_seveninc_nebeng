@@ -15,28 +15,26 @@ function handleError(error) {
 }
 
 const orderService = {
-  getAll: async () => {
+  getAll: async ({ page = 1, search = "", status = "" }) => {
     try {
-      const res = await api.get("/api/orders");
-      console.log("✅ Response dari /api/orders:", res.data);
-      return res.data?.data;
-    } catch (error) {
-      handleError(error);
-    }
-  },
+      const params = new URLSearchParams();
 
-  getById: async (type, id) => {
-    try {
-      const res = await api.get(`/api/orders/${type}/${id}`);
+      params.append("page", page);
+
+      if (search) params.append("search", search);
+      if (status) params.append("status", status);
+
+      const res = await api.get(`/api/orders?${params.toString()}`);
+      // console.log("✅ Response dari /api/orders:", res.data);
       return res.data;
     } catch (error) {
       handleError(error);
     }
   },
 
-  getByCode: async (type, code) => {
+  getOrderById: async (type, id) => {
     try {
-      const res = await api.get(`/api/orders/${type}/${code}`);
+      const res = await api.get(`/api/orders/${type}/${id}`);
       return res.data;
     } catch (error) {
       handleError(error);
