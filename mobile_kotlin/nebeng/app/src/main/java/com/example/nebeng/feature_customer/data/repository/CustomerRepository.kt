@@ -7,13 +7,17 @@ import com.example.nebeng.feature_customer.data.remote.model.request.UpdateCusto
 import com.example.nebeng.feature_customer.domain.model.Customer
 import kotlinx.coroutines.flow.Flow
 import com.example.nebeng.core.common.Result
+import com.example.nebeng.feature_customer.domain.model.UserCustomerSummary
+import com.example.nebeng.feature_passenger_ride_booking.domain.model.PassengerRideBookingFull
 
 interface CustomerRepository {
     suspend fun getAllCustomers(token: String): Flow<Result<List<Customer>>>
 
     suspend fun getCustomerById(token: String, id: Int): Flow<Result<Customer>>
 
-    suspend fun getCustomerByUserId(token: String, userId: Int): Flow<Result<List<Customer>>>
+//    suspend fun getCustomerByUserId(token: String, userId: Int): Flow<Result<List<Customer>>>
+    suspend fun getCustomerByUserId(token: String, userId: Int): Flow<Result<Customer>>
+
 
     suspend fun createCustomer(
         token: String,
@@ -47,4 +51,9 @@ interface CustomerRepository {
         token: String,
         id: Int
     ): Flow<Result<Boolean>>
+
+    suspend fun getCustomerByUserIdSummary(
+        token: String,
+        userId: Int
+    ): Flow<Result<UserCustomerSummary>>
 }

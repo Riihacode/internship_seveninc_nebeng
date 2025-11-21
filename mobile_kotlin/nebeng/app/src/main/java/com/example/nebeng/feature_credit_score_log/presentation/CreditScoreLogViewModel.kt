@@ -90,25 +90,6 @@ class CreditScoreLogViewModel @Inject constructor(
     // ============================================================
     // 🔹 Create Credit Score Log
     // ============================================================
-//    fun createCreditScoreLog(token: String, request: CreateCreditScoreLogRequest) {
-//        viewModelScope.launch {
-//            useCases.create(token, request).collectLatest { result ->
-//                when (result) {
-//                    is Result.Loading -> _uiState.value = _uiState.value.copy(isLoading = true)
-//                    is Result.Success -> _uiState.value = _uiState.value.copy(
-//                        isLoading = false,
-//                        currentLog = result,
-//                        successMessage = "Credit score log berhasil dibuat",
-//                        errorMessage = null
-//                    )
-//                    is Result.Error -> _uiState.value = _uiState.value.copy(
-//                        isLoading = false,
-//                        errorMessage = result.message
-//                    )
-//                }
-//            }
-//        }
-//    }
     fun createCreditScoreLog(token: String, request: CreateCreditScoreLogRequest) {
         viewModelScope.launch {
             useCases.create(token, request).collectLatest { result ->

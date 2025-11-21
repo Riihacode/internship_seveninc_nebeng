@@ -1,7 +1,5 @@
 package com.example.nebeng.feature_customer.domain.model
 
-import com.example.nebeng.feature_user.domain.model.User
-
 data class Customer(
     val id: Int,
     val userId: Int,
@@ -23,8 +21,6 @@ data class Customer(
     val createdAt: String,
     val updatedAt: String
 
-    // Relasi
-//    val user: User? = null
 ) {
     companion object {
         fun getEmpty(): Customer = Customer(

@@ -9,7 +9,10 @@ import javax.inject.Inject
 class ReadByUserIdCustomerUseCase @Inject constructor(
     private val repository: CustomerRepository
 ) {
-    suspend operator fun invoke(token: String, userId: Int): Flow<Result<List<Customer>>> {
+//    suspend operator fun invoke(token: String, userId: Int): Flow<Result<List<Customer>>> {
+//        return repository.getCustomerByUserId(token, userId)
+//    }
+    suspend operator fun invoke(token: String, userId: Int): Flow<Result<Customer>> {
         return repository.getCustomerByUserId(token, userId)
     }
 }

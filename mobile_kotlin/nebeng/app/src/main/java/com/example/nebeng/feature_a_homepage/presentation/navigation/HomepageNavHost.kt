@@ -9,7 +9,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.nebeng.feature_a_homepage.presentation.HomepageViewModel
 import com.example.nebeng.feature_a_homepage.presentation.screen_role.customer.HomepageCustomerScreenUi
+import com.example.nebeng.feature_a_homepage.presentation.screen_role.customer.nebeng_motor.page_01.PassengerRideMotorScreen
 //import com.example.nebeng.feature_a_homepage.presentation.screen_role.driver.HomepageDriverScreenUi
+
+const val ROUTE_PASSENGER_MOTOR = "passenger_motor"
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -30,10 +33,18 @@ fun HomepageNavHost(
         navController = navController,
         startDestination = startDestination
     ) {
+//        composable("homepage_customer") {
+//            HomepageCustomerScreenUi(state = uiState)
+//        }
         composable("homepage_customer") {
-            HomepageCustomerScreenUi(state = uiState)
+            HomepageCustomerScreenUi(
+                state = uiState,
+                onMenuMotorClick = {
+                    navController.navigate(ROUTE_PASSENGER_MOTOR)
+                }
+            )
         }
-        
+
         composable("homepage_driver") {
 //            HomepageDriverScreenUi(
 //                state = uiState,
@@ -42,6 +53,13 @@ fun HomepageNavHost(
 //                    navController.navigate("verify_documents")
 //                }
 //            )
+        }
+
+        composable(ROUTE_PASSENGER_MOTOR) {
+            PassengerRideMotorScreen(
+                onBack = { navController.popBackStack() },
+                onNext = { /* nanti lanjut ke page_02 */ }
+            )
         }
 
         // Placeholder halaman verifikasi dokumen (nanti diganti actual screen)

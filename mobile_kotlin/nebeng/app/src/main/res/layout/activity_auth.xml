@@ -5,6 +5,6 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".feature_a_auth.presentation.auth.AuthActivity">
+    tools:context=".feature_a_authentication.presentation.auth.AuthActivity">
 
 </androidx.constraintlayout.widget.ConstraintLayout>

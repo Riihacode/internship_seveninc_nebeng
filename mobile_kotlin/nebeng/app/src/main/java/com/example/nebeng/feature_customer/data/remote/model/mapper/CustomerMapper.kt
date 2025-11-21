@@ -1,9 +1,12 @@
 package com.example.nebeng.feature_customer.data.remote.model.mapper
 
+import com.example.nebeng.core.utils.UserType
+import com.example.nebeng.feature_a_authentication.domain.model.AuthenticationItem
 import com.example.nebeng.feature_customer.data.remote.model.dto.DataDto
 import com.example.nebeng.feature_customer.data.remote.model.dto.DataItemDto
 import com.example.nebeng.feature_customer.data.remote.model.dto.UserDto
 import com.example.nebeng.feature_customer.domain.model.Customer
+import com.example.nebeng.feature_customer.domain.model.UserCustomerSummary
 import com.example.nebeng.feature_user.domain.model.User
 import kotlin.String
 
@@ -68,6 +71,16 @@ fun UserDto.toDomain(): User {
         name = name,
         username = username,
         email = email,
-        userType = userType
+        userType = UserType.fromString(userType),
+        banned = banned == 1,
+        createdAt = createdAt,
+        updatedAt = updatedAt
+    )
+}
+
+fun DataItemDto.toSummary(): UserCustomerSummary {
+    return UserCustomerSummary(
+        customerId = id,
+        customerName = fullName
     )
 }

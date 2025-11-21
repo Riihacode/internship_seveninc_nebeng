@@ -3,11 +3,12 @@ package com.example.nebeng.feature_a_homepage.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nebeng.core.session.data.UserPreferencesRepository
-import com.example.nebeng.feature_a_auth.domain.model.Auth
+import com.example.nebeng.feature_auth.domain.model.Auth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -16,7 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomepageViewModel @Inject constructor(
-    private val userPrefsRepo: UserPreferencesRepository
+    private val userPrefsRepo: UserPreferencesRepository,
+//    private val homepageUseCases: HompageUseCases
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HomepageUiState(isLoading = true))
@@ -75,4 +77,23 @@ class HomepageViewModel @Inject constructor(
             it.copy(points = (it.points + 5).coerceAtMost(9999)) // contoh dummy reward
         }
     }
+
+//    fun loadTerminals(token: String) {
+//        viewModelScope.launch {
+//            historyOrderUseCases.getTerminal(token)
+//                .catch { e ->
+//                    _uiState.update {
+//                        it.copy(errorMessage = e.message ?: "Gagal memuat terminal")
+//                    }
+//                }
+//                .collect { terminalList ->
+//                    _uiState.update {
+//                        it.copy(
+//                            terminals = terminalList,
+//                            errorMessage = null
+//                        )
+//                    }
+//                }
+//        }
+//    }
 }

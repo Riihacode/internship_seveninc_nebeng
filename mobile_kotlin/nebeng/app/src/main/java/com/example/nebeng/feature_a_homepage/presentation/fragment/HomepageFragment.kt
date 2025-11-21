@@ -6,6 +6,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.nebeng.app.ui.common.RoleAwareFragment
 import com.example.nebeng.feature_a_homepage.presentation.HomepageViewModel
+import com.example.nebeng.feature_a_homepage.presentation.navigation.HomepageNavHost
 import com.example.nebeng.feature_a_homepage.presentation.screen_role.customer.HomepageCustomerScreenUi
 //import com.example.nebeng.feature_a_homepage.presentation.screen_role.driver.HomepageDriverScreenUi
 import dagger.hilt.android.AndroidEntryPoint
@@ -64,8 +65,12 @@ class HomepageFragment : RoleAwareFragment() {
 
     @Composable
     override fun CustomerUI() {
-        val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-        HomepageCustomerScreenUi(uiState)
+//        val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+//        HomepageCustomerScreenUi(uiState)
+        HomepageNavHost(
+            userType = "customer",
+            viewModel = viewModel
+        )
     }
 
     @Composable

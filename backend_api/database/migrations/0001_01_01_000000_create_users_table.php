@@ -40,14 +40,29 @@ return new class extends Migration
         //     $table->integer('last_activity')->index();
         // });
         Schema::create('users', function (Blueprint $table) {
+            // $table->id();
+            // $table->string('name');
+            // $table->string('username')->unique();
+            // $table->string('email')->unique();
+            // $table->string('user_type')->default('customer');
+            // $table->boolean('banned')->default(0);
+            // $table->string('password');
+            // $table->rememberToken();
+            // $table->timestamps();
             $table->id();
-            $table->string('name');
+            $table->string('name'); // WAJIB DIPERTAHANKAN
             $table->string('username')->unique();
             $table->string('email')->unique();
-            $table->string('user_type')->default('customer');
-            $table->boolean('banned')->default(0);
             $table->string('password');
-            $table->rememberToken();
+            $table->enum('user_type', [
+                'superadmin',
+                'admin',
+                'finance',
+                'customer',
+                'driver',
+                'terminal'
+            ]);
+            $table->boolean('banned')->default(false);
             $table->timestamps();
         });
 

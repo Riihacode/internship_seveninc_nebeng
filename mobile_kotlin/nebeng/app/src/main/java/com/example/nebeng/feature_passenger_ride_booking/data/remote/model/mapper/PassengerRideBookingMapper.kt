@@ -5,127 +5,12 @@ import com.example.nebeng.feature_driver.domain.model.Driver
 import com.example.nebeng.feature_passenger_ride.domain.model.PassengerRide
 import com.example.nebeng.feature_passenger_ride_booking.data.remote.model.dto.*
 import com.example.nebeng.feature_passenger_ride_booking.domain.model.*
+import com.example.nebeng.feature_passenger_ride_booking.domain.model.feature_a_history_order.BookingCustomerSummary
+import com.example.nebeng.feature_passenger_ride_booking.domain.model.feature_a_history_order.BookingDriverSummary
+import com.example.nebeng.feature_passenger_ride_booking.domain.model.feature_a_history_order.BookingRideSummary
+import com.example.nebeng.feature_passenger_ride_booking.domain.model.feature_a_history_order.BookingTransactionSummary
+import com.example.nebeng.feature_passenger_ride_booking.domain.model.feature_a_history_order.PassengerRideBookingSummary
 import com.example.nebeng.feature_passenger_transaction.domain.model.PassengerTransaction
-
-///**
-// * ======================================
-// *  DTO → DOMAIN MAPPER
-// * ======================================
-// */
-//fun DataDto.toDomain(): PassengerRideBooking {
-//    return PassengerRideBooking(
-//        id = id,
-//        bookingCode = bookingCode,
-//        passengerRideId = passengerRideId,
-//        customerId = customerId,
-//        seatsReserved = seatsReserved,
-//        totalPrice = totalPrice,
-//        status = status,
-//        createdAt = createdAt,
-//        updatedAt = updatedAt,
-//    )
-//}
-//
-///**
-// * ======================================
-// *  CHILD DTO → DOMAIN
-// * ======================================
-// */
-//fun PassengerRideDto.toDomain(): PassengerRide {
-//    return PassengerRide(
-//        id = id,
-//        driverName = driver.fullName,
-//        departureTerminalName = departureTerminalId.toString(),
-//        arrivalTerminalName = arrivalTerminalId.toString(),
-//        vehicleType = vehicleType,
-//        pricePerSeat = pricePerSeat,
-//        commissionPercentage = commissionPercentage,
-//        seatsAvailable = seatsAvailable,
-//        seatsReserved = seatsReserved,
-//        rideStatus = rideStatus,
-//        departureTime = departureTime,
-//        createdAt = createdAt,
-//        updatedAt = updatedAt
-//        // driver ada di domain Driver
-//    )
-//}
-//
-//fun PassengerTransactionDto.toDomain(): PassengerTransaction {
-//    return PassengerTransaction(
-//        id = id,
-//        passengerRideBookingId = passengerRideBookingId,
-//        customerId = customerId,
-//        paymentMethod = paymentMethodId,
-//        transactionDate = transactionDate,
-//        paymentStatus = paymentStatus,
-//        totalAmount = totalAmount,
-//        creditUsed = creditUsed,
-//        paymentProofImg = paymentProofImg,
-//        createdAt = createdAt,
-//        updatedAt = updatedAt
-//    )
-//}
-//
-//fun CustomerDto.toDomain(): Customer {
-//    return Customer(
-//        id = id,
-//        userId = userId,
-//        fullName = fullName,
-//        telephone = telephone,
-//        fullAddress = fullAddress,
-//
-//        profileImg = profileImg,
-//        verified = verified,
-//        faceImg = faceImg,
-//        faceWithIdImg = faceWithIdImg,
-//
-//        idCardImg = idCardImg,
-//        idCardNumber = idCardNumber,
-//        idCardFullName = idCardFullname,
-//        idCardBirthdate = idCardBirthdate,
-//
-//        creditAmount = creditAmount,
-//
-//        createdAt = createdAt,
-//        updatedAt = updatedAt
-//    )
-//}
-//
-//fun DriverDto.toDomain(): Driver {
-//    return Driver(
-//        id = id,
-//        userId = userId,
-//        fullName = fullName,
-//        telephone = telephone,
-//        fullAddress = fullAddress,
-//        profileImg = profileImg,
-//        faceImg = faceImg,
-//        faceWithIdImg = faceWithIdImg,
-//        idCardImg = idCardImg,
-//        idCardFullname = idCardFullname,
-//        idCardNumber = idCardNumber,
-//        idCardBirthdate = idCardBirthdate,
-//        driverLicenseNumber = driverLicenseNumber,
-//        driverLicenseType = driverLicenseType,
-//        driverLicenseExpired = driverLicenseExpired,
-//        driverLicenseImg = driverLicenseImg,
-//        policeClearanceCertificateNumber = policeClearanceCertificateNumber,
-//        policeClearanceCertificateFullname = policeClearanceCertificateFullname,
-//        policeClearanceCertificateImg = policeClearanceCertificateImg,
-//        policeClearanceCertificateExpired = policeClearanceCertificateExpired,
-//        idCardVerified = idCardVerified,
-//        driverLicenseVerified = driverLicenseVerified,
-//        policeClearanceVerified = policeClearanceVerified,
-//        creditScore = creditScore,
-//        balance = balance,
-//        createdAt = createdAt,
-//        updatedAt = updatedAt,
-//
-//        totalRating = totalRating,
-//        ratingCount = ratingCount,
-//        averageRating = averageRating
-//    )
-//}
 
 /**
  * ============================================================
@@ -250,18 +135,44 @@ fun PassengerTransactionDto.toDomain(): PassengerTransaction {
 //fun DataDto.toFullDomain(): PassengerRideBookingFull {
 //    return PassengerRideBookingFull(
 //        booking     = this.toDomain(),
-//        customer    = this.customer.toDomain(),
-//        ride        = this.passengerRide.toDomain(),
-//        driver      = this.passengerRide.driver.toDomain(),
-//        transaction = this.passengerTransaction.toDomain()
+//        customer    = this.customer?.toDomain() ?: Customer.getEmpty(),
+//        ride        = this.passengerRide?.toDomain() ?: PassengerRide.getEmpty(),
+//        driver      = this.passengerRide?.driver?.toDomain() ?: Driver.getEmpty(),
+//        transaction = this.passengerTransaction?.toDomain() ?: PassengerTransaction.getEmpty()
 //    )
 //}
-fun DataDto.toFullDomain(): PassengerRideBookingFull {
-    return PassengerRideBookingFull(
-        booking     = this.toDomain(),
-        customer    = this.customer?.toDomain() ?: Customer.getEmpty(),
-        ride        = this.passengerRide?.toDomain() ?: PassengerRide.getEmpty(),
-        driver      = this.passengerRide?.driver?.toDomain() ?: Driver.getEmpty(),
-        transaction = this.passengerTransaction?.toDomain() ?: PassengerTransaction.getEmpty()
+
+fun DataDto.toSummary(): PassengerRideBookingSummary {
+    return PassengerRideBookingSummary(
+        bookingId = id,
+        bookingCode = bookingCode,
+        createdAt = createdAt,
+        customer = BookingCustomerSummary(
+            id = customer?.id ?: 0,
+            fullName = customer?.fullName.orEmpty(),
+            telephone = customer?.telephone.orEmpty(),
+        ),
+        driver = BookingDriverSummary(
+            id = passengerRide?.driver?.id ?: 0,
+            fullName = passengerRide?.driver?.fullName.orEmpty(),
+            averageRating = passengerRide?.driver?.averageRating
+        ),
+        ride = BookingRideSummary(
+            id = passengerRide?.id ?: 0,
+            departureTerminalId = passengerRide?.departureTerminalId ?: 0,
+            arrivalTerminalId = passengerRide?.arrivalTerminalId ?: 0,
+            vehicleType = passengerRide?.vehicleType.orEmpty(),
+            departureTime = passengerRide?.departureTime.orEmpty(),
+            seatsReserved = seatsReserved,
+            pricePerSeat = passengerRide?.pricePerSeat ?: 0,
+            rideStatus = passengerRide?.rideStatus.orEmpty()
+        ),
+        transaction = BookingTransactionSummary(
+            id = passengerTransaction?.id ?: 0,
+            totalAmount = passengerTransaction?.totalAmount ?: 0,
+            paymentStatus = passengerTransaction?.paymentStatus?.name,
+            creditUsed = passengerTransaction?.creditUsed ?: 0
+        ),
+        status = status
     )
 }

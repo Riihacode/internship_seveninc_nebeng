@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\AdministratorController;
-use App\Http\Controllers\RideController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\RideController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\RegencyController;
@@ -13,6 +13,9 @@ use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\TerminalController;
 use App\Http\Controllers\GoodsRideController;
+use App\Http\Controllers\AdminOrdersController;
+use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\AdministratorController;
 use App\Http\Controllers\PassengerRideController;
 use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\CreditScoreLogController;
@@ -25,7 +28,6 @@ use App\Http\Controllers\CustomerAdminController;
 use App\Http\Controllers\DriverAdminController;
 use App\Http\Controllers\PassengerRideBookingController;
 use App\Http\Controllers\PassengerTransactionController;
-use App\Http\Controllers\TransactionController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -107,7 +109,6 @@ Route::middleware('auth:api')->group(function() {
     // ######################################################################################
     // ######################################################################################
 
-
     // [ DRIVER ]
     Route::prefix('drivers')->group(function () {
         Route::get('/', [DriverController::class, 'index']);
@@ -156,6 +157,7 @@ Route::middleware('auth:api')->group(function() {
         Route::get('/{id}', [CreditScoreLogController::class, 'show']);
         Route::get('/driver/{driver_id}', [CreditScoreLogController::class, 'byDriver']);
         Route::post('/', [CreditScoreLogController::class, 'store']);
+        Route::put('/{id}', [CreditScoreLogController::class, 'update']);
         Route::delete('/{id}', [CreditScoreLogController::class, 'destroy']);
     });
 

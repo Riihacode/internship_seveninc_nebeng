@@ -69,10 +69,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import com.example.nebeng.core.utils.BookingStatus
 import com.example.nebeng.core.utils.RideStatus
 import com.example.nebeng.core.utils.VehicleType
-import com.example.nebeng.feature_a_auth.domain.model.Auth
+import com.example.nebeng.feature_auth.domain.model.Auth
 //import com.example.nebeng.feature_a_history_order.data.model.mapper.toPresentation
 import com.example.nebeng.feature_a_history_order.domain.model.HistoryOrderItem
 import com.example.nebeng.feature_a_history_order.presentation.HistoryOrderUiState
+//import com.example.nebeng.feature_a_history_order.presentation.screen_role.driver.RideRouteItem
 //import com.example.nebeng.feature_a_history_order.presentation.support_for_present.component.HistoryItemCard
 import com.example.nebeng.feature_a_history_order.presentation.support_for_present.model.HistoryItemData
 
@@ -2245,7 +2246,7 @@ private fun HistoryItemCard(
                     )
                     Spacer(Modifier.width(6.dp))
                     Text(
-                        "Nebeng ${data.vehicleType.value}",
+                        text = "Nebeng ${data.vehicleType.value}",
                         color = NebengBlue,
                         fontWeight = FontWeight.SemiBold,
                         fontSize = 14.sp
@@ -2273,12 +2274,17 @@ private fun HistoryItemCard(
             Spacer(Modifier.height(8.dp))
 
             Text(
-                "${data.departureTerminalId} → ${data.arrivalTerminalId}",
+                text = buildString {
+                    append(data.departureTerminalName.ifBlank { "Terminal Keberangkatan" })
+                    append(" → ")
+                    append(data.arrivalTerminalName.ifBlank { "Terminal Tujuan" })
+                },
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 16.sp,
                 color = Color.Black
             )
 
+            // ====== Jalur (Rute) ======
             Spacer(Modifier.height(6.dp))
 
             Text("${data.createdAt.take(10)} • ${data.createdAt.takeLast(8)}", color = Color.Gray, fontSize = 13.sp)
@@ -2332,7 +2338,10 @@ private fun PreviewHistoryOrderCustomerScreenUi() {
                 bookingStatus = BookingStatus.DITERIMA,
                 vehicleType = VehicleType.MOBIL,
                 rideStatus = RideStatus.PENDING,
-                driverName = "Tanjirō"
+                driverName = "Tanjirō",
+                customerId = 1,
+                customerName = "Customer 1",
+                averageRating = 4.5f
             ),
             HistoryOrderItem(
                 bookingId = 2,
@@ -2345,7 +2354,10 @@ private fun PreviewHistoryOrderCustomerScreenUi() {
                 bookingStatus = BookingStatus.PENDING,
                 vehicleType = VehicleType.MOTOR,
                 rideStatus = RideStatus.PENDING,
-                driverName = null
+                driverName = null,
+                customerId = 1,
+                customerName = "Customer 1",
+                averageRating = 4.5f
             )
         )
     )

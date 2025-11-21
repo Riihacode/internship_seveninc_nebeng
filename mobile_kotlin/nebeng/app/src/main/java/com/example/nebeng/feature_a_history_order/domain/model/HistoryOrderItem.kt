@@ -20,8 +20,22 @@ data class HistoryOrderItem(
     val departureTerminalId: Int,
     val arrivalTerminalId: Int,
 
+    val departureTerminalName: String = "",
+    val arrivalTerminalName: String = "",
+    val departureTerminalDetail: String = "",
+    val arrivalTerminalDetail: String = "",
+
     val seatsReserved: Int,
     val totalPrice: Int,
+
+    // vehicle belum bisa diakses karena tidak ada relasi dari passenger ride ke vehicle
+//    val driverId: Int,
+//    val vehicleName: String = "",
+//    val vehicleColor: String = "",
+    val averageRating: Float?,
+
+    val customerName: String = "",
+    val customerId: Int,
 
     val bookingStatus: BookingStatus?,
     val vehicleType: VehicleType,

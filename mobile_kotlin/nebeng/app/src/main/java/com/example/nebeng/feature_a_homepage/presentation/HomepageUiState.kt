@@ -1,6 +1,6 @@
 package com.example.nebeng.feature_a_homepage.presentation
 
-import com.example.nebeng.feature_a_auth.domain.model.Auth
+import com.example.nebeng.feature_auth.domain.model.Auth
 import com.example.nebeng.feature_a_history_order.presentation.support_for_present.model.HistoryItemData
 
 data class HomepageUiState(

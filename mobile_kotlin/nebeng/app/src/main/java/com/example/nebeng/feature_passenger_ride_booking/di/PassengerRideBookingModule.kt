@@ -1,16 +1,5 @@
 package com.example.nebeng.feature_passenger_ride_booking.di
 
-import com.example.nebeng.feature_passenger_ride.data.remote.api.PassengerRideApi
-import com.example.nebeng.feature_passenger_ride.data.repository.PassengerRideRepository
-import com.example.nebeng.feature_passenger_ride.data.repository.PassengerRideRepositoryImpl
-import com.example.nebeng.feature_passenger_ride.domain.usecase.CreatePassengerRideUseCase
-import com.example.nebeng.feature_passenger_ride.domain.usecase.DeletePassengerRideUseCase
-import com.example.nebeng.feature_passenger_ride.domain.usecase.PassengerRideUseCases
-import com.example.nebeng.feature_passenger_ride.domain.usecase.ReadPassengerRideAllUseCase
-import com.example.nebeng.feature_passenger_ride.domain.usecase.ReadPassengerRideByDriverIdUseCase
-import com.example.nebeng.feature_passenger_ride.domain.usecase.ReadPassengerRideByIdUseCase
-import com.example.nebeng.feature_passenger_ride.domain.usecase.ReadPassengerRideByStatusUseCase
-import com.example.nebeng.feature_passenger_ride.domain.usecase.UpdatePassengerRideUseCase
 import com.example.nebeng.feature_passenger_ride_booking.data.remote.api.PassengerRideBookingApi
 import com.example.nebeng.feature_passenger_ride_booking.data.repository.PassengerRideBookingRepository
 import com.example.nebeng.feature_passenger_ride_booking.data.repository.PassengerRideBookingRepositoryImpl
@@ -23,6 +12,7 @@ import com.example.nebeng.feature_passenger_ride_booking.domain.usecase.ReadByCu
 import com.example.nebeng.feature_passenger_ride_booking.domain.usecase.ReadByIdPassengerRideBookingUseCase
 import com.example.nebeng.feature_passenger_ride_booking.domain.usecase.ReadByPassengerRideIdPassengerRideBookingUseCase
 import com.example.nebeng.feature_passenger_ride_booking.domain.usecase.UpdatePassengerRideBookingUseCase
+//import com.example.nebeng.feature_passenger_ride_booking.domain.usecase.feature_a_history_order.GetPassengerRideBookingSummaryByCustomerIdUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -63,6 +53,9 @@ object PassengerRideBookingModule {
             update                  = UpdatePassengerRideBookingUseCase(repository),
             patch                   = PatchPassengerRideBookingUseCase(repository),
             delete                  = DeletePassengerRideBookingUseCase(repository)
+
+            // Aggregator feature_a_history_order
+//            getHistorySummaryByCustomerId = GetPassengerRideBookingSummaryByCustomerIdUseCase(repository)
         )
     }
 }
