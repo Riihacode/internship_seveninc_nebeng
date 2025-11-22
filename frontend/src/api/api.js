@@ -23,6 +23,14 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response,
   (error) => {
+    console.log("Interceptor error", {
+      status: error.response?.status,
+      message: error.response?.data?.message,
+      errors: error.response?.data?.errors,
+      url: error.config?.url,
+      method: error.config?.method,
+      payload: error.config?.data ? JSON.parse(error.config.data) : null,
+    });
     if (error.response && error.response.status === 401) {
       console.warn("Token expired or Unauthorized");
       const currentToken = localStorage.getItem("token");

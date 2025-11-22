@@ -15,7 +15,13 @@ class CustomerServiceAdmin
         $this->customerRepository = $repo;
     }
 
-    // List semua customer
+    /**
+     * List all customers.
+     *
+     * @param int $perPage
+     * @param array $filters
+     * @return mixed
+     */
     public function listCustomers($perPage = 10, $filters = [])
     {
         return $this->customerRepository->paginate($perPage, $filters);
@@ -62,6 +68,13 @@ class CustomerServiceAdmin
         return $this->customerRepository->create($data);
     }
 
+    /**
+     * update customers.
+     *
+     * @param int $perPage
+     * @param array $filters
+     * @return mixed
+     */
     // Update data customer
     public function updateCustomer($id, array $data)
     {

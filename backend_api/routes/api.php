@@ -13,7 +13,6 @@ use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\TerminalController;
 use App\Http\Controllers\GoodsRideController;
-use App\Http\Controllers\AdminOrdersController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\AdministratorController;
 use App\Http\Controllers\PassengerRideController;
@@ -303,6 +302,16 @@ Route::middleware('auth:api')->group(function() {
         Route::put('/{id}', [DriverAdminController::class, 'update']);
         Route::patch('{id}/verify', [DriverAdminController::class, 'verify']);
         Route::delete('/{id}', [DriverAdminController::class, 'destroy']);
+    });
+
+    // [ USER ]
+    Route::prefix('users')->group(function () {
+        Route::get('/', [UserController::class, 'index']);
+        Route::get('/{id}', [UserController::class, 'show']);
+        Route::post('/', [UserController::class, 'store']);
+        Route::put('/{id}', [UserController::class, 'update']);
+        Route::patch('{id}/verify', [UserController::class, 'verify']);
+        Route::delete('/{id}', [UserController::class, 'destroy']);
     });
 
 });

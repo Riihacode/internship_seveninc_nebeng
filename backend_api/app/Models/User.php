@@ -28,6 +28,20 @@ class User extends Authenticatable implements JWTSubject
         'banned',
     ];
 
+
+    /**
+     * ========================
+     * RELATIONSHIPS
+     * ========================
+     */
+
+    public function driver(){
+        return $this->hasOne( Driver:: class, 'user_id');
+    }
+    public function customer(){
+        return $this->hasOne( Customer:: class, 'user_id');
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -48,6 +62,7 @@ class User extends Authenticatable implements JWTSubject
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'banned' => 'boolean',
         ];
     }
 

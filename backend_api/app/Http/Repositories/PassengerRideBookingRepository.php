@@ -29,7 +29,7 @@ class PassengerRideBookingRepository
                   ->orWhereHas('customer', function ($qc) use ($search){
                     $qc->where('full_name', 'LIKE', "%$search%");
                   })
-                  ->orWhereHas('driver', function ($qd) use ($search){
+                  ->orWhereHas('passengerRide.driver', function ($qd) use ($search){
                     $qd->where('full_name', 'LIKE', "%$search%");
                   });
             });

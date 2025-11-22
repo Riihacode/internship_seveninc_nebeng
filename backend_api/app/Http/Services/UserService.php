@@ -16,9 +16,16 @@ class UserService
         $this->repo = $repo;
     }
 
-    public function list()
+        /**
+     * List all user.
+     *
+     * @param int $perPage
+     * @param array $filters
+     * @return mixed
+     */
+    public function list($perPage = 10, $filters = [])
     {
-        return $this->repo->getAllUser();
+        return $this->repo->paginate($perPage, $filters);
     }
 
     public function get($id)
@@ -57,6 +64,20 @@ class UserService
 
         if ($validator->fails()) throw new ValidationException($validator);
         return $this->repo->updateUser($user, $data);
+    }
+
+    // Verifikasi customer
+    public function verifyUser($id, $status)
+    {
+        $user = $this->repo->findUserById($id);
+
+        if(!$user){
+            return response()->json(['message' => 'user not found'], 404);
+        }
+
+        $data = ['banned' => $status];
+        $this->repo->updateUser($id, $data);
+        return response()->json(['message' => 'Document verification updated successfully']);
     }
 
     public function delete($id)

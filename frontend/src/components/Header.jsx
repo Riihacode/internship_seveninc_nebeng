@@ -16,6 +16,8 @@ export default function Header() {
     if (path === "/pesanan") return "Data Pesanan";
     if (path.startsWith("/refund")) return "Data Refund";
     if (path.startsWith("/laporan")) return "Data Laporan";
+    if (path === "/verifikasi") return "Data User";
+    if (path.startsWith("/verifikasi")) return "Verifikasi User";
   };
   return (
     <>

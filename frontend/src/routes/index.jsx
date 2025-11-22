@@ -13,6 +13,8 @@ import Pengaturan from "../pages/shared/Pengaturan.jsx";
 import DetailMitra from "../pages/shared/DetailMitra.jsx";
 import DetailCustomer from "../pages/shared/DetailCustomer.jsx";
 import Dashboard from "../pages/superAdmin/Dashboard.jsx";
+import Verifikasi from "../pages/shared/Verifikasi.jsx";
+import DetailVerifikasi from "../pages/shared/DetailVerifikasi.jsx";
 
 export default function AppRoutes() {
   return (
@@ -33,6 +35,22 @@ export default function AppRoutes() {
             element={
               <ProtectedRoute requiredRole={["admin", "superadmin"]}>
                 <Mitra />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/verifikasi"
+            element={
+              <ProtectedRoute requiredRole={["admin", "superadmin"]}>
+                <Verifikasi />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/verifikasi/:id"
+            element={
+              <ProtectedRoute requiredRole={["admin", "superadmin"]}>
+                <DetailVerifikasi />
               </ProtectedRoute>
             }
           />

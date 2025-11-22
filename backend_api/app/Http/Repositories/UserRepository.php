@@ -13,62 +13,6 @@ class UserRepository{
         $this->model = $user;
     }
 
-    // // public function createUser(array $data){
-    // //     return User::create([
-    // //         'name' => $data['name'],
-    // //         'username' => $data['username'],
-    // //         'email' => $data['email'],
-    // //         // 'role' => $data['role'],
-    // //         'password' => Hash::make($data['password']),
-    // //         'user_type' => $data['user_type'],
-    // //     ]);
-    // // }
-    // public function createUser(array $data) {
-    //     return $this->model->create([
-    //         'name'      => $data['name'],
-    //         'username'  => $data ['username'],
-    //         'email'     => $data['email'],
-    //         'password'  => $data['password'],
-    //         'user_type' => $data['user_type'],
-    //     ]);
-    // }
-
-    // // public function findByEmailOrUsername(string $login){
-    // //     return User::where('email', $login)
-    // //         ->orWhere('username', $login)
-    // //         ->first();
-    // // }
-
-    // public function findByEmailOrUsername(string $userIdentifier) {
-    //     return $this->model
-    //         ->where('email', $userIdentifier)
-    //         ->orWhere('username', $userIdentifier)
-    //         ->first();
-    // }
-
-    // public function updateUser(User $user, array $data){
-    //     return $user->update($data);
-    // }
-
-    // public function deleteUser(User $user){
-    //     return $user->delete();
-    // }
-
-    // // public function getAllUser(){
-    // //     return User::all();
-    // // }
-
-    // public function getAllUser() {
-    //     return $this->model->all();
-    // }
-
-    // // public function findByIdUser($id){
-    // //     return User::findOrFail($id);
-    // // }
-
-    // public function findByIdUser($id) {
-    //     return $this->model->findOrFail($id);
-    // }
     public function getAllUser()
     {
         return User::orderBy('created_at', 'DESC')->get();
@@ -83,7 +27,7 @@ class UserRepository{
 
     public function findUserById($id)
     {
-        return User::find($id);
+        return User::with(['customer', 'driver'])->findOrFail($id);
     }
 
     public function createUser(array $data)
@@ -92,8 +36,9 @@ class UserRepository{
         return User::create($data);
     }
 
-    public function updateUser(User $user, array $data)
+    public function updateUser($id, array $data)
     {
+        $user = User::findOrFail($id);
         if (isset($data['password'])) {
             $data['password'] = Hash::make($data['password']);
         }
@@ -104,5 +49,30 @@ class UserRepository{
     public function deleteUser(User $user)
     {
         return $user->delete();
+    }
+
+    public function paginate($perPage = 10, $filters = []){
+        $query = $this->model
+            ->with(['customer', 'driver'])
+            ->orderBy('created_at', 'DESC');
+
+        $query->whereIn('user_type', ['driver', 'customer']);
+
+        // filter
+            if($filters['status'] !== null && $filters['status'] !== "") {
+                $query->where('banned', $filters['status']);
+            }
+
+        // search
+        if(!empty($filters['search'])){
+            $search = $filters['search'];
+
+            $query->where(function($q) use ($search) {
+                $q->where('id', 'LIKE', "%$search%")
+                  ->orWhere('email', 'LIKE', "%$search%")
+                  ->orWhere('name', 'LIKE', "%$search%");
+            });
+        }
+        return $query->paginate($perPage);
     }
 }

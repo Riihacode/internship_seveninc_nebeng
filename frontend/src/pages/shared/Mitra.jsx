@@ -35,7 +35,7 @@ export default function Mitra() {
 
       return nameMatch || phoneMatch || emailMatch;
     });
-  }, [drivers, searchText, filterStatus]);
+  }, [drivers, searchText]);
 
   const columns = [
     {

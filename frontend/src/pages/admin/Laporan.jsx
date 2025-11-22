@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
 
 export default function Laporan() {
-  const { orders, loading, error } = useOrders();
+  const { orders, isLoadingList, error } = useOrders();
   const navigate = useNavigate();
   const formatTanggal = (tanggal) =>
     tanggal ? dayjs(tanggal).format("DD MMMM YYYY") : "-";
@@ -53,7 +53,7 @@ export default function Laporan() {
         <Table
           columns={columns}
           data={orders}
-          loading={loading}
+          loading={isLoadingList}
           error={error}
         ></Table>
       </div>

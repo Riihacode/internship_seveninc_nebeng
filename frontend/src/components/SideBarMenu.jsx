@@ -10,11 +10,13 @@ import {
   UserStar,
   HandCoins,
   Columns3Cog,
+  ChartPie,
 } from "lucide-react";
 
 export const sideBarMenu = {
   admin: [
     { name: "Beranda", icon: Home, path: "/home" },
+    { name: "Verifikasi Data", icon: ChartPie, path: "/verifikasi" },
     { name: "Mitra", icon: User, path: "/mitra" },
     { name: "Customer", icon: Users, path: "/customer" },
     { name: "Pesanan", icon: NotebookText, path: "/pesanan" },
@@ -24,6 +26,7 @@ export const sideBarMenu = {
 
   superadmin: [
     { name: "Dashboard", icon: PieChart, path: "/sp/dashboard" },
+    { name: "Verifikasi Data", icon: ChartPie, path: "/verifikasi" },
     { name: "Layanan", icon: Columns3Cog, path: "/sp/layanan" },
     { name: "Verifikasi Data", icon: BadgeCheck, path: "/sp/verifikasi" },
     { name: "Mitra", icon: User, path: "/mitra" },

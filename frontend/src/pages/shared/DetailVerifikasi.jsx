@@ -1,0 +1,248 @@
+import { useParams } from "react-router-dom";
+import Layout from "../../components/Layout";
+import { useUsers } from "../../hooks/useUsers";
+import Input from "../../components/Input";
+import dayjs from "dayjs";
+import Swal from "sweetalert2";
+import { useState, useEffect } from "react";
+
+export default function DetailUser() {
+  const { id } = useParams();
+  const { getUserById, verifyUser, isLoadingDetail, isLoadingAction } =
+    useUsers();
+  const formatTanggal = (tanggal) =>
+    tanggal ? dayjs(tanggal).format("DD MMMM YYYY") : "-";
+
+  const [user, setUser] = useState(null);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const res = await getUserById(id);
+        setUser(res.data);
+        console.log("user : ", res.data);
+      } catch (err) {
+        setError(err.message);
+      }
+    };
+
+    load();
+  }, [id, getUserById]);
+
+  const handleVerify = async (status) => {
+    console.log("🟦 handleVerify: trigger");
+    if (!user) return;
+    try {
+      await verifyUser(user.id, status);
+
+      const fresh = await getUserById(id);
+      setUser(fresh.data);
+
+      Swal.fire(
+        status === true ? "Terblokir" : "Akses",
+        `User berhasil ${status === true ? "diblock" : "di unblock"}!`,
+        "success"
+      );
+    } catch (error) {
+      Swal.fire("Gagal", "Terjadi kesalahan, coba lagi", "error");
+      console.log(error);
+    }
+  };
+
+  if (isLoadingDetail)
+    return (
+      <Layout>
+        <svg
+          className="w-6 h-6 mx-auto text-gray-500 animate-spin"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <circle
+            className="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            strokeWidth="4"
+          ></circle>
+          <path
+            className="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+          ></path>
+        </svg>
+      </Layout>
+    );
+
+  if (error || !user)
+    return (
+      <Layout>
+        <h1 className="text-center py-4 text-gray-500 dark:text-neutral-400">
+          {error ? "Terjadi Kesalahan saat memuat data" : "Belum ada data"}
+          <br />
+          <span className="text-sm text-gray-400">
+            {error ? error.message : "Coba lagi nanti"}
+          </span>
+        </h1>
+      </Layout>
+    );
+
+  const profile =
+    user.user_type === "driver"
+      ? user.driver
+      : user.user_type === "customer"
+        ? user.customer
+        : null;
+
+  return (
+    <Layout>
+      <div className="bg-white rounded-2xl min-h-screen p-3">
+        <div className="bg-gray-200 min-h-fit w-full rounded-2xl flex justify-items-center">
+          <div className="m-5">
+            <img
+              className="rounded-full"
+              src={user.profile_img || "https://placehold.co/200x200"}
+              alt="SIM"
+            />
+          </div>
+          <div className="flex flex-col justify-center justify-items-center m-3">
+            <h1 className="font-semibold">{user?.name}</h1>
+            <p className="text-gray-600">{user?.email}</p>
+            <p className="text-gray-600">{profile.telephone ?? "-"}</p>
+            <span>
+              {user.banned === true ? (
+                <span className="inline-flex items-center gap-x-1.5 rounded-full bg-red-800 px-2 py-1 text-xs font-medium text-white">
+                  <svg
+                    className="h-1.5 w-1.5 fill-red-500"
+                    viewBox="0 0 8 8"
+                    aria-hidden="true"
+                  >
+                    <circle cx="4" cy="4" r="3" />
+                  </svg>
+                  Terblokir
+                </span>
+              ) : (
+                <span className="inline-flex items-center gap-x-1.5 rounded-full bg-green-800 px-2 py-1 text-xs font-medium text-white">
+                  <svg
+                    className="h-1.5 w-1.5 fill-green-500"
+                    viewBox="0 0 8 8"
+                    aria-hidden="true"
+                  >
+                    <circle cx="4" cy="4" r="3" />
+                  </svg>
+                  Akses
+                </span>
+              )}
+            </span>
+          </div>
+        </div>
+        <h1 className="m-3 font-bold">Informasi Pribadi</h1>
+        <div className="m-3 flex justify-baseline w-full">
+          {/* Sisi Kiri */}
+          <div className="flex flex-col min-w-lg">
+            <Input label="ID User" value={user.id} />
+            <Input label="Nama Lengkap" value={user.name} />
+            <Input label="Username" value={user.username} />
+          </div>
+          {/* Sisi Kanan */}
+          <div className="flex flex-col">
+            <Input label="Email" value={user.email} />
+            <Input
+              label="Tanggal Bergabung"
+              value={formatTanggal(user.created_at)}
+            />
+            <Input label="No.Tlp" value={profile.telephone ?? "-"} />
+          </div>
+        </div>
+        <br />
+        <h1 className="m-3 font-bold">Informasi KTP</h1>
+        <div className="m-3 flex justify-baseline w-full">
+          {/* Sisi Kiri */}
+          <div className="flex flex-col min-w-lg">
+            <Input
+              label="Nama Lengkap Sesuai KTP"
+              value={profile.id_card_fullname}
+            />
+            <Input
+              label="Tanggal Lahir"
+              value={formatTanggal(profile.id_card_birthdate)}
+            />
+          </div>
+          {/* Sisi Kanan */}
+          <div className="flex flex-col">
+            <Input label="NIK" value={profile.id_card_number} />
+          </div>
+        </div>
+        <br />
+        <div className="w-fi m-3 rounded-2xl min-h-fit flex">
+          <div className="rounded-2xl p-3 flex-col">
+            <p className="font-semibold text-center">Foto Wajah</p>
+            <img
+              src={profile.face_img ?? "https://placehold.co/300x200"}
+              alt="face img"
+            />
+          </div>
+          <div className="rounded-2xl p-3 flex-col">
+            <p className="font-semibold text-center">Foto Wajah Dengan KTP</p>
+            <img
+              src={profile.face_with_id_image ?? "https://placehold.co/300x200"}
+              alt="face with ktp"
+            />
+          </div>
+          <div className="rounded-2xl p-3 flex-col">
+            <p className="font-semibold text-center">Foto KTP</p>
+            <img
+              src={profile.id_card_img ?? "https://placehold.co/300x200"}
+              alt="ktp"
+            />
+          </div>
+        </div>
+        <div className="p-3">
+          {user.banned === true ? (
+            <button
+              className="bg-green-500 text-white px-3 py-2 rounded-xl"
+              onClick={async () => {
+                const result = await Swal.fire({
+                  title: "Konfirmasi",
+                  text: "Apakah kamu yakin ingin memblokir user ini?",
+                  icon: "question",
+                  showCancelButton: true,
+                  confirmButtonText: "Ya, Terima",
+                  cancelButtonText: "Batal",
+                });
+                if (result.isConfirmed) {
+                  handleVerify(false);
+                }
+              }}
+              disabled={isLoadingDetail}
+            >
+              {isLoadingAction ? "Loading..." : "Unblokir User"}
+            </button>
+          ) : (
+            <button
+              className="bg-red-500 text-white px-3 py-2 rounded-xl mr-2"
+              onClick={async () => {
+                const result = await Swal.fire({
+                  title: "Konfirmasi",
+                  text: "Apakah kamu yakin ingin verifikasi user ini?",
+                  icon: "question",
+                  showCancelButton: true,
+                  confirmButtonText: "Ya, Terima",
+                  cancelButtonText: "Batal",
+                });
+                if (result.isConfirmed) {
+                  handleVerify(true);
+                }
+              }}
+              disabled={isLoadingDetail}
+            >
+              {isLoadingAction ? "Loading..." : "Blokir User"}
+            </button>
+          )}
+        </div>
+      </div>
+    </Layout>
+  );
+}
