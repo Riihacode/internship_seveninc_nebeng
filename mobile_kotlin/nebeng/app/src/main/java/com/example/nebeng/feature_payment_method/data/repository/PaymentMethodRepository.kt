@@ -4,6 +4,7 @@ import com.example.nebeng.core.common.Result
 import com.example.nebeng.feature_payment_method.data.remote.model.request.CreatePaymentMethodRequest
 import com.example.nebeng.feature_payment_method.data.remote.model.request.UpdatePaymentMethodRequest
 import com.example.nebeng.feature_payment_method.domain.model.PaymentMethod
+import com.example.nebeng.feature_payment_method.domain.model.PaymentMethodSummary
 import kotlinx.coroutines.flow.Flow
 
 interface PaymentMethodRepository {
@@ -12,4 +13,8 @@ interface PaymentMethodRepository {
     suspend fun createPaymentMethod(token: String, request: CreatePaymentMethodRequest): Flow<Result<PaymentMethod>>
     suspend fun updatePaymentMethod(token: String, id: Int, request: UpdatePaymentMethodRequest): Flow<Result<PaymentMethod>>
     suspend fun deletePaymentMethod(token: String, id: Int): Flow<Result<Boolean>>
+
+
+    suspend fun getAllPaymentMethodsSummary(token: String): Flow<Result<List<PaymentMethodSummary>>>
+    suspend fun getPaymentMethodByIdSummary(token: String, id: Int): Flow<Result<PaymentMethodSummary>>
 }

@@ -4,6 +4,7 @@ import com.example.nebeng.core.common.Result
 import com.example.nebeng.feature_passenger_ride.data.remote.model.request.CreatePassengerRideRequest
 import com.example.nebeng.feature_passenger_ride.data.remote.model.request.UpdatePassengerRideRequest
 import com.example.nebeng.feature_passenger_ride.domain.model.PassengerRide
+import com.example.nebeng.feature_passenger_ride.domain.model.PassengerRideSummary
 
 interface PassengerRideRepository {
     // Get All
@@ -47,4 +48,16 @@ interface PassengerRideRepository {
         token: String,
         id: Int
     ): Result<String>
+
+
+    // Get All
+    suspend fun getAllPassengerRidesSummary(
+        token: String
+    ): Result<List<PassengerRideSummary>>
+
+    // Get By Id Table
+    suspend fun getPassengerRideByIdSummary(
+        token: String,
+        id: Int
+    ): Result<PassengerRideSummary>
 }

@@ -6,6 +6,7 @@ import com.example.nebeng.feature_passenger_transaction.data.remote.api.Passenge
 import com.example.nebeng.feature_passenger_transaction.data.remote.model.mapper.*
 import com.example.nebeng.feature_passenger_transaction.data.remote.model.request.*
 import com.example.nebeng.feature_passenger_transaction.domain.model.PassengerTransaction
+import com.example.nebeng.feature_passenger_transaction.domain.model.PassengerTransactionSummary
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -226,5 +227,30 @@ class PassengerTransactionRepositoryImpl @Inject constructor(
         is HttpException -> e.message ?: "HTTP error"
         is IOException -> "Network error: ${e.message}"
         else -> "Unexpected error: ${e.message}"
+    }
+
+
+    override suspend fun getAllPassengerTransactionsSummary(token: String): Flow<Result<List<PassengerTransactionSummary>>> = flow {
+        emit(Result.Loading)
+        try {
+            val response = api.getAllPassengerTransactions(token)
+//            val mapped = PassengerTransactionMapper.fromDataItemList(response.data)
+            val passengerTransaction = response.data.map { it.toSummary() }
+            emit(Result.Success(passengerTransaction))
+        } catch (e: Exception) {
+            emit(Result.Error(handleError(e)))
+        }
+    }
+
+    override suspend fun getPassengerTransactionByIdSummary(token: String, id: Int): Flow<Result<PassengerTransactionSummary>> = flow {
+        emit(Result.Loading)
+        try {
+            val response = api.getPassengerTransactionById(token, id)
+//            val mapped = PassengerTransactionMapper.fromByIdDto(response.data)
+            val passengerTransaction = response.data.toSummary()
+            emit(Result.Success(passengerTransaction))
+        } catch (e: Exception) {
+            emit(Result.Error(handleError(e)))
+        }
     }
 }

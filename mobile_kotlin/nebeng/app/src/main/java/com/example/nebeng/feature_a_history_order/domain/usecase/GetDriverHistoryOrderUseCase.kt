@@ -5,5 +5,6 @@ import javax.inject.Inject
 
 class GetDriverHistoryOrderUseCase @Inject constructor(
     private val repository: PassengerRideBookingRepository
-){
+) {
+
 }

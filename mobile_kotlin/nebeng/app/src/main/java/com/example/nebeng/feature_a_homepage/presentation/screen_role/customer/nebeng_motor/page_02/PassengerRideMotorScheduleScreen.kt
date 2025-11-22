@@ -16,12 +16,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
-import coil.compose.AsyncImage
 import com.example.nebeng.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PassengerRideMotorResultScreen(
+fun PassengerRideMotorScheduleScreen(
     onBack: () -> Unit = {},
     onDetailClick: (Int) -> Unit = {}   // index order sementara
 ) {
@@ -198,6 +197,6 @@ private fun RouteRow(
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 private fun PreviewPassengerRideMotorResultScreen() {
-    PassengerRideMotorResultScreen()
+    PassengerRideMotorScheduleScreen()
 }
 

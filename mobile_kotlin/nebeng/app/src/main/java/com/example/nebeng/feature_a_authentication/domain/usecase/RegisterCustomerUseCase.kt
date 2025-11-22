@@ -48,7 +48,7 @@ class RegisterCustomerUseCase @Inject constructor(
                     val baseAuth = registerResult.data.toAuthenticationItem()
 
                     // Ambil informasi customer berdasarkan userId setelah register
-                    customerRepository.getCustomerByUserIdSummary(
+                    customerRepository.getUserCustomerByUserIdSummary(
                         token = baseAuth.token,
                         userId = baseAuth.userId
                     ).map { custResult ->

@@ -122,16 +122,6 @@ fun PassengerRideMotorScreen(
             )
 
             // ========= CARD INPUT (ROUTE + DATE) =============
-//            PassengerRouteCard(
-//                modifier = Modifier
-//                    .align(Alignment.BottomCenter)   // karena dipanggil di dalam Box
-//                    .fillMaxWidth()
-//                    .padding(horizontal = 20.dp)
-//                    .offset(y = 40.dp),             // geser turun dari AppBar
-//                onStartClick = onStartSelect,
-//                onEndClick  = onEndSelect,
-//                onDateClick = onDateSelect
-//            )
             PassengerRouteCard(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)

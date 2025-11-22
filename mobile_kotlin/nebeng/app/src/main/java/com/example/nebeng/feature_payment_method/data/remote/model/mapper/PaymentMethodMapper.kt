@@ -6,6 +6,7 @@ import com.example.nebeng.feature_payment_method.data.remote.model.request.Updat
 import com.example.nebeng.feature_payment_method.data.remote.model.response.DataItem
 import com.example.nebeng.feature_payment_method.domain.model.PaymentMethod
 import com.example.nebeng.core.utils.PaymentStatus
+import com.example.nebeng.feature_payment_method.domain.model.PaymentMethodSummary
 
 /* ============================================================
    🔹 Mapper untuk DataDto → Domain (dipakai di create/update/readById)
@@ -62,5 +63,30 @@ fun PaymentMethod.toUpdateRequest(): UpdatePaymentMethodRequest {
         accountNumber = "",
         accountName = "",
         bankName = ""
+    )
+}
+
+
+
+
+
+
+
+// ==============================================
+fun DataItem.toSummary(): PaymentMethodSummary {
+    return PaymentMethodSummary(
+        id = id,
+        bankName = bankName,
+        accountName = accountName,
+        accountNumber = accountNumber
+    )
+}
+
+fun DataDto.toSummary(): PaymentMethodSummary {
+    return PaymentMethodSummary(
+        id = id,
+        bankName = bankName,
+        accountName = accountName,
+        accountNumber = accountNumber
     )
 }

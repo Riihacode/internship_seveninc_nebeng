@@ -2,6 +2,7 @@ package com.example.nebeng.app.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
@@ -26,6 +27,20 @@ class MainActivity : AppCompatActivity() {
 
     private var hasSetupGraph = false
 
+    // 🔥 Halaman yang bottom nav harus disembunyikan
+    private val hideBottomNavRoutes = setOf(
+        "nebeng_motor",
+        "nebeng_motor_ride_schedule",
+        "nebeng_motor_ride_schedule_detail",
+        "nebeng_motor_payment_method",
+        "nebeng_motor_payment_method_detail",
+        "nebeng_motor_payment_status",
+        "nebeng_motor_payment_waiting",
+        "nebeng_motor_payment_success",
+        "nebeng_motor_on_the_way",
+        "passenger_motor_map"
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -34,6 +49,15 @@ class MainActivity : AppCompatActivity() {
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         binding.navView.setupWithNavController(navController)
+
+        // 🔥 Listener untuk menyembunyikan / menampilkan bottom nav
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.route in hideBottomNavRoutes) {
+                binding.navView.visibility = View.GONE
+            } else {
+                binding.navView.visibility = View.VISIBLE
+            }
+        }
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -69,5 +93,9 @@ class MainActivity : AppCompatActivity() {
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
         finish()
+    }
+
+    fun setBottomNavVisibility(isVisible: Boolean) {
+        binding.navView.visibility = if (isVisible) View.VISIBLE else View.GONE
     }
 }

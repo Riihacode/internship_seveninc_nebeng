@@ -113,5 +113,9 @@ dependencies {
 
     // MAPLIBRE (OpenStreetMap)
     implementation(libs.android.sdk)
-    implementation(libs.compose.extension)
+    implementation(libs.android.plugin.annotation.v9)
+    implementation(libs.android.sdk.v1100)
+    implementation(libs.android.sdk.v1020)
+
+    implementation(libs.osmdroid.android)
 }

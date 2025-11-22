@@ -44,18 +44,18 @@ import com.example.nebeng.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PaymentMethodScreen(
+fun PassengerRideMotorPaymentMethodScreen(
     onBack: () -> Unit = {},
     onNext: (String) -> Unit = {}      // mengirim metode pembayaran terpilih
 ) {
     var selectedMethod by remember { mutableStateOf<String?>(null) }
 
     val methods = listOf(
-        PaymentMethodModel("QRIS", "Pindai QR pengemudi untuk membayar", R.drawable.qris),
-        PaymentMethodModel("Tunai", null, R.drawable.qris),
-        PaymentMethodModel("BRI Virtual Account", null, R.drawable.qris),
-        PaymentMethodModel("BCA Virtual Account", null, R.drawable.qris),
-        PaymentMethodModel("Dana", null, R.drawable.qris)
+        PassengerRideMotorPaymentMethodModel("QRIS", "Pindai QR pengemudi untuk membayar", R.drawable.qris),
+        PassengerRideMotorPaymentMethodModel("Tunai", null, R.drawable.qris),
+        PassengerRideMotorPaymentMethodModel("BRI Virtual Account", null, R.drawable.qris),
+        PassengerRideMotorPaymentMethodModel("BCA Virtual Account", null, R.drawable.qris),
+        PassengerRideMotorPaymentMethodModel("Dana", null, R.drawable.qris)
     )
 
     Column(
@@ -134,7 +134,7 @@ fun PaymentMethodScreen(
 
 @Composable
 private fun PaymentMethodItem(
-    method: PaymentMethodModel,
+    method: PassengerRideMotorPaymentMethodModel,
     selected: Boolean,
     onSelect: () -> Unit
 ) {
@@ -178,5 +178,5 @@ private fun PaymentMethodItem(
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 private fun PreviewPaymentMethodScreen() {
-    PaymentMethodScreen()
+    PassengerRideMotorPaymentMethodScreen()
 }
