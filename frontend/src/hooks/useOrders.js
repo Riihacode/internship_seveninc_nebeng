@@ -2,62 +2,75 @@ import orderService from "../service/orderService";
 import { useState, useEffect, useCallback } from "react";
 import useAuth from "./useAuth";
 
-export function useOrders() {
+export function useOrders({ search ="", status ="" } = {}) {
   const { user, loading: authLoading } = useAuth();
   const [orders, setOrders] = useState([]);
+  const [selectedOrder, setSelectedOrder] = useState([]);
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [meta, setMeta] = useState({
+    current_page: 1,
+    last_page: 1,
+    per_page: 10,
+    total: 0,
+  });
+  const [links, setLinks] = useState({
+    next_page_url: null,
+    prev_page_url: null,
+  });
 
-  const fetchOrders = useCallback(async () => {
-    if (authLoading || !user) return;
-    setLoading(true);
+  const [isLoadingList, setIsLoadingList] = useState(false);
+  const [isLoadingDetail, setIsLoadingDetail] = useState(false);
+
+  const handleError = (err) => {
+    console.error("Order hook error : ", err);
+  };
+
+  const fetchOrders = useCallback(
+    async (page = 1) => {
+      if (authLoading || !user) return;
+      setIsLoadingList(true);
+      setError(null);
+      try {
+        const response = await orderService.getAll({ page, search, status });
+        // console.log("📦 Data orders dari service:", response);
+        if (response.success) {
+          setOrders(response.data || []);
+          setMeta(response.meta || {});
+          setLinks(response.links || {});
+        } else {
+          setOrders([]);
+          setMeta({
+            current_page: 1,
+            last_page: 1,
+            per_page: 10,
+            total: 0,
+            next_page_url: null,
+            prev_page_url: null,
+          });
+        }
+      } catch (err) {
+        handleError(err);
+      } finally {
+        setIsLoadingList(false);
+      }
+    },
+    [authLoading, user, search, status]
+  );
+
+  const getOrderById = useCallback(async (type, id) => {
+    setIsLoadingDetail(true);
     setError(null);
     try {
-      const data = await orderService.getAll();
-      console.log("📦 Data orders dari service:", data);
-      setOrders(data || []);
-    } catch (error) {
-      setError(error);
+      const order = await orderService.getOrderById(type, id);
+      setSelectedOrder(order);
+      console.log("Data order dari service", order);
+      return order;
+    } catch (err) {
+      handleError(err);
     } finally {
-      setLoading(false);
+      setIsLoadingDetail(false);
     }
-  }, [authLoading, user]);
-
-  // const createOrder = async (payload) => {
-  //   setLoading(true);
-  //   try {
-  //     await orderService.create(payload);
-  //     await fetchOrders(); // refresh data
-  //   } catch (error) {
-  //     setError(error.message);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
-  // const updateOrder = async (id, payload) => {
-  //   setLoading(true);
-  //   try {
-  //     await orderService.update(id, payload);
-  //     await fetchOrders();
-  //   } catch (error) {
-  //     setError(error.message);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
-  // const deleteOrder = async (id) => {
-  //   setLoading(true);
-  //   try {
-  //     await orderService.remove(id);
-  //     setOrders((prev) => prev.filter((d) => d.id !== id));
-  //   } catch (error) {
-  //     setError(error.message);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
+  }, []);
 
   useEffect(() => {
     if (!authLoading && user) {
@@ -67,9 +80,14 @@ export function useOrders() {
 
   return {
     orders,
-    loading,
     error,
+    meta,
+    links,
+    isLoadingList,
+    isLoadingDetail,
+    selectedOrder,
     fetchOrders,
+    getOrderById,
     // createOrder,
     // updateOrder,
     // deleteOrder,

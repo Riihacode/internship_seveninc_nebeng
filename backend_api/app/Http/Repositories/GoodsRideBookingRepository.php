@@ -14,13 +14,35 @@ class GoodsRideBookingRepository
     }
 
     // Ambil semua booking beserta relasi
-    public function getAll()
+    public function getAll($filters = [])
     {
-        return $this->model
+        $query = $this->model
             ->with(['goodsRide.driver', 'customer', 'goodsTransaction'])
-            ->orderBy('created_at', 'DESC')
-            ->get();
+            ->orderBy('created_at', 'DESC');
+
+        // search
+        if(!empty($filters['search'])){
+            $search = $filters['search'];
+
+            $query->where(function($q) use ($search) {
+                $q->where('booking_code', 'LIKE', "%$search%")
+                  ->orWhereHas('customer', function ($qc) use ($search){
+                    $qc->where('full_name', 'LIKE', "%$search%");
+                  })
+                  ->orWhereHas('driver', function ($qd) use ($search){
+                    $qd->where('full_name', 'LIKE', "%$search%");
+                  });
+            });
+        }
+
+        // status
+        if(!empty($filters['status'])){
+            $query->where('status', $filters['status']);
+        }
+
+        return $query->get();
     }
+
 
     public function countByDate($date){
         return $this->model->whereDate('created_at', $date)->count();
@@ -77,5 +99,18 @@ class GoodsRideBookingRepository
     {
         $booking = $this->model->findOrFail($id);
         return $booking->delete();
+    }
+
+    public function paginate($perPage = 10, $filters = []){
+        $query = $this->model
+            ->with(['goodsRide.driver', 'customer', 'goodsTransaction'])
+            ->orderBy('created_at', 'DESC');
+
+            // filter
+            if(!empty($filters['status'])) {
+                $query->where('payment_status', $filters['status']);
+            }
+
+            return $query->paginate($perPage);
     }
 }

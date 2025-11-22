@@ -25,9 +25,9 @@ class GoodsRideBookingService
     }
 
     // List semua booking
-    public function listBookings()
+    public function listBookings($filters = [])
     {
-        return $this->goodsRideBookingRepository->getAll();
+        return $this->goodsRideBookingRepository->getAll($filters);
     }
 
     // Get by ID
@@ -98,5 +98,9 @@ class GoodsRideBookingService
     public function deleteBooking($id)
     {
         return $this->goodsRideBookingRepository->delete($id);
+    }
+
+    public function paginateBookings($perPage = 10, $filters = []){
+        return $this->goodsRideBookingRepository->paginate($perPage, $filters);
     }
 }

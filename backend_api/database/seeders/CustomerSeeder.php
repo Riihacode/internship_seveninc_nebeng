@@ -69,7 +69,10 @@ class CustomerSeeder extends Seeder
                     // Data ID Card
                     'id_card_number' => 'ID' . rand(10000000, 99999999),
                     'id_card_fullname' => $data['full_name'],
-                    'id_card_birthdate' => Carbon::now()->subYears(rand(18, 40))->subDays(rand(0, 365)),
+                    'id_card_birthdate' => Carbon::today()
+                        ->subYears(rand(20, 50))
+                        ->subDays(rand(0, 365))
+                        ->toDateString(),
                     'id_card_img' => null,
                     'face_img' => null,
                     'face_with_id_img' => null,

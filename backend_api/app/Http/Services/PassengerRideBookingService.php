@@ -26,9 +26,9 @@ class PassengerRideBookingService
 
 
     // List semua booking
-    public function listBookings()
+    public function listBookings($filters = [])
     {
-        return $this->bookingRepository->getAll();
+        return $this->bookingRepository->getAll($filters);
     }
 
     // Detail booking
@@ -108,5 +108,10 @@ class PassengerRideBookingService
         }
 
         return $this->bookingRepository->update($id, ['status' => $status]);
+    }
+
+
+    public function paginateBookings($perPage = 10, $filters = []){
+        return $this->bookingRepository->paginate($perPage, $filters);
     }
 }

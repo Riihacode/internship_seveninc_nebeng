@@ -3,13 +3,46 @@ import SearchBar from "../../components/SearchBar.jsx";
 import { useDrivers } from "../../hooks/useDrivers.js";
 import Table from "../../components/Table.jsx";
 import { useNavigate } from "react-router-dom";
+import { useMemo, useState } from "react";
 
 export default function Mitra() {
-  const { drivers, error, loading } = useDrivers();
+  const [searchText, setSearchText] = useState("");
+  const [filterStatus, setFilterStatus] = useState("");
+  const { drivers, error, isLoadingList, meta, links, fetchDrivers } =
+    useDrivers({
+      search: searchText,
+      status: filterStatus,
+    });
   const navigate = useNavigate();
 
+  const filterOptions = [
+    { label: "Terverifikasi", value: "Terverifikasi" },
+    { label: "Pengajuan", value: "Pengajuan" },
+    { label: "Terblokir", value: "Terblokir" },
+  ];
+
+  const filteredDrivers = useMemo(() => {
+    return drivers.filter((row) => {
+      const nameMatch = row.full_name
+        .toLowerCase()
+        .includes(searchText.toLowerCase());
+
+      const emailMatch = row.user.email
+        .toLowerCase()
+        .includes(searchText.toLowerCase());
+
+      const phoneMatch = row.telephone.includes(searchText);
+
+      return nameMatch || phoneMatch || emailMatch;
+    });
+  }, [drivers, searchText, filterStatus]);
+
   const columns = [
-    { label: "No", align: "center", render: (_, i) => i + 1 },
+    {
+      label: "No",
+      align: "center",
+      render: (_, i) => (meta.current_page - 1) * meta.per_page + (i + 1),
+    },
     { label: "Nama Mitra", key: "full_name" },
     { label: "Email", render: (d) => d.user.email },
     { label: "NO. TLP", key: "telephone" },
@@ -17,12 +50,14 @@ export default function Mitra() {
     {
       label: "Status",
       render: (row) => {
-        const idCard = row.id_card_verified ? 1 : 0;
-        const driverLicense = row.driver_license_verified ? 1 : 0;
-        const police = row.police_clearance_verified ? 1 : 0;
+        const idCard = row.id_card?.verified ? true : false;
+        const driverLicense = row.driver_license?.verified ? true : false;
+        const police = row.police_certificate?.verified ? true : false;
 
-        const allVerified = idCard === 1 && driverLicense === 1 && police === 1;
-        const anyVerified = idCard === 1 || driverLicense === 1 || police === 1;
+        const allVerified =
+          idCard === true && driverLicense === true && police === true;
+        const anyVerified =
+          idCard === true || driverLicense === true || police === true;
 
         if (allVerified) {
           return (
@@ -82,15 +117,51 @@ export default function Mitra() {
 
   return (
     <Layout>
-      <SearchBar />
-      <div className="bg-white rounded-2xl mt-4">
+      <SearchBar
+        searchText={searchText}
+        onSearchChange={setSearchText}
+        filterOptions={filterOptions}
+        filterValue={filterStatus}
+        onFilterChange={setFilterStatus}
+      />
+      <div className="bg-white rounded-2xl mt-4 min-h-7/9">
         <Table
           columns={columns}
           data={drivers}
-          loading={loading}
-          error={error}
+          loading={isLoadingList}
+          error={error?.message}
         />
       </div>
+      {/* Pagination */}
+      {!isLoadingList && filteredDrivers.length > 0 && (
+        <div className="mt-4">
+          <button
+            disabled={!links.prev_page_url}
+            onClick={() => fetchDrivers(meta.current_page - 1)}
+            className={`px-3 py-1 rounded-lg text-xs ${
+              links.prev_page_url
+                ? "bg-green-500 text-white hover:bg-green-600"
+                : "bg-gray-200 text-gray-400 cursor-not-allowed"
+            }`}
+          >
+            &laquo;
+          </button>
+          <span className="text-xs mx-2">
+            Halaman {meta.current_page} dari {meta.last_page}
+          </span>
+          <button
+            disabled={!links.next_page_url}
+            onClick={() => fetchDrivers(meta.current_page + 1)}
+            className={`px-3 py-1 rounded-lg text-xs ${
+              links.next_page_url
+                ? "bg-green-500 text-white hover:bg-green-600"
+                : "bg-gray-200 text-gray-400 cursor-not-allowed"
+            }`}
+          >
+            &raquo;
+          </button>
+        </div>
+      )}
     </Layout>
   );
 }

@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Layout from "../../components/Layout";
 import { useOrders } from "../../hooks/useOrders";
 import Input from "../../components/Input";
@@ -7,29 +7,50 @@ import dayjs from "dayjs";
 import { useTransactions } from "../../hooks/useTransaction";
 
 export default function DetailPesanan() {
-  const { id } = useParams();
-  const { orders, error, loading: loadingOrders } = useOrders();
+  const { booking_type, id } = useParams();
+  const { getOrderById, isLoadingList } = useOrders();
+
+  const formatTanggal = (tanggal) =>
+    tanggal ? dayjs(tanggal).format("DD MMMM YYYY - HH:mm") : "-";
+
+  const [order, setOrder] = useState(null);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const res = await getOrderById(booking_type, id);
+        console.log("type :", booking_type);
+        console.log("id :", id);
+        console.log("res :", res);
+        setOrder(res.data);
+      } catch (err) {
+        setError(err.message);
+      }
+    };
+
+    load();
+  }, [id, booking_type, getOrderById]);
+
   const {
     transaction,
     loading: loadingTransaction,
     fetchTransactionBooking,
   } = useTransactions();
-  const formatTanggal = (tanggal) =>
-    tanggal ? dayjs(tanggal).format("DD MMMM YYYY - HH:mm") : "-";
-
-  const order = Array.isArray(orders)
-    ? orders?.find((d) => d.id === parseInt(id))
-    : null;
 
   useEffect(() => {
-    if (order?.id) {
-      fetchTransactionBooking(order.booking_type, order.id);
-      console.log("🚀 Fetching transaction for:", order.type, order.id);
+    if (order?.booking_id) {
+      fetchTransactionBooking(booking_type, parseInt(id));
+      console.log(
+        "🚀 Fetching transaction for:",
+        order.booking_type,
+        order.booking_id
+      );
     }
-  }, [order, fetchTransactionBooking]);
+  }, [order, fetchTransactionBooking, id, booking_type]);
   return (
     <Layout>
-      {loadingOrders || loadingTransaction ? (
+      {isLoadingList || loadingTransaction ? (
         <svg
           className="w-6 h-6 mx-auto text-gray-500 animate-spin"
           xmlns="http://www.w3.org/2000/svg"
@@ -90,10 +111,7 @@ export default function DetailPesanan() {
                     label="Nama Lengkap"
                     value={order?.customer_name ?? "-"}
                   />
-                  <Input
-                    label="Nama Lengkap"
-                    value={order?.customer?.telephone ?? "-"}
-                  />
+                  <Input label="No Tlp" value={order?.customer_phone ?? "-"} />
                 </div>
               </div>
             </div>

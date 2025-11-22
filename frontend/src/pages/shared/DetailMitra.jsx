@@ -3,14 +3,27 @@ import { useDrivers } from "../../hooks/useDrivers.js";
 import { useParams } from "react-router-dom";
 import Input from "../../components/Input.jsx";
 import Swal from "sweetalert2";
+import { useEffect, useState } from "react";
 
 export default function DetailMitra() {
   const { id } = useParams();
-  const { drivers, error, loading, verifyDriver } = useDrivers();
+  const { getDriverById, verifyDriver, isLoadingDetail } = useDrivers();
 
-  const mitra = Array.isArray(drivers)
-    ? drivers?.find((d) => d.id === parseInt(id))
-    : null;
+  const [mitra, setMitra] = useState(null);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const res = await getDriverById(id);
+        setMitra(res.data);
+      } catch (err) {
+        setError(err.message);
+      }
+    };
+
+    load();
+  }, [id, getDriverById]);
 
   const handleVerify = async (type, status) => {
     let reason = null;
@@ -28,18 +41,22 @@ export default function DetailMitra() {
       reason = result.value;
     }
 
-    const res = await verifyDriver(mitra.id, { type, status, reason });
-    if (res)
+    try {
+      const res = await verifyDriver(mitra.id, { type, status, reason });
+
       Swal.fire(
-        status === 1 ? "Sukses" : "Ditolak",
-        `${type.toUpperCase()} berhasil ${
-          status === 1 ? "Diverifikasi" : "diblokir"
-        }`,
+        status ? "Sukses" : "Ditolak",
+        `${type.toUpperCase()} berhasil ${status ? "Diverifikasi" : "ditolak"}`,
         "success"
       );
+
+      if (res?.data) setMitra(res.data);
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
-  if (loading)
+  if (isLoadingDetail)
     return (
       <Layout>
         <svg
@@ -72,7 +89,7 @@ export default function DetailMitra() {
           {error ? "Terjadi Kesalahan saat memuat data" : "Belum ada data"}
           <br />
           <span className="text-sm text-gray-400">
-            {error ? error.message : "Coba lagi nanti"}
+            {typeof error === "string" ? error : error?.message}
           </span>
         </h1>
       </Layout>
@@ -176,7 +193,7 @@ export default function DetailMitra() {
         <h1 className="m-3 font-bold">Informasi Pribadi</h1>
         <div className="m-3 flex justify-baseline w-full">
           {/* Sisi Kiri */}
-          <div className="flex flex-col min-w-lg">
+          <div className="flex flex-col min-w-[300px]">
             <Input label="ID Driver" value={mitra.id} />
             <Input label="Nama Lengkap" value={mitra.full_name} />
             <Input label="Username" value={mitra.user?.username} />
@@ -230,8 +247,8 @@ export default function DetailMitra() {
                         label={getLabel(key)}
                         value={
                           key === "status"
-                            ? value === 1
-                              ? "Terverivikasi"
+                            ? value == true
+                              ? "Terverifikasi"
                               : "Belum Diverivikasi"
                             : value || "-"
                         }
@@ -252,11 +269,11 @@ export default function DetailMitra() {
                 <div className="mt-2 px-3">
                   {item.data.status === null || item.data.status === "null" ? (
                     <p className="text-gray-500 italic">Belum diverifikasi.</p>
-                  ) : item.data.status == 1 ? (
+                  ) : item.data.status == true ? (
                     <p className="text-green-600 font-semibold">
                       Terverifikasi ✅
                     </p>
-                  ) : item.data.status == 0 ? (
+                  ) : item.data.status == false ? (
                     <div className="text-red-600">
                       <p className="font-semibold">Ditolak ❌</p>
                       {item.data.reason && (
@@ -284,14 +301,14 @@ export default function DetailMitra() {
                         handleVerify(item.type, 1);
                       }
                     }}
-                    disabled={loading}
+                    disabled={isLoadingDetail}
                   >
                     Terima
                   </button>
                   <button
                     className="bg-red-500 text-white px-3 py-2 rounded-xl"
                     onClick={() => handleVerify(item.type, 0)}
-                    disabled={loading}
+                    disabled={isLoadingDetail}
                   >
                     Tolak
                   </button>

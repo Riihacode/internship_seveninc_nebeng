@@ -10,91 +10,91 @@ function handleError(error) {
     throw new Error("Server tidak merespon. Periksa koneksi anda");
   } else {
     console.error("Error:", error.message);
-    throw new Error("Teradi kesalahan tidak diketahui");
+    throw new Error("Terjadi kesalahan tidak diketahui");
   }
 }
 
-const driverService = {
-  getAll: async () => {
+const customersService = {
+  getAll: async ({ page = 1, search = "", status = "" }) => {
     try {
-      const res = await api.get("/api/customers");
-      return res.data?.data;
+      const params = new URLSearchParams();
+
+      params.append("page", page);
+
+      if (search) params.append("search", search);
+      if (status) params.append("status", status);
+
+      const res = await api.get(`/api/admin/customers?${params.toString()}`);
+      // console.log("Data dari customer service :", res);
+      return res.data;
     } catch (error) {
       handleError(error);
+      throw error;
     }
   },
 
   getById: async (id) => {
     try {
-      const res = await api.get(`/api/customers/${id}`);
+      const res = await api.get(`/api/admin/customers/${id}`);
+      console.log("Data detail customer dari service : ", res);
       return res.data;
     } catch (error) {
       handleError(error);
+      throw error;
     }
   },
 
   getByUserId: async (user_id) => {
     try {
-      const res = await api.get(`/api/customers/user/${user_id}`);
+      const res = await api.get(`/api/admin/customers/user/${user_id}`);
       return res.data;
     } catch (error) {
       handleError(error);
+      throw error;
     }
   },
 
   create: async (data) => {
     try {
-      const res = await api.post("/api/customers", data);
+      const res = await api.post("/api/admin/customers", data);
       return res.data;
     } catch (error) {
       handleError(error);
+      throw error;
     }
   },
 
   update: async (id, data) => {
     try {
-      const res = await api.put(`/api/customers/${id}`, data);
+      const res = await api.put(`/api/admin/customers/${id}`, data);
       return res.data;
     } catch (error) {
       handleError(error);
+      throw error;
     }
   },
 
   verify: async (id, status) => {
     try {
-      const res = await api.patch(`/api/customers/${id}/verify`, { status });
+      const res = await api.patch(`/api/admin/customers/${id}/verify`, {
+        status,
+      });
       return res.data;
     } catch (error) {
       handleError(error);
-    }
-  },
-
-  addCredit: async (id, data) => {
-    try {
-      const res = await api.patch(`/api/add-credit/${id}`, data);
-      return res.data;
-    } catch (error) {
-      handleError(error);
-    }
-  },
-
-  deductCredit: async (id, data) => {
-    try {
-      const res = await api.patch(`/api/add-credit/${id}`, data);
-      return res.data;
-    } catch (error) {
-      handleError(error);
+      throw error;
     }
   },
 
   remove: async (id) => {
     try {
-      const res = await api.delete(`/api/customers/${id}`);
+      const res = await api.delete(`/api/admin/customers/${id}`);
       return res.data;
     } catch (error) {
       handleError(error);
+      throw error;
     }
   },
 };
 
-export default driverService;
+export default customersService;
