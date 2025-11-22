@@ -60,7 +60,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun HomepageCustomerScreenUi(
     state: HomepageUiState,
-    onMenuMotorClick: () -> Unit = {}
+    onMenuMotorClick: () -> Unit = {},
+    onMenuOpenMapClick:() -> Unit = {}
 ) {
     val user = state.currentUser
     val points = state.points
@@ -154,12 +155,19 @@ fun HomepageCustomerScreenUi(
                     .weight(1f)
                     .clickable { onMenuMotorClick() }
             )
+//            MenuItem(
+//                iconRes = R.drawable.ic_mobil,
+//                label = "Mobil",
+//                modifier = Modifier
+//                    .weight(1f)
+////                    .clickable { onMenuMotorClick() }
+//            )
             MenuItem(
                 iconRes = R.drawable.ic_mobil,
-                label = "Mobil",
+                label = "MAP",
                 modifier = Modifier
                     .weight(1f)
-//                    .clickable { onMenuMotorClick() }
+                    .clickable { onMenuOpenMapClick() }   // 🔥 Go to Map Screen
             )
             MenuItem(R.drawable.ic_barang, "Barang", modifier = Modifier.weight(1f))
             MenuItem(R.drawable.ic_transport, "Barang \n(Transportasi Umum)", modifier = Modifier.weight(1f))

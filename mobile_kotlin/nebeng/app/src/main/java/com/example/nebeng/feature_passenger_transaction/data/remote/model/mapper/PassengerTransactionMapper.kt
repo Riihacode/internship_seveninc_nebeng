@@ -10,6 +10,8 @@ import com.example.nebeng.feature_passenger_transaction.data.remote.model.respon
 import com.example.nebeng.feature_passenger_transaction.domain.model.PassengerTransaction
 import com.example.nebeng.feature_payment_method.domain.model.PaymentMethod
 import com.example.nebeng.core.utils.PaymentStatus
+import com.example.nebeng.feature_passenger_transaction.data.remote.model.request.CreatePassengerTransactionRequest
+import com.example.nebeng.feature_passenger_transaction.domain.model.PassengerTransactionSummary
 
 ///* ============================================================
 //   🔹 DTO → Domain untuk relasi nested (Customer, PaymentMethod, Booking)
@@ -273,4 +275,39 @@ object PassengerTransactionMapper {
             updatedAt = dto.updatedAt
         )
     }
+}
+
+
+
+// ===============================================
+fun DataItem.toSummary(): PassengerTransactionSummary{
+    return PassengerTransactionSummary(
+        id = id,
+        passengerRideBookingId = passengerRideBookingId,
+        customerId = customerId,
+        totalAmount = totalAmount,
+        paymentMethod = paymentMethodId,
+        paymentProofImg = paymentProofImg,
+        paymentStatus = PaymentStatus.fromString(paymentStatus),
+        creditUsed = creditUsed,
+        transactionDate = transactionDate,
+        createdAt = createdAt,
+        updatedAt = updatedAt
+    )
+}
+
+fun DataByIdPassengerTransaction.toSummary(): PassengerTransactionSummary{
+    return PassengerTransactionSummary(
+        id = id,
+        passengerRideBookingId = passengerRideBookingId,
+        customerId = customerId,
+        totalAmount = totalAmount,
+        paymentMethod = paymentMethodId,
+        paymentProofImg = paymentProofImg,
+        paymentStatus = PaymentStatus.fromString(paymentStatus),
+        creditUsed = creditUsed,
+        transactionDate = transactionDate,
+        createdAt = createdAt,
+        updatedAt = updatedAt
+    )
 }

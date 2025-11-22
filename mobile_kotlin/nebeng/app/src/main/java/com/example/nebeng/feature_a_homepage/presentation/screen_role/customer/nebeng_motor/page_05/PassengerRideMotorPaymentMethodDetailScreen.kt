@@ -48,15 +48,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.nebeng.R
-import com.example.nebeng.feature_a_homepage.presentation.screen_role.customer.nebeng_motor.page_04.PaymentMethodModel
+import com.example.nebeng.feature_a_homepage.presentation.screen_role.customer.nebeng_motor.page_04.PassengerRideMotorPaymentMethodModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PaymentMethodDetailScreen(
+fun PassengerRideMotorPaymentMethodDetailScreen(
     onBack: () -> Unit = {},
     onPay: () -> Unit = {},
     orderNumber: String = "FR-2345678997543234",
-    paymentMethod: PaymentMethodModel = PaymentMethodModel(
+    paymentMethod: PassengerRideMotorPaymentMethodModel = PassengerRideMotorPaymentMethodModel(
         name = "BRI Virtual Account",
         icon = R.drawable.qris
     ),
@@ -315,11 +315,11 @@ private fun RouteRow(
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 private fun PreviewPaymentMethodDetailScreen() {
-    PaymentMethodDetailScreen(
+    PassengerRideMotorPaymentMethodDetailScreen(
         onBack = {},
         onPay = {},
         orderNumber = "FR-2345678997543234",
-        paymentMethod = PaymentMethodModel(
+        paymentMethod = PassengerRideMotorPaymentMethodModel(
             name = "BRI Virtual Account",
             icon = R.drawable.qris
         ),

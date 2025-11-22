@@ -50,7 +50,7 @@ class LoginCustomerUseCase @Inject constructor(
                     val baseAuth = loginResult.data.toAuthenticationItem()
 
                     // ⚡ Tahap 2 — ambil customer berdasarkan userId
-                    customerRepository.getCustomerByUserIdSummary(
+                    customerRepository.getUserCustomerByUserIdSummary(
                         token = baseAuth.token,
                         userId = baseAuth.userId
                     ).map { customerResult ->

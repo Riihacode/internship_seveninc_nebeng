@@ -5,6 +5,7 @@ import com.example.nebeng.feature_passenger_transaction.data.remote.model.reques
 import com.example.nebeng.feature_passenger_transaction.data.remote.model.request.PatchStatusByIdPassengerTransactionRequest
 import com.example.nebeng.feature_passenger_transaction.data.remote.model.request.UpdatePassengerTransactionRequest
 import com.example.nebeng.feature_passenger_transaction.domain.model.PassengerTransaction
+import com.example.nebeng.feature_passenger_transaction.domain.model.PassengerTransactionSummary
 import kotlinx.coroutines.flow.Flow
 
 interface PassengerTransactionRepository {
@@ -48,4 +49,8 @@ interface PassengerTransactionRepository {
     ): Flow<Result<PassengerTransaction>>
 
     suspend fun deletePassengerTransactionById(token: String, id: Int): Flow<Result<String>>
+
+    suspend fun getAllPassengerTransactionsSummary(token: String): Flow<Result<List<PassengerTransactionSummary>>>
+
+    suspend fun getPassengerTransactionByIdSummary(token: String, id: Int): Flow<Result<PassengerTransactionSummary>>
 }

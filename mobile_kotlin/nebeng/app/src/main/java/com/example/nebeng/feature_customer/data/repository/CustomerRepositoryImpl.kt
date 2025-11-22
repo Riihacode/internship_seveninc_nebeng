@@ -13,9 +13,10 @@ import javax.inject.Inject
 import com.example.nebeng.core.common.Result
 import com.example.nebeng.feature_customer.data.remote.model.mapper.toDomain
 import com.example.nebeng.feature_customer.data.remote.model.mapper.toSummary
+import com.example.nebeng.feature_customer.data.remote.model.mapper.toUserCustomerSummary
+import com.example.nebeng.feature_customer.domain.model.CustomerSummary
 import com.example.nebeng.feature_customer.domain.model.UserCustomerSummary
 //import com.example.nebeng.feature_passenger_ride_booking.data.remote.model.mapper.toFullDomain
-import com.example.nebeng.feature_passenger_ride_booking.domain.model.PassengerRideBookingFull
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
 
@@ -270,56 +271,7 @@ class CustomerRepositoryImpl @Inject constructor(
         }
     }.flowOn(Dispatchers.IO)
 
-//    override suspend fun getCustomerByUserIdSummary(
-//        token: String,
-//        userId: Int,
-//    ): Flow<Result<UserCustomerSummary>>  = flow {
-//        emit(Result.Loading)
-//        try {
-//            val response = api.getCustomerByUserId("Bearer $token", userId)
-//
-//            if (response.isSuccessful) {
-//                val list = response.body()?.data ?: emptyList()
-//                val dto = list.firstOrNull()?.toSummary()
-//
-//                if (dto != null) emit(Result.Success(dto))
-//                else emit(Result.Error("Customer not found"))
-//            } else {
-//                emit(Result.Error(response.errorBody()?.string() ?: "Unknown error"))
-//            }
-//        } catch (e: Exception) {
-//            emit(Result.Error(e.message ?: "Unknown exception"))
-//        }
-//    }.flowOn(Dispatchers.IO)
-//    override suspend fun getCustomerByUserIdSummary(
-//        token: String,
-//        userId: Int,
-//    ): Flow<Result<UserCustomerSummary>>  = flow {
-//        emit(Result.Loading)
-//        try {
-//            val response = api.getCustomerByUserId("Bearer $token", userId)
-//            android.util.Log.d("CustomerRepo", "getCustomerByUserIdSummary code=${response.code()}")
-//
-//            if (response.isSuccessful) {
-//                val list = response.body()?.data ?: emptyList()
-//                android.util.Log.d("CustomerRepo", "getCustomerByUserIdSummary size=${list.size}")
-//
-//                val dto = list.firstOrNull()?.toSummary()
-//
-//                if (dto != null) {
-//                    android.util.Log.d("CustomerRepo", "getCustomerByUserIdSummary dto: id=${dto.customerId}, name=${dto.customerName}")
-//                    emit(Result.Success(dto))
-//                } else {
-//                    emit(Result.Error("Customer not found"))
-//                }
-//            } else {
-//                emit(Result.Error(response.errorBody()?.string() ?: "Unknown error"))
-//            }
-//        } catch (e: Exception) {
-//            emit(Result.Error(e.message ?: "Unknown exception"))
-//        }
-//    }.flowOn(Dispatchers.IO)
-    override suspend fun getCustomerByUserIdSummary(
+    override suspend fun getUserCustomerByUserIdSummary(
         token: String,
         userId: Int,
     ): Flow<Result<UserCustomerSummary>> = flow {
@@ -332,7 +284,7 @@ class CustomerRepositoryImpl @Inject constructor(
                 return@flow
             }
 
-            val dto = response.body()?.data?.toSummary()   // <-- langsung object, bukan array
+            val dto = response.body()?.data?.toUserCustomerSummary()   // <-- langsung object, bukan array
 
             if (dto != null) emit(Result.Success(dto))
             else emit(Result.Error("Customer not found"))
@@ -343,4 +295,24 @@ class CustomerRepositoryImpl @Inject constructor(
         }
     }.flowOn(Dispatchers.IO)
 
+    override suspend fun getCustomerByIdSummary(
+        token: String,
+        id: Int,
+    ): Flow<Result<CustomerSummary>> = flow {
+        emit(Result.Loading)
+        try {
+            val response = api.getCustomerById("Bearer $token", id)
+            if (response.isSuccessful) {
+                val customer = response.body()?.data?.toSummary()
+                if (customer != null) {
+                    emit(Result.Success(customer))
+                    Log.d("CustomerRepo", "✅ getCustomerById: ${customer.fullName}")
+                } else emit(Result.Error("Customer not found"))
+            } else {
+                emit(Result.Error(response.errorBody()?.string() ?: "Failed to fetch customer by ID"))
+            }
+        } catch (e: Exception) {
+            emit(Result.Error(e.message ?: "Unknown error while fetching customer by ID"))
+        }
+    }.flowOn(Dispatchers.IO)
 }

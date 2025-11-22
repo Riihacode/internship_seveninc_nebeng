@@ -3,9 +3,11 @@ package com.example.nebeng.feature_passenger_ride.data.repository
 import com.example.nebeng.core.common.Result
 import com.example.nebeng.feature_passenger_ride.data.remote.api.PassengerRideApi
 import com.example.nebeng.feature_passenger_ride.data.remote.model.mapper.toDomain
+import com.example.nebeng.feature_passenger_ride.data.remote.model.mapper.toSummary
 import com.example.nebeng.feature_passenger_ride.data.remote.model.request.CreatePassengerRideRequest
 import com.example.nebeng.feature_passenger_ride.data.remote.model.request.UpdatePassengerRideRequest
 import com.example.nebeng.feature_passenger_ride.domain.model.PassengerRide
+import com.example.nebeng.feature_passenger_ride.domain.model.PassengerRideSummary
 import java.lang.Exception
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -142,6 +144,43 @@ class PassengerRideRepositoryImpl @Inject constructor(
             }
         } catch (e: Exception) {
             Result.Error(e.message ?: "Gagal menghapus passenger ride")
+        }
+    }
+
+    override suspend fun getAllPassengerRidesSummary(
+        token: String
+    ): Result<List<PassengerRideSummary>> {
+        return try {
+            val response = api.getAllPassengerRides(token = "Bearer $token")
+            if (response.isSuccessful) {
+                val data = response.body()?.data?.map { it.toSummary() } ?: emptyList()
+                Result.Success(data)
+            } else {
+                Result.Error(message = response.message())
+            }
+        } catch(e: Exception) {
+            Result.Error(message = e.message ?: "Gagal memuat data passenger ride")
+        }
+    }
+
+    override suspend fun getPassengerRideByIdSummary(
+        token: String,
+        id: Int
+    ): Result<PassengerRideSummary> {
+        return try {
+            val response = api.getPassengerRideById("Bearer $token", id)
+            if(response.isSuccessful) {
+                val ride = response.body()?.data?.firstOrNull()?.toSummary()
+                if (ride != null) {
+                    Result.Success(ride)
+                } else {
+                    Result.Error("Passenger ride tidak ditemukan")
+                }
+            } else {
+                Result.Error(response.message())
+            }
+        } catch(e: kotlin.Exception) {
+            Result.Error(e.message ?: "Gagal memuat PassengerRides dengan ID $id")
         }
     }
 }

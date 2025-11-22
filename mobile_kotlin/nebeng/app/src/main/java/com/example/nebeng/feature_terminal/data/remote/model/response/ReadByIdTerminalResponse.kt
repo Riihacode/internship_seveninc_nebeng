@@ -4,7 +4,7 @@ import com.example.nebeng.feature_terminal.data.remote.model.dto.DataDto
 import com.google.gson.annotations.SerializedName
 
 data class ReadByIdTerminalResponse(
-	@field:SerializedName("data") val data: DataDto? = null
+	@field:SerializedName("data") val data: DataDto
 )
 
 //data class Regency(
