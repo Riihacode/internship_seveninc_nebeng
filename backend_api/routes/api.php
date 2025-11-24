@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\VehicleAdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RideController;
@@ -312,6 +313,18 @@ Route::middleware('auth:api')->group(function() {
         Route::put('/{id}', [UserController::class, 'update']);
         Route::patch('{id}/verify', [UserController::class, 'verify']);
         Route::delete('/{id}', [UserController::class, 'destroy']);
+    });
+
+    // [ VEHICLES ADMIN ]
+    Route::prefix('admin/vehicles')->group(function () {
+        Route::get('/', [VehicleAdminController::class, 'index']);
+        Route::get('/{id}', [VehicleAdminController::class, 'show']);
+        Route::get('/driver/{driver_id}', [VehicleAdminController::class, 'byDriver']);
+        Route::post('/', [VehicleAdminController::class, 'store']);
+        Route::put('/{id}', [VehicleAdminController::class, 'update']);
+        Route::patch('/{id}/verify', [VehicleAdminController::class, 'verify']);
+        Route::patch('/{id}/reject', [VehicleAdminController::class, 'reject']);
+        Route::delete('/{id}', [VehicleAdminController::class, 'destroy']);
     });
 
 });

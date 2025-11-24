@@ -2,10 +2,17 @@ import { NavLink } from "react-router-dom";
 import LogoutButton from "./LogoutButton";
 import { sideBarMenu } from "./SideBarMenu";
 import useAuth from "../hooks/useAuth";
+import { ChevronDown, ChevronRight } from "lucide-react";
+import { useState } from "react";
 export default function SideBar() {
   const { user } = useAuth();
+  const [openDropdown, setOpenDropdown] = useState();
   if (!user) return null;
   const menus = sideBarMenu[user?.user_type] || [];
+
+  const toggleDropdown = (name) => {
+    setOpenDropdown(openDropdown === name ? null : name);
+  };
 
   return (
     <aside
@@ -26,24 +33,68 @@ export default function SideBar() {
         <ul className="flex flex-col">
           {menus.map((menu, i) => (
             <li key={i} className="cursor-pointer hover:text-blue-500">
-              <NavLink
-                to={menu.path}
-                className={({ isActive }) =>
-                  `relative flex items-center gap-3 px-4 py-3 transition-all duration-300 group
+              {/* Jika punya children */}
+              {"children" in menu ? (
+                <div className="">
+                  <button
+                    onClick={() => toggleDropdown(menu.name)}
+                    className="flex items-center justify-between w-full px-4 py-3 hover:text-blue-400"
+                  >
+                    <div className="flex items-center gap-3">
+                      <menu.icon sise={20} />
+                      <span>{menu.name}</span>
+                    </div>
+
+                    {openDropdown === menu.name ? (
+                      <ChevronDown size={18} />
+                    ) : (
+                      <ChevronRight size={18} />
+                    )}
+                  </button>
+
+                  {/* children */}
+                  {openDropdown === menu.name && (
+                    <ul className="ml-10 mt-1 space-y-1">
+                      {menu.children.map((child, idx) => (
+                        <li key={idx}>
+                          <NavLink
+                            to={child.path}
+                            className={({ isActive }) =>
+                              `block px-2 py-2 text-sm rounded ${
+                                isActive
+                                  ? "text-blue-400"
+                                  : "text-gray-200 hover:text-blue-300"
+                              }`
+                            }
+                          >
+                            {child.name}
+                          </NavLink>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              ) : (
+                // normal menu
+                <NavLink
+                  to={menu.path}
+                  className={({ isActive }) =>
+                    `relative flex items-center gap-3 px-4 py-3 transition-all duration-300 group
                 ${
                   isActive
                     ? "text-blue-500 font-semibold before:content-[''] before:absolute before:left-0 before:top-0 before:h-full before:w-[3px] before:bg-blue-500 before:rounded-r-md"
                     : "white dark:text-gray-300 hover:text-blue-500"
                 }`
-                }
-              >
-                {/* Garis Kanan */}
-                <span
-                  className={`absolute right-0 top-0 h-full w-[3px] rounded-r-md bg-blue-500 transition-all duration-300 opacity-0 group-hover:opacity-100`}
-                ></span>
-                <menu.icon size={20} />
-                <span>{menu.name}</span>
-              </NavLink>
+                  }
+                >
+                  {/* Garis Kanan */}
+                  <span
+                    className={`absolute right-0 top-0 h-full w-[3px] rounded-r-md bg-blue-500 transition-all duration-300 opacity-0 group-hover:opacity-100`}
+                  ></span>
+                  <menu.icon size={20} />
+                  <span>{menu.name}</span>
+                </NavLink>
+              )}
             </li>
           ))}
         </ul>

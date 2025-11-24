@@ -70,7 +70,8 @@ class UserRepository{
             $query->where(function($q) use ($search) {
                 $q->where('id', 'LIKE', "%$search%")
                   ->orWhere('email', 'LIKE', "%$search%")
-                  ->orWhere('name', 'LIKE', "%$search%");
+                  ->orWhere('name', 'LIKE', "%$search%")
+                  ->orWhere('user_type', 'LIKE', "%$search%");
             });
         }
         return $query->paginate($perPage);

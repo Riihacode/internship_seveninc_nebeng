@@ -15,6 +15,7 @@ import DetailCustomer from "../pages/shared/DetailCustomer.jsx";
 import Dashboard from "../pages/superAdmin/Dashboard.jsx";
 import Verifikasi from "../pages/shared/Verifikasi.jsx";
 import DetailVerifikasi from "../pages/shared/DetailVerifikasi.jsx";
+import Kendaraan from "../pages/shared/Kendaraan.jsx";
 
 export default function AppRoutes() {
   return (
@@ -35,6 +36,14 @@ export default function AppRoutes() {
             element={
               <ProtectedRoute requiredRole={["admin", "superadmin"]}>
                 <Mitra />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/kendaraan"
+            element={
+              <ProtectedRoute requiredRole={["admin", "superadmin"]}>
+                <Kendaraan />
               </ProtectedRoute>
             }
           />

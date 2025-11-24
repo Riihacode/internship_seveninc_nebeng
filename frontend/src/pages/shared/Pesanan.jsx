@@ -37,7 +37,7 @@ export default function Pesanan() {
 
       return codeOrderMatch || customerMatch || driverMatch;
     });
-  }, [orders, searchText, filterStatus]);
+  }, [orders, searchText]);
 
   const formatTanggal = useCallback(
     (tanggal) => (tanggal ? dayjs(tanggal).format("DD MMMM YYYY") : "-"),

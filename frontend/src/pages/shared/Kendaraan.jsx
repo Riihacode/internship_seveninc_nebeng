@@ -1,17 +1,18 @@
 import Layout from "../../components/Layout";
-import { useUsers } from "../../hooks/useUsers";
+import { useVehicles } from "../../hooks/useVehicles";
 import SearchBar from "../../components/SearchBar";
 import Table from "../../components/Table";
 import { useNavigate } from "react-router-dom";
 import { useMemo, useState } from "react";
 
-export default function User() {
+export default function Vehicle() {
   const [searchText, setSearchText] = useState("");
   const [filterStatus, setFilterStatus] = useState("");
-  const { users, error, isLoadingList, meta, links, fetchUsers } = useUsers({
-    search: searchText,
-    status: filterStatus,
-  });
+  const { vehicles, error, isLoadingList, meta, links, fetchVehicles } =
+    useVehicles({
+      search: searchText,
+      status: filterStatus,
+    });
   const navigate = useNavigate();
 
   const filterOptions = [
@@ -19,37 +20,41 @@ export default function User() {
     { label: "Akses", value: 0 },
   ];
 
-  const filteredUsers = useMemo(() => {
-    return users.filter((row) => {
-      const nameMatch = row.name
+  const filteredVehicles = useMemo(() => {
+    return vehicles.filter((row) => {
+      const nameMatch = row.vehicle_name
         .toLowerCase()
         .includes(searchText.toLowerCase());
 
-      const emailMatch = row.email
+      const driverMatch = row.driver.full_name
         .toLowerCase()
         .includes(searchText.toLowerCase());
 
-      const roleMatch = row.user_type
+      const typeMatch = row.vehicle_type
         .toLowerCase()
         .includes(searchText.toLowerCase());
 
-      return nameMatch || emailMatch || roleMatch;
+      const regisMatch = row.registration_number
+        .toLowerCase()
+        .includes(searchText.toLowerCase());
+
+      return nameMatch || driverMatch || typeMatch || regisMatch;
     });
-  }, [users, searchText]);
+  }, [vehicles, searchText]);
 
   const columns = [
     {
-      label: "No",
-      align: "center",
-      render: (_, i) => (meta.current_page - 1) * meta.per_page + (i + 1),
+      label: "image",
+      key: "vehicle_img",
     },
-    { label: "Nama User", key: "name" },
-    { label: "Email", key: "email" },
-    { label: "Role", key: "user_type" },
+    { label: "Nama Driver", render: (row) => row.driver?.full_name || "-" },
+    { label: "Kendaraan", key: "vehicle_name" },
+    { label: "Plat Nomor", key: "registration_number" },
+    { label: "Warna", key: "vehicle_color" },
     {
       label: "Status",
       render: (row) =>
-        row.banned === 1 || row.banned === true ? (
+        row.vehicle_verified === 1 || row.vehicle_verified === true ? (
           <span className="inline-flex items-center gap-x-1.5 rounded-full bg-red-100 px-2 py-1 text-xs font-medium text-red-800">
             <svg
               className="h-1.5 w-1.5 fill-red-500"
@@ -98,17 +103,17 @@ export default function User() {
       <div className="bg-white rounded-2xl mt-4 min-h-[78%]">
         <Table
           columns={columns}
-          data={filteredUsers}
+          data={filteredVehicles}
           loading={isLoadingList}
           error={error}
         />
       </div>
       {/* Pagination */}
-      {!isLoadingList && filteredUsers.length > 0 && (
+      {!isLoadingList && filteredVehicles.length > 0 && (
         <div className="mt-4">
           <button
             disabled={!links.prev_page_url}
-            onClick={() => fetchUsers(meta.current_page - 1)}
+            onClick={() => fetchVehicles(meta.current_page - 1)}
             className={`px-3 py-1 rounded-lg text-xs ${
               links.prev_page_url
                 ? "bg-green-500 text-white hover:bg-green-600"
@@ -122,7 +127,7 @@ export default function User() {
           </span>
           <button
             disabled={!links.next_page_url}
-            onClick={() => fetchUsers(meta.current_page + 1)}
+            onClick={() => fetchVehicles(meta.current_page + 1)}
             className={`px-3 py-1 rounded-lg text-xs ${
               links.next_page_url
                 ? "bg-green-500 text-white hover:bg-green-600"

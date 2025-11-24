@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class VehicleSeeder extends Seeder
 {
@@ -14,36 +13,61 @@ class VehicleSeeder extends Seeder
      */
     public function run(): void
     {
-        //
-        // Pastikan sudah ada driver di tabel drivers
+        // Ambil semua driver_id dari tabel drivers
         $drivers = DB::table('drivers')->pluck('id')->toArray();
 
         if (empty($drivers)) {
-            $this->command->warn('⚠️  Tidak ada data driver di tabel drivers. Jalankan DriverSeeder terlebih dahulu.');
+            $this->command->warn('⚠️ Tidak ada data driver di tabel drivers. Jalankan DriverSeeder terlebih dahulu.');
             return;
         }
 
-        // Ambil waktu sekarang untuk kolom created_at / updated_at
+        $this->command->info('🚗 Membuat 100 data kendaraan otomatis...');
+
+        $vehicleNames = [
+            'Honda Beat', 'Honda Vario', 'Yamaha NMAX', 'Yamaha Aerox',
+            'Honda Scoopy', 'Yamaha Mio', 'Suzuki Nex', 'Honda PCX',
+            'Honda Supra X', 'Yamaha Jupiter MX'
+        ];
+
+        $vehicleColors = [
+            'Hitam', 'Putih', 'Merah', 'Biru', 'Silver', 'Abu-Abu', 'Kuning'
+        ];
+
+        $vehicleTypes = ['Motor', 'Mobil'];
+
+        $data = [];
         $now = Carbon::now();
 
-        DB::table('vehicles')->insert([
-            [
-                'driver_id' => $drivers[0],
-                'registration_number' => 'AB1234CD',
-                'registration_year' => 2022,
-                'registration_expired' => Carbon::now()->addYear(),
-                'registration_img' => 'vehicle_docs/ab1234cd_stnk.jpg',
-                'vehicle_name' => 'Honda Beat Street',
-                'vehicle_color' => 'Hitam',
-                'vehicle_type' => 'Motor',
-                'vehicle_img' => 'vehicles/beat_street_black.jpg',
-                'vehicle_verified' => true,
-                'vehicle_rejected_reason' => null,
-                'created_at' => $now,
-                'updated_at' => $now,
-            ]
-        ]);
+        for ($i = 0; $i < 100; $i++) {
+            $vehicleName = $vehicleNames[array_rand($vehicleNames)];
+            $color = $vehicleColors[array_rand($vehicleColors)];
+            $type = $vehicleTypes[array_rand($vehicleTypes)];
 
-         $this->command->info('✅ VehicleSeeder berhasil dijalankan! Data vehicle berhasil dimasukkan.');
+            // Random nomor polisi
+            $registrationNumber =
+                strtoupper(substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 1)) .
+                rand(1000, 9999) .
+                strtoupper(substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 2));
+
+            $data[] = [
+                'driver_id'             => $drivers[array_rand($drivers)],
+                'registration_number'   => $registrationNumber,
+                'registration_year'     => rand(2015, 2024),
+                'registration_expired'  => Carbon::now()->addYears(rand(1, 5)),
+                'registration_img'      => "vehicle_docs/{$registrationNumber}_stnk.jpg",
+                'vehicle_name'          => $vehicleName,
+                'vehicle_color'         => $color,
+                'vehicle_type'          => $type,
+                'vehicle_img'           => "vehicles/{$vehicleName}_{$color}.jpg",
+                'vehicle_verified'      => rand(0, 1),
+                'vehicle_rejected_reason' => null,
+                'created_at'            => $now,
+                'updated_at'            => $now,
+            ];
+        }
+
+        DB::table('vehicles')->insert($data);
+
+        $this->command->info('✅ 100 data vehicle berhasil dibuat!');
     }
 }
