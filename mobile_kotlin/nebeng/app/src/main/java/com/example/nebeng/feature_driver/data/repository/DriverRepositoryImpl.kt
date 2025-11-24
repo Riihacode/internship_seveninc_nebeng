@@ -11,6 +11,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 import com.example.nebeng.core.common.Result
 import com.example.nebeng.feature_driver.data.remote.model.mapper.toDomain
+import com.example.nebeng.feature_driver.domain.model.DriverSummary
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
 
@@ -116,4 +117,23 @@ class DriverRepositoryImpl @Inject constructor(
         }
     }.flowOn(Dispatchers.IO)
 
+    override suspend fun getDriverByIdSummary(token: String, id: Int): Flow<Result<DriverSummary>> = flow {
+        emit(Result.Loading)
+        try {
+            val response = api.getDriverById("Bearer $token", id)
+            if (response.isSuccessful) {
+                val data = response.body()?.data?.toSummary()
+                if (data != null) {
+                    emit(Result.Success(data))
+                    Log.d("DriverRepo", "✅ getDriverById: ${data.fullName}")
+                } else {
+                    emit(Result.Error("Driver data not found"))
+                }
+            } else {
+                emit(Result.Error(response.errorBody()?.string() ?: "Failed to fetch driver by ID"))
+            }
+        } catch (e: Exception) {
+            emit(Result.Error(e.message ?: "Unknown error while fetching driver by ID"))
+        }
+    }.flowOn(Dispatchers.IO)
 }

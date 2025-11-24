@@ -61,4 +61,8 @@ interface PassengerRideBookingRepository {
         customerId: Int
     ): Flow<Result<List<PassengerRideBookingSummary>>>
 
+    suspend fun readByIdPassengerRideBookingSummary(
+        token: String,
+        id: Int
+    ): Flow<Result<PassengerRideBookingSummary>>
 }

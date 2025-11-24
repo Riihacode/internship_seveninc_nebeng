@@ -147,4 +147,29 @@ class PassengerRideBookingRepositoryImpl @Inject constructor(
             emit(Result.Error(e.message ?: "Unknown error"))
         }
     }
+
+    override suspend fun readByIdPassengerRideBookingSummary(
+        token: String,
+        id: Int
+    ): Flow<Result<PassengerRideBookingSummary>> = flow {
+        emit(Result.Loading)
+
+        try {
+            val response = api.getPassengerRideBookingById("Bearer $token", id)
+
+            if (response.isSuccessful) {
+                val dto = response.body()?.dataDto
+                if (dto != null) {
+                    emit(Result.Success(dto.toSummary()))
+                } else {
+                    emit(Result.Error("⚠ Data booking kosong"))
+                }
+            } else {
+                emit(Result.Error(response.errorBody()?.string() ?: "Gagal fetch booking by ID"))
+            }
+
+        } catch (e: Exception) {
+            emit(Result.Error(e.message ?: "Unknown error"))
+        }
+    }
 }

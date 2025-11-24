@@ -145,7 +145,9 @@ fun DataDto.toSummary(): PassengerRideBookingSummary {
         driver = BookingDriverSummary(
             id = passengerRide?.driver?.id ?: 0,
             fullName = passengerRide?.driver?.fullName.orEmpty(),
-            averageRating = passengerRide?.driver?.averageRating
+            averageRating = passengerRide?.driver?.averageRating,
+            telephone = passengerRide?.driver?.telephone.orEmpty(),
+            profileImg = passengerRide?.driver?.profileImg.orEmpty()
         ),
         ride = BookingRideSummary(
             id = passengerRide?.id ?: 0,

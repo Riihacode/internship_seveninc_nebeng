@@ -3,5 +3,7 @@ package com.example.nebeng.feature_passenger_ride_booking.domain.model.feature_a
 data class BookingDriverSummary(
     val id: Int,
     val fullName: String,
-    val averageRating: Float?
+    val averageRating: Float?,
+    val telephone: String,
+    val profileImg: String
 )

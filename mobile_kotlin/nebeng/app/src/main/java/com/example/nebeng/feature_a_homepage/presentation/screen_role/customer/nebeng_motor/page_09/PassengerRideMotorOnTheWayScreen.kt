@@ -70,7 +70,7 @@ fun PassengerRideMotorOnTheWayScreen(
         sheetContent = { RouteDetailsBottomSheet(onCancelOrder) },
         scaffoldState = rememberBottomSheetScaffoldState(bottomSheetState = sheetState),
         sheetContainerColor = Color.White,
-        sheetShape = RoundedCornerShape(topStart = 22.dp, topEnd = 22.dp),
+        sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
         sheetPeekHeight = 360.dp,        // ⬅️ posisi awal (seperti desain)
         topBar = {
             TopAppBar(
@@ -297,118 +297,6 @@ private fun RouteDetailsBottomSheet(onCancelOrder: () -> Unit) {
         Spacer(Modifier.height(8.dp))
     }
 }
-
-@Composable
-private fun BottomSheetContent(onCancelOrder: () -> Unit) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 20.dp)
-    ) {
-        Spacer(Modifier.height(12.dp))
-
-        // No Pesanan
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            Text("No Pesanan :", fontWeight = FontWeight.Medium)
-            Text("FR-2345678997543234", fontWeight = FontWeight.Bold)
-        }
-
-        Spacer(Modifier.height(14.dp))
-
-        // Card Motor
-        Card(
-            shape = RoundedCornerShape(14.dp),
-            border = BorderStroke(1.dp, Color(0xFFE6E6E6)),
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Row(
-                Modifier.padding(16.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column(Modifier.weight(1f)) {
-                    Text("Nmax - HITAM", fontWeight = FontWeight.Bold)
-                    Text("R 2424 MJ", color = Color.Gray, fontSize = 13.sp)
-                }
-                Image(
-                    painterResource(id = R.drawable.ic_motor),
-                    contentDescription = null,
-                    modifier = Modifier.size(48.dp)
-                )
-            }
-        }
-
-        Spacer(Modifier.height(16.dp))
-
-        // Card Driver
-        Card(
-            shape = RoundedCornerShape(14.dp),
-            border = BorderStroke(1.dp, Color(0xFFE6E6E6)),
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Row(
-                Modifier.padding(16.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painterResource(id = R.drawable.ic_person_grey_24),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(48.dp)
-                        .clip(CircleShape)
-                )
-                Spacer(Modifier.width(12.dp))
-                Text("Jamal Driver", fontWeight = FontWeight.SemiBold, modifier = Modifier.weight(1f))
-                Icon(painterResource(id = R.drawable.ic_motor), contentDescription = null)
-                Spacer(Modifier.width(18.dp))
-                Icon(painterResource(id = R.drawable.ic_motor), contentDescription = null)
-            }
-        }
-
-        Spacer(Modifier.height(18.dp))
-
-        RouteRow(
-            startTitle = "Yogyakarta",
-            startDetail = "Patehan, Kec. Kraton, Kota Yogyakarta 55133",
-            endTitle = "Purwokerto",
-            endDetail = "Alun-alun Purwokerto"
-        )
-
-        Spacer(Modifier.height(18.dp))
-
-        Divider()
-
-        Spacer(Modifier.height(10.dp))
-
-        Row(
-            Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(painterResource(id = R.drawable.ic_motor), contentDescription = null)
-                Spacer(Modifier.width(6.dp))
-                Text("Tunai", fontWeight = FontWeight.Medium)
-            }
-            Text("Rp 120.000", fontWeight = FontWeight.Bold, color = Color(0xFF0F3D82))
-        }
-
-        Spacer(Modifier.height(18.dp))
-
-        Button(
-            onClick = onCancelOrder,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(52.dp),
-            shape = RoundedCornerShape(14.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0F3D82))
-        ) {
-            Text("Batalkan Pesanan", fontSize = 17.sp, fontWeight = FontWeight.SemiBold)
-        }
-
-        Spacer(Modifier.height(12.dp))
-    }
-}
-
 
 @Composable
 private fun RouteRow(

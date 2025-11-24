@@ -4,7 +4,14 @@ import com.example.nebeng.core.utils.BookingStatus
 import com.example.nebeng.core.utils.PaymentStatus
 import com.example.nebeng.core.utils.RideStatus
 import com.example.nebeng.core.utils.VehicleType
-import com.example.nebeng.feature_a_homepage.domain.model.HomepageItemCustomer
+import com.example.nebeng.feature_a_homepage.domain.model.nebeng_motor.customer.CustomerCurrentCustomer
+import com.example.nebeng.feature_a_homepage.domain.model.nebeng_motor.customer.DriverCustomer
+import com.example.nebeng.feature_a_homepage.domain.model.nebeng_motor.customer.PassengerRideBookingCustomer
+import com.example.nebeng.feature_a_homepage.domain.model.nebeng_motor.customer.PassengerRideCustomer
+import com.example.nebeng.feature_a_homepage.domain.model.nebeng_motor.customer.PassengerTransactionCustomer
+import com.example.nebeng.feature_a_homepage.domain.model.nebeng_motor.customer.PaymentMethodCustomer
+import com.example.nebeng.feature_a_homepage.domain.model.nebeng_motor.customer.TerminalArrivalCustomer
+import com.example.nebeng.feature_a_homepage.domain.model.nebeng_motor.customer.TerminalDepartureCustomer
 import com.example.nebeng.feature_customer.domain.model.CustomerSummary
 import com.example.nebeng.feature_driver.domain.model.DriverSummary
 import com.example.nebeng.feature_passenger_ride.domain.model.PassengerRideSummary
@@ -13,72 +20,112 @@ import com.example.nebeng.feature_passenger_transaction.domain.model.PassengerTr
 import com.example.nebeng.feature_payment_method.domain.model.PaymentMethodSummary
 import com.example.nebeng.feature_terminal.domain.model.TerminalSummary
 
-fun toHomepageItemCustomer(
-    booking             : PassengerRideBookingSummary,
-    customer            : CustomerSummary,
-    ride                : PassengerRideSummary,
-    transaction         : PassengerTransactionSummary,
-    payment             : PaymentMethodSummary,
-    terminalDeparture   : TerminalSummary,
-    terminalArrival     : TerminalSummary,
-    driver              : DriverSummary
-): HomepageItemCustomer {
-    return HomepageItemCustomer(
-        // PassengerRideBooking
-        idBooking           = booking.bookingId,
-        passengerRideId     = booking.ride.id,
-        customerId          = booking.customer.id,
-        createdAtBooking    = booking.createdAt,
-        bookingCode         = booking.bookingCode,
-        totalPrice          = booking.transaction.totalAmount,
-        bookingStatus       = BookingStatus.fromString(booking.status),
-        seatsReservedBooking= booking.ride.seatsReserved,
+fun PassengerRideBookingSummary.toPassengerRideBookingCustomer(): PassengerRideBookingCustomer {
+    return PassengerRideBookingCustomer(
+        idBooking               = bookingId,
+        passengerRideId         = ride.id,
+        customerId              = customer.id,
+        createdAtBooking        = createdAt,
+        bookingCode             = bookingCode.orEmpty(),
+        totalPrice              = transaction.totalAmount,
+        bookingStatus           = BookingStatus.fromString(status),
+        seatsReservedBooking    = ride.seatsReserved,
 
-        // Customer
-        idCustomer          = customer.id,
-        customerName        = customer.fullName,
-        customerTelephone   = customer.telephone,
+        idCustomer              = customer.id,
+        customerName            = customer.fullName,
+        customerTelephone       = customer.telephone,
 
-        // Passenger Ride
-        idPassengerRide     = ride.id,
-        driverId            = ride.driverId,
-        departureTerminalId = ride.departureTerminalId,
-        arrivalTerminalId   = ride.arrivalTerminalId,
-        rideStatus          = RideStatus.fromString(ride.rideStatus),
-        seatsReservedRide   = ride.seatsReserved,
-        seatsAvailableRide  = ride.seatsAvailable,
-        departureTime       = ride.departureTime,
-        pricePerSeat        = ride.pricePerSeat.toString(),
-        vehicleType         = VehicleType.fromString(ride.vehicleType),
-        driverIdRide        = ride.driverId,
+        idPassengerRide         = ride.id,
+        driverId                = driver.id,
+        departureTerminalId     = ride.departureTerminalId,
+        arrivalTerminalId       = ride.arrivalTerminalId,
+        rideStatus              = RideStatus.fromString(ride.rideStatus),
+        seatsReservedRide       = ride.seatsReserved,
+        departureTime           = ride.departureTime,
+        pricePerSeat            = ride.pricePerSeat.toString(),
+        vehicleType             = VehicleType.fromString(ride.vehicleType),
+        driverIdRide            = driver.id,
 
-        // Passenger Transaction
-        idPassengerTransaction  = transaction.id,
-        transactionDate         = transaction.transactionDate,
-        paymentStatus           = transaction.paymentStatus ?: PaymentStatus.PENDING,
+        idDepartureTerminal     = ride.departureTerminalId,
+        idArrivalTerminal       = ride.arrivalTerminalId,
 
-        // Payment Method
-        idPaymentMethod     = payment.id,
-        bankName            = payment.bankName,
-        accountName         = payment.accountName,
-        accountNumber       = payment.accountNumber,
+        idDriver                = driver.id,
+        fullNameDriver          = driver.fullName
+    )
+}
 
-        // Terminal — gabungan departure & arrival
-        idDepartureTerminal     = terminalDeparture.id,
-        idArrivalTerminal       = terminalArrival.id,
-        departureTerminalName   = terminalDeparture.name,
-        arrivalTerminalName     = terminalArrival.name,
-        terminalFullAddress     = terminalDeparture.fullAddress,
-        terminalRegency         = terminalDeparture.regencyId.toString(),
-        terminalLongitude       = terminalDeparture.longitude,
-        terminalLatitude        = terminalDeparture.latitude,
-        publicTerminalSubtype   = terminalDeparture.publicTerminalSubtype,
-        terminalType            = terminalDeparture.terminalType,
+fun CustomerSummary.toCustomerCurrentCustomer(): CustomerCurrentCustomer {
+    return CustomerCurrentCustomer(
+        idCustomer          = id,
+        customerName        = fullName,
+        customerTelephone   = telephone
+    )
+}
 
-        // Driver
-        idDriver        = driver.id,
-        fullNameDriver  = driver.fullName,
-        telephoneDriver = driver.telephone,
-        profileImgDriver= driver.profileImg
+fun PassengerRideSummary.toPassengerRideCustomer(): PassengerRideCustomer {
+    return PassengerRideCustomer(
+        idPassengerRide     = id,
+        driverIdRide        = driverId,
+        departureTerminalId = departureTerminalId,
+        arrivalTerminalId   = arrivalTerminalId,
+        rideStatus          = RideStatus.fromString(rideStatus),
+        seatsReservedRide   = seatsReserved,
+        seatsAvailableRide  = seatsAvailable,
+        departureTime       = departureTime,
+        pricePerSeat        = pricePerSeat.toString(),
+        vehicleType         = VehicleType.fromString(vehicleType),
+        driverId            = driverId
+    )
+}
+
+fun PassengerTransactionSummary.toPassengerTransactionCustomer(): PassengerTransactionCustomer{
+    return PassengerTransactionCustomer(
+        idPassengerTransaction  = id,
+        transactionDate         = transactionDate,
+        paymentStatus           = paymentStatus ?: PaymentStatus.PENDING
+    )
+}
+
+fun PaymentMethodSummary.toPaymentMethoCustomer(): PaymentMethodCustomer {
+    return PaymentMethodCustomer(
+        idPaymentMethod     = id,
+        bankName            = bankName,
+        accountName         = accountName,
+        accountNumber       = accountNumber
+    )
+}
+
+fun TerminalSummary.toTerminalArrivalCustomer(): TerminalArrivalCustomer {
+    return TerminalArrivalCustomer(
+        idArrivalTerminal       = id,
+        arrivalTerminalName     = name,
+        terminalFullAddress     = fullAddress,
+        terminalRegencyId       = regencyId,
+        terminalLongitude       = longitude,
+        terminalLatitude        = latitude,
+        publicTerminalSubtype   = publicTerminalSubtype,
+        terminalType            = terminalType
+    )
+}
+
+fun TerminalSummary.toTerminalDepartureCustomer(): TerminalDepartureCustomer {
+    return TerminalDepartureCustomer(
+        idDepartureTerminal     = id,
+        departureTerminalName   = name,
+        terminalFullAddress     = fullAddress,
+        terminalRegencyId       = regencyId,
+        terminalLongitude       = longitude,
+        terminalLatitude        = latitude,
+        publicTerminalSubtype   = publicTerminalSubtype,
+        terminalType            = terminalType
+    )
+}
+
+fun DriverSummary.toDriverCustomer(): DriverCustomer {
+    return DriverCustomer(
+        idDriver            = id,
+        fullNameDriver      = fullName,
+        telephoneDriver     = telephone,
+        profileImgDriver    = profileImg.orEmpty()
     )
 }

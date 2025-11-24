@@ -28,10 +28,6 @@ data class HistoryOrderItem(
     val seatsReserved: Int,
     val totalPrice: Int,
 
-    // vehicle belum bisa diakses karena tidak ada relasi dari passenger ride ke vehicle
-//    val driverId: Int,
-//    val vehicleName: String = "",
-//    val vehicleColor: String = "",
     val averageRating: Float?,
 
     val customerName: String = "",
