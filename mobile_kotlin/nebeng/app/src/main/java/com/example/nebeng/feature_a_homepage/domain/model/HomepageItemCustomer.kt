@@ -64,4 +64,58 @@ data class HomepageItemCustomer(
     val fullNameDriver: String,
     val telephoneDriver: String,
     val profileImgDriver: String?,
-)
+) {
+    companion object {
+        fun empty() = HomepageItemCustomer(
+            idBooking = 0,
+            passengerRideId = 0,
+            customerId = 0,
+            createdAtBooking = "",
+            bookingCode = "",
+            totalPrice = 0,
+            bookingStatus = BookingStatus.PENDING,
+            seatsReservedBooking = 0,
+
+            idCustomer = 0,
+            customerName = "",
+            customerTelephone = "",
+
+            idPassengerRide = 0,
+            driverId = 0,
+            departureTerminalId = 0,
+            arrivalTerminalId = 0,
+            rideStatus = RideStatus.PENDING,
+            seatsReservedRide = 0,
+            seatsAvailableRide = 0,
+            departureTime = "",
+            pricePerSeat = "",
+            vehicleType = VehicleType.MOTOR,
+            driverIdRide = 0,
+
+            idPassengerTransaction = 0,
+            transactionDate = "",
+            paymentStatus = PaymentStatus.PENDING,
+
+            idPaymentMethod = 0,
+            bankName = "",
+            accountName = "",
+            accountNumber = "",
+
+            idDepartureTerminal = 0,
+            idArrivalTerminal = 0,
+            departureTerminalName = "",
+            arrivalTerminalName = "",
+            terminalFullAddress = "",
+            terminalRegency = "",
+            terminalLongitude = 0.0,
+            terminalLatitude = 0.0,
+            publicTerminalSubtype = PublicTerminalSubtype.TERMINAL_BIS,
+            terminalType = TerminalType.PUBLIC,
+
+            idDriver = 0,
+            fullNameDriver = "",
+            telephoneDriver = "",
+            profileImgDriver = "",
+        )
+    }
+}
