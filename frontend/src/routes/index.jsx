@@ -14,6 +14,8 @@ import DetailMitra from "../pages/shared/DetailMitra.jsx";
 import DetailCustomer from "../pages/shared/DetailCustomer.jsx";
 import Dashboard from "../pages/superAdmin/Dashboard.jsx";
 import Verifikasi from "../pages/shared/Verifikasi.jsx";
+import VerifikasiDriver from "../pages/shared/VerifikasiDriver.jsx";
+import VerifikasiCustomer from "../pages/shared/VerifikasiCustomer.jsx";
 import DetailVerifikasi from "../pages/shared/DetailVerifikasi.jsx";
 import Kendaraan from "../pages/shared/Kendaraan.jsx";
 
@@ -52,6 +54,22 @@ export default function AppRoutes() {
             element={
               <ProtectedRoute requiredRole={["admin", "superadmin"]}>
                 <Verifikasi />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/verifikasiMitra"
+            element={
+              <ProtectedRoute requiredRole={["admin", "superadmin"]}>
+                <VerifikasiDriver />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/verifikasiCustomer"
+            element={
+              <ProtectedRoute requiredRole={["admin", "superadmin"]}>
+                <VerifikasiCustomer />
               </ProtectedRoute>
             }
           />
