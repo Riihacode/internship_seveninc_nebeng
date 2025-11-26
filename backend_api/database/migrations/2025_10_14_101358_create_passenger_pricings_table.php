@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('passenger_pricings', function (Blueprint $table) {
             $table->id();
+            $table->string('transaction_code')->nullable();
 
             $table->enum('vehicle_type', ['motor', 'mobil']);
 
@@ -34,6 +35,14 @@ return new class extends Migration
 
             $table->integer('price_per_seat');
             $table->integer('commision_percentage');
+
+            /* 🔥 MIDTRANS FIELDS */
+            $table->string('midtrans_order_id')->nullable();
+            $table->string('midtrans_payment_type')->nullable();
+            $table->string('midtrans_bank')->nullable();
+            $table->string('midtrans_va_number')->nullable();
+            $table->string('midtrans_transaction_status')->nullable();
+            $table->json('midtrans_raw_response')->nullable();
 
             $table->timestamps();
         });

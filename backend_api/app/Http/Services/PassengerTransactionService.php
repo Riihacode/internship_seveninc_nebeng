@@ -2,12 +2,14 @@
 
 namespace App\Http\Services;
 
-use App\Http\Repositories\PassengerTransactionRepository;
+use Exception;
 use App\Models\GoodsTransaction;
 use App\Models\PassengerRideBooking;
 use App\Models\PassengerTransaction;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use App\Http\Repositories\PassengerTransactionRepository;
 
 class PassengerTransactionService
 {
@@ -43,6 +45,98 @@ class PassengerTransactionService
     }
 
     // Tambah transaksi baru
+    // public function createTransaction(array $data)
+    // {
+    //     $validator = Validator::make($data, [
+    //         'passenger_ride_booking_id' => 'required|exists:passenger_ride_bookings,id',
+    //         'customer_id' => 'required|exists:customers,id',
+    //         'total_amount' => 'required|integer|min:0',
+    //         'payment_method_id' => 'required|exists:payment_methods,id',
+    //         'payment_proof_img' => 'nullable|string',
+    //         'payment_status' => 'nullable|string|in:Pending,Diterima,Ditolak,Credited',
+    //         'credit_used' => 'nullable|integer|min:0',
+    //         'transaction_date' => 'nullable|date',
+    //     ]);
+
+    //     if ($validator->fails()) {
+    //         throw new ValidationException($validator);
+    //     }
+
+    //     $booking = PassengerRideBooking::find($data['passenger_ride_booking_id']);
+    //     if(!$booking){
+    //         throw ValidationException::withMessages([
+    //             'passenger_ride_booking_id' => 'Booking not found',
+    //         ]);
+    //     }
+
+    //     // Transaction Code
+    //     $transaction_code = $this->generateCode($booking->booking_code);
+
+    //     // // Default status
+    //     // $data['transaction_code'] = $transaction_code;
+    //     // $data['payment_status'] = $data['payment_status'] ?? 'Pending';
+    //     // $data['transaction_date'] = $data['transaction_date'] ?? now();
+
+    //     // return $this->transactionRepository->create($data);
+    //      // 👶 Buat record transaksi internal dulu (status Pending)
+    //     $transaction = $this->transactionRepository->create([
+    //         'passenger_ride_booking_id' => $data['passenger_ride_booking_id'],
+    //         'customer_id' => $data['customer_id'],
+    //         'total_amount' => $data['total_amount'],
+    //         'payment_method_id' => $data['payment_method_id'],
+    //         'transaction_code' => $transaction_code,
+    //         'payment_status' => 'Pending',
+    //         'transaction_date' => now(),
+    //     ]);
+
+    //     try {
+    //         // ===============================
+    //         // 🔥 REQUEST MIDTRANS CHARGE
+    //         // ===============================
+    //         $midtransPayload = [
+    //             "payment_type" => "bank_transfer",
+    //             "transaction_details" => [
+    //                 "order_id" => $transaction_code,
+    //                 "gross_amount" => $data['total_amount'],
+    //             ],
+    //             "customer_details" => [
+    //                 "first_name" => $transaction->customer->full_name ?? "Customer",
+    //                 "email" => $transaction->customer->email ?? "email@example.com",
+    //             ],
+    //             "bank_transfer" => [
+    //                 "bank" => "bni"  // nanti akan disesuaikan berdasarkan payment_method_id
+    //             ]
+    //         ];
+
+    //         $midtransResponse = Http::withBasicAuth(config('midtrans.server_key'), '')
+    //             ->post(config('midtrans.base_url') . '/v2/charge', $midtransPayload)
+    //             ->json();
+
+    //         // Ambil VA + expired time dari response
+    //         $vaNumber = $midtransResponse['va_numbers'][0]['va_number'] ?? null;
+    //         $paymentType = $midtransResponse['payment_type'] ?? null;
+    //         $transactionId = $midtransResponse['transaction_id'] ?? null;
+    //         $expiryTime = $midtransResponse['expiry_time'] ?? null; // API sandbox mengembalikan string
+
+    //         // ===============================
+    //         // 🔥 UPDATE RECORD TRANSAKSI DI DB
+    //         // ===============================
+    //         $transaction->update([
+    //             'midtrans_order_id'       => $transaction_code,
+    //             'midtrans_transaction_id' => $transactionId,
+    //             'payment_type'            => $paymentType,
+    //             'va_number'               => $vaNumber,
+    //             'payment_expired_at'      => $expiryTime,
+    //             'payment_response_raw'    => $midtransResponse,
+    //         ]);
+
+    //         return $transaction;
+    //     }
+    //     catch (Exception $e) {
+    //         // Jika gagal hit Midtrans, transaksi internal tetap ada tapi tanpa VA
+    //         return $transaction;
+    //     }
+    // }
     public function createTransaction(array $data)
     {
         $validator = Validator::make($data, [
@@ -61,22 +155,70 @@ class PassengerTransactionService
         }
 
         $booking = PassengerRideBooking::find($data['passenger_ride_booking_id']);
-
         if(!$booking){
             throw ValidationException::withMessages([
                 'passenger_ride_booking_id' => 'Booking not found',
             ]);
         }
 
-        // Transaction Code
+        // Generate transaction code
         $transaction_code = $this->generateCode($booking->booking_code);
-
-        // Default status
         $data['transaction_code'] = $transaction_code;
         $data['payment_status'] = $data['payment_status'] ?? 'Pending';
         $data['transaction_date'] = $data['transaction_date'] ?? now();
 
-        return $this->transactionRepository->create($data);
+        // 1️⃣ Simpan transaksi dulu (status masih Pending)
+        $transaction = $this->transactionRepository->create($data);
+
+        // 2️⃣ Siapkan payload Midtrans /charge
+        $payload = [
+            "payment_type" => "bank_transfer",
+            "transaction_details" => [
+                "order_id"      => $transaction->transaction_code,
+                "gross_amount"  => $transaction->total_amount,
+            ],
+            "customer_details" => [
+                "first_name" => $transaction->customer->full_name,
+                "email"      => $transaction->customer->user->email ?? "email@example.com",
+                "phone"      => $transaction->customer->telephone,
+            ],
+            "bank_transfer" => [
+                "bank" => "bni"  // sementara fix dulu, nanti jika mau dynamic bisa berdasarkan payment_method_id
+            ]
+        ];
+
+        // 3️⃣ Kirim ke Midtrans
+        $serverKey = config('midtrans.server_key');
+        $apiUrl = config('midtrans.api_url') . 'charge';
+
+        $response = Http::withBasicAuth($serverKey, "")
+            ->withHeaders(["Content-Type" => "application/json"])
+            ->post($apiUrl, $payload)
+            ->json();
+
+        // 4️⃣ Ambil data dari respon Midtrans
+        $vaNumber = $response['va_numbers'][0]['va_number'] ?? null;
+        $paymentType = $response['payment_type'] ?? null;
+        $midtransTransactionId = $response['transaction_id'] ?? null;
+        $orderId = $response['order_id'] ?? null;
+        $expiredAt = $response['expiry_time'] ?? null;
+
+        // 5️⃣ Update ke DB
+        $transaction->update([
+            'midtrans_order_id'       => $orderId,
+            'midtrans_transaction_id' => $midtransTransactionId,
+            'payment_type'            => $paymentType,
+            'va_number'               => $vaNumber,
+            'payment_expired_at'      => $expiredAt,
+            'payment_response_raw'    => $response,
+        ]);
+
+        // 6️⃣ Return sama seperti sebelumnya (ada VA & raw_response)
+        return $transaction->fresh([
+            'customer',
+            'passengerRideBooking',
+            'paymentMethod'
+        ]);
     }
 
     public function generateCode($bookingCode){
@@ -86,6 +228,7 @@ class PassengerTransactionService
 
         return 'TX-'. $cleanCode . '-' . str_pad($countToday, 4, '0', STR_PAD_LEFT);
     }
+
     // Update transaksi (misal update bukti pembayaran)
     public function updateTransaction($id, array $data)
     {

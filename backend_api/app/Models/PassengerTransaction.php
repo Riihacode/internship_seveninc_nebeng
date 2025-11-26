@@ -26,6 +26,13 @@ class PassengerTransaction extends Model
         'credit_used',
         'transaction_date',
         'transaction_code',
+
+        'midtrans_order_id',
+        'midtrans_transaction_id',
+        'payment_type',
+        'va_number',
+        'payment_expired_at',
+        'payment_response_raw',
     ];
 
     /**
@@ -70,9 +77,15 @@ class PassengerTransaction extends Model
     /**
      * Ubah kolom timestamp ke instance Carbon
      */
-    protected $casts = [
-        'transaction_date' => 'datetime',
-        'credit_used' => 'integer',
+    // protected $casts = [
+    //     'transaction_date' => 'datetime',
+    //     'credit_used' => 'integer',
+    // ];
+     protected $casts = [
+        'transaction_date'    => 'datetime',
+        'payment_expired_at'  => 'datetime',
+        'credit_used'         => 'integer',
+        'payment_response_raw'=> 'array',
     ];
 
     /**
