@@ -15,10 +15,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // 10 Customer
+        // 100 Customer
         Customer::factory(100)->create();
 
-        // 10 Driver
+        // 100 Driver
         Driver::factory(100)->create();
 
         $this->call([

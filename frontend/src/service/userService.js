@@ -25,7 +25,7 @@ const userService = {
       if (status) params.append("status", status);
 
       const res = await api.get(`/api/users?${params.toString()}`);
-      // console.log("Data dari customer service :", res);
+      // console.log("Data dari user service :", res);
       return res.data;
     } catch (error) {
       handleError(error);
@@ -36,7 +36,7 @@ const userService = {
   getById: async (id) => {
     try {
       const res = await api.get(`/api/users/${id}`);
-      console.log("Data detail customer dari service : ", res);
+      console.log("Data detail user dari service : ", res);
       return res.data;
     } catch (error) {
       handleError(error);

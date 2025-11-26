@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
 import { useCallback, useMemo, useState } from "react";
 
-export default function Pesanan() {
+export default function Transaksi() {
   const [searchText, setSearchText] = useState("");
   const [filterStatus, setFilterStatus] = useState("");
   const { orders, isLoadingList, error, meta, links, fetchOrders } = useOrders({
@@ -50,25 +50,6 @@ export default function Pesanan() {
     [formatTanggal]
   );
 
-  const renderLayanan = useCallback((row) => {
-    if (row.layanan === "umum" || row.layanan === "sendiri") return "Barang";
-    return row.layanan || "-";
-  }, []);
-
-  const renderAction = useCallback(
-    (row) => (
-      <button
-        onClick={() =>
-          navigate(`/orders/${row.booking_type}/${row.booking_id}`)
-        }
-        className="text-green-600 hover:text-blue-green dark:text-green-400 dark:hover:text-green-300 font-semibold bg-green-200 rounded-2xl px-2 py-1 text-xs"
-      >
-        Detail
-      </button>
-    ),
-    [navigate]
-  );
-
   function renderStatus(status) {
     const val = String(status).toLowerCase();
 
@@ -102,14 +83,31 @@ export default function Pesanan() {
     );
   }
 
+  const renderAction = useCallback(
+    (row) => (
+      <button
+        onClick={() =>
+          navigate(`/orders/${row.booking_type}/${row.booking_id}`)
+        }
+        className="text-green-600 hover:text-blue-green dark:text-green-400 dark:hover:text-green-300 font-semibold bg-green-200 rounded-2xl px-2 py-1 text-xs"
+      >
+        Detail
+      </button>
+    ),
+    [navigate]
+  );
+
   // COLUMNS
   const columns = useMemo(
     () => [
       {
-        label: "No Pesanan",
+        label: "NO.",
         align: "center",
-        key: "booking_code",
-        //render: (_, i) => i + 1,
+        render: (_, i) => i + 1,
+      },
+      {
+        label: "Tanggal",
+        render: renderTanggal,
       },
       {
         label: "Driver",
@@ -120,14 +118,13 @@ export default function Pesanan() {
         key: "customer_name",
       },
       {
-        label: "Tanggal",
-        render: renderTanggal,
+        label: "NO. Transaksi",
+        key: "transaction_code",
       },
       {
-        label: "Layanan",
-        render: renderLayanan,
+        label: "NO. Orderan",
+        key: "booking_code",
       },
-      { label: "Harga", key: "total_price" },
       { label: "Status", render: (row) => renderStatus(row.status) },
       {
         label: "Aksi",
@@ -135,7 +132,7 @@ export default function Pesanan() {
         render: renderAction,
       },
     ],
-    [renderAction, renderLayanan, renderTanggal]
+    [renderAction, renderTanggal]
   );
 
   return (

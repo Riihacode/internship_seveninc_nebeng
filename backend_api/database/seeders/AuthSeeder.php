@@ -51,6 +51,13 @@ class AuthSeeder extends Seeder
                 'user_type' => 'terminal',
                 'password' => Hash::make('password123'),
             ],
+            [
+                'name' => 'finance',
+                'username' => 'finance1',
+                'email' => 'finance1@example.com',
+                'user_type' => 'finance',
+                'password' => Hash::make('password123'),
+            ],
         ];
 
         foreach ($users as $userData) {

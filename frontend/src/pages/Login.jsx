@@ -29,6 +29,8 @@ export default function Login() {
         navigate("/home");
       } else if (user.user_type === "superadmin") {
         navigate("/sa/dashboard");
+      } else if (user.user_type === "finance") {
+        navigate("dashboardFinance");
       } else {
         navigate("/");
       }

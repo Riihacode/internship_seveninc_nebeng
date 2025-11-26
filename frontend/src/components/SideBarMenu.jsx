@@ -11,6 +11,8 @@ import {
   HandCoins,
   Columns3Cog,
   ChartPie,
+  WalletMinimal,
+  Building2,
 } from "lucide-react";
 
 export const sideBarMenu = {
@@ -65,5 +67,12 @@ export const sideBarMenu = {
     { name: "Refund", icon: BanknoteArrowDown, path: "/refund" },
     { name: "Pencairan Dana", icon: HandCoins, path: "/pencairan" },
     { name: "Laporan", icon: Presentation, path: "/laporan" },
+  ],
+  finance: [
+    { name: "Dashboard", icon: Home, path: "/dashboardFinance" },
+    { name: "Transaksi", icon: NotebookText, path: "/transaksi" },
+    { name: "Mitra", icon: User, path: "/mitra" },
+    { name: "Pos Mitra", icon: Building2, path: "/posMitra" },
+    { name: "Pencairan Dana", icon: WalletMinimal, path: "/pencairanDana" },
   ],
 };

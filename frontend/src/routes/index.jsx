@@ -18,6 +18,11 @@ import VerifikasiDriver from "../pages/shared/VerifikasiDriver.jsx";
 import VerifikasiCustomer from "../pages/shared/VerifikasiCustomer.jsx";
 import DetailVerifikasi from "../pages/shared/DetailVerifikasi.jsx";
 import Kendaraan from "../pages/shared/Kendaraan.jsx";
+// FINANCE
+import DashboardFinance from "../pages/finance/DashboardFinance.jsx";
+import PenacairanDana from "../pages/finance/PencairanDana.jsx";
+import PosMitra from "../pages/finance/PosMitra.jsx";
+import Transaksi from "../pages/finance/Transaksi.jsx";
 
 export default function AppRoutes() {
   return (
@@ -30,14 +35,6 @@ export default function AppRoutes() {
             element={
               <ProtectedRoute>
                 <Home />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/mitra"
-            element={
-              <ProtectedRoute requiredRole={["admin", "superadmin"]}>
-                <Mitra />
               </ProtectedRoute>
             }
           />
@@ -82,9 +79,17 @@ export default function AppRoutes() {
             }
           />
           <Route
+            path="/mitra"
+            element={
+              <ProtectedRoute requiredRole={["admin", "superadmin", "finance"]}>
+                <Mitra />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/mitra/:id"
             element={
-              <ProtectedRoute requiredRole={["admin", "superadmin"]}>
+              <ProtectedRoute requiredRole={["admin", "superadmin", "finance"]}>
                 <DetailMitra />
               </ProtectedRoute>
             }
@@ -150,6 +155,40 @@ export default function AppRoutes() {
             element={
               <ProtectedRoute requiredRole="superadmin">
                 <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* FINANCE */}
+          <Route
+            path="/dashboardFinance"
+            element={
+              <ProtectedRoute requiredRole="finance">
+                <DashboardFinance />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/pencairanDana"
+            element={
+              <ProtectedRoute requiredRole="finance">
+                <PenacairanDana />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/posMitra"
+            element={
+              <ProtectedRoute requiredRole="finance">
+                <PosMitra />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/transaksi"
+            element={
+              <ProtectedRoute requiredRole="finance">
+                <Transaksi />
               </ProtectedRoute>
             }
           />

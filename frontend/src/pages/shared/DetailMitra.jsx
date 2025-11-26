@@ -219,7 +219,7 @@ export default function DetailMitra() {
             <Input label="Rating" value={mitra.average_rating} />
           </div>
           {/* Sisi Kanan */}
-          <div className="flex flex-col my-3 font-semibold justify-center justify-items-center">
+          <div className="flex flex-col m-3 font-semibold justify-center justify-items-center">
             <div className="m-3 m">
               <label htmlFor="">Foto Wajah</label>
               <div className="rounded-2xl mt-2">

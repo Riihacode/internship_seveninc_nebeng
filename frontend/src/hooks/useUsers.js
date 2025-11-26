@@ -76,6 +76,7 @@ export function useUsers({ search = "", status = "" } = {}) {
       setError(null);
       try {
         const user = await userService.getById(id);
+        console.log("User dari hook: ", user);
         setSelectedUser(user.data);
         return user;
       } catch (err) {
