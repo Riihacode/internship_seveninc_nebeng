@@ -29,6 +29,7 @@ use App\Http\Controllers\GoodsTransactionController;
 use App\Http\Controllers\PassengerPricingController;
 use App\Http\Controllers\PassengerRideBookingController;
 use App\Http\Controllers\PassengerTransactionController;
+use App\Http\Controllers\RefundController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -336,6 +337,12 @@ Route::middleware('auth:api')->group(function() {
         Route::patch('/{id}/verify', [VehicleAdminController::class, 'verify']);
         Route::patch('/{id}/reject', [VehicleAdminController::class, 'reject']);
         Route::delete('/{id}', [VehicleAdminController::class, 'destroy']);
+    });
+
+    // [ REFUNDS ]
+    Route::prefix('admin/refunds')->group(function () {
+        Route::get('/', [RefundController::class, 'index']);
+        Route::get('/{type}/{id}', [RefundController::class, 'show']);
     });
 
 });
