@@ -35,7 +35,7 @@ export default function SideBar() {
 
   return (
     <aside
-      className={`hidden md:flex flex-col justify-between bg-[#10367d] dark:border-gray-700 dark:text-white dark:bg-gray-600 min-w-64 min-h-screen relative ${user?.user_type}`}
+      className={`hidden md:flex flex-col justify-between bg-[#10367d] dark:border-gray-700 dark:text-white dark:bg-gray-600 w-64 h-screen fixed top-0 left-0`}
     >
       <nav className="text-sm text-white">
         <div className="flex justify-center justify-items-center py-3 h-17 text-2xl uppercase text-center tracking-widest bg-[#10367d] border-b-1 border-white mb-4 dark:bg-gray-700">

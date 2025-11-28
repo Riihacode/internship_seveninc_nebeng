@@ -35,7 +35,7 @@ export default function Login() {
         navigate("/");
       }
     } catch (error) {
-      console.error("Login error :", error);
+      console.error("Login error :", error.message);
       alert("Login gagal, periksa kembali email / username dan password");
     } finally {
       setLoading(false);

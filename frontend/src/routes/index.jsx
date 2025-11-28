@@ -145,7 +145,7 @@ export default function AppRoutes() {
           <Route
             path="/pengaturan"
             element={
-              <ProtectedRoute requiredRole={["admin", "superadmin"]}>
+              <ProtectedRoute requiredRole={["admin", "superadmin", "finance"]}>
                 <Pengaturan />
               </ProtectedRoute>
             }

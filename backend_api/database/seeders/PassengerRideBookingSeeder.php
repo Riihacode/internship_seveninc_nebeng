@@ -39,6 +39,9 @@ class PassengerRideBookingSeeder extends Seeder
                 $totalPrice = $seatsReserved * $ride->price_per_seat;
                 $status = $statuses[array_rand($statuses)];
 
+                // Jika ditolak → reject_status = "proses"
+                $rejectStatus = $status === 'Ditolak' ? 'proses' : null;
+
                 // Generate nomor booking
                 $today = Carbon::today()->format('Ymd');
                 $countToday = PassengerRideBooking::whereDate('created_at', Carbon::today())->count() + 1;
@@ -50,6 +53,7 @@ class PassengerRideBookingSeeder extends Seeder
                     'seats_reserved'    => $seatsReserved,
                     'total_price'       => $totalPrice,
                     'status'            => $status,
+                    'reject_status'     => $rejectStatus,
                     'booking_code'      => $bookingNumber,
                 ]);
 

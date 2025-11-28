@@ -1,4 +1,30 @@
 import api from "./api";
+
+function handleError(error) {
+  if (error.response) {
+    const data = error.response.data;
+
+    // lempar data lengkap
+    return Promise.reject({
+      message: data.message || "Terjadi kesalahan di server",
+      errors: data.errors || data.error || null,
+      status: error.response.status,
+    });
+  } else if (error.request) {
+    return Promise.reject({
+      message: "Server tidak merespon. Periksa koneksi anda",
+      errors: null,
+      status: null,
+    });
+  } else {
+    return Promise.reject({
+      message: "Terjadi kesalahan tidak diketahui",
+      errors: null,
+      status: null,
+    });
+  }
+}
+
 // login
 export const loginUser = async ({ userIdentifier, password }) => {
   try {
@@ -9,8 +35,8 @@ export const loginUser = async ({ userIdentifier, password }) => {
     console.log(response);
     return response.data;
   } catch (error) {
-    console.log("Login error:", error.response?.status, error.response?.data);
-    throw error;
+    console.log("Error di service auth: ", error);
+    return handleError(error);
   }
 };
 
@@ -30,6 +56,6 @@ export const logoutUser = async () => {
       // Anggap logout sukses, jangan throw
       return { data: { message: "Logged out" } };
     }
-    throw error;
+    handleError(error);
   }
 };

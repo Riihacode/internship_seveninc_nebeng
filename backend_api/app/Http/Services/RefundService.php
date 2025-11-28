@@ -20,9 +20,9 @@ class RefundService{
         $this->goodsRepo = $goodsRepo;
     }
 
-    public function listAllRefund($perPage = 10){
-        $passengerRefund = $this->passengerRepo->getRejected();
-        $goodsRefund = $this->goodsRepo->getRejected();
+    public function listAllRefund($perPage = 10, $filters = []){
+        $passengerRefund = $this->passengerRepo->getRejected($filters);
+        $goodsRefund = $this->goodsRepo->getRejected($filters);
 
         $passenger = $passengerRefund->map(function($i){
             $i->refund_type = 'passenger';

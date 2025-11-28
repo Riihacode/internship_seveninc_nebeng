@@ -46,6 +46,9 @@ class GoodsRideBookingSeeder extends Seeder
                 $totalPrice = $itemWeight * $pricePerKg;
                 $status = $statuses[array_rand($statuses)];
 
+                // Jika ditolak → reject_status = "proses"
+                $rejectStatus = $status === 'Ditolak' ? 'proses' : null;
+
                 // Generate nomor booking
                 $today = Carbon::today()->format('Ymd');
                 $countToday = GoodsRideBooking::whereDate('created_at', Carbon::today())->count() + 1;
@@ -59,6 +62,7 @@ class GoodsRideBookingSeeder extends Seeder
                     'item_img'        => null,
                     'total_price'     => $totalPrice,
                     'status'          => $status,
+                    'reject_status'   => $rejectStatus,
                     'booking_code'    => $bookingNumber,
                 ]);
 
