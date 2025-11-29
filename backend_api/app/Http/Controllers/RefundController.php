@@ -16,12 +16,13 @@ class RefundController extends Controller
 
     public function index(Request $request)
     {
-        // $orders = $this->ordersService->listAllBookings();
-        // return response()->json(['data' => $orders], 200);
-
         $perPage = $request->input('perPage', 10);
+        $filters = [
+            'status' => $request->query('status'),
+            'search' => $request->query('search'),
+        ];
 
-        $data = $this->service->listAllRefund($perPage);
+        $data = $this->service->listAllRefund($perPage, $filters);
 
         return response()->json([
             'success' => true,

@@ -8,6 +8,7 @@ import Customer from "../pages/shared/Customer.jsx";
 import Pesanan from "../pages/shared/Pesanan.jsx";
 import DetailPesanan from "../pages/shared/DetailPasanan.jsx";
 import Refund from "../pages/shared/Refund.jsx";
+import DetailRefund from "../pages/shared/DetailRefund.jsx";
 import Laporan from "../pages/admin/Laporan.jsx";
 import Pengaturan from "../pages/shared/Pengaturan.jsx";
 import DetailMitra from "../pages/shared/DetailMitra.jsx";
@@ -135,6 +136,14 @@ export default function AppRoutes() {
             }
           />
           <Route
+            path="/refund/:type/:booking_id"
+            element={
+              <ProtectedRoute requiredRole={["admin", "superadmin"]}>
+                <DetailRefund />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/laporan"
             element={
               <ProtectedRoute requiredRole="admin">
@@ -145,7 +154,7 @@ export default function AppRoutes() {
           <Route
             path="/pengaturan"
             element={
-              <ProtectedRoute requiredRole={["admin", "superadmin"]}>
+              <ProtectedRoute requiredRole={["admin", "superadmin", "finance"]}>
                 <Pengaturan />
               </ProtectedRoute>
             }

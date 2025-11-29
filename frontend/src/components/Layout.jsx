@@ -14,7 +14,7 @@ export default function layout({ children }) {
         <Header />
 
         {/* Isi halaman */}
-        <main className="p-6 flex-1">{children}</main>
+        <main className="pt-20 pl-68">{children}</main>
       </div>
     </div>
   );

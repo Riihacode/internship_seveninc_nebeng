@@ -23,8 +23,19 @@ class GoodsRideBooking extends Model
         'item_img',
         'total_price',
         'status',
+        'reject_status',
         'booking_code',
     ];
+
+    // AUTO SET reject_status whenever status = "Ditolak"
+    public function setStatusAttribute($value)
+    {
+        $this->attributes['status'] = $value;
+
+        if ($value === 'Ditolak') {
+            $this->attributes['reject_status'] = 'proses';
+        }
+    }
 
     /**
      * ========================

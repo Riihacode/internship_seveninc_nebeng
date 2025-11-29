@@ -18,10 +18,11 @@ export default function Header() {
     if (path.startsWith("/laporan")) return "Data Laporan";
     if (path === "/verifikasi") return "Data User";
     if (path.startsWith("/verifikasi")) return "Verifikasi User";
+    if (path === "/pengaturan") return "Pengaturan";
   };
   return (
     <>
-      <header className="bg-gray-100 dark:bg-gray-400 dark:text-white py-3 h-17 text-end w-full border-b border-gray-200 flex items-center justify-between">
+      <header className="fixed top-0 left-64 bg-gray-100 w-[calc(100%-16rem)] dark:bg-gray-400 dark:text-white py-3 h-17 text-end border-b border-gray-200 flex items-center justify-between">
         <div className="pl-9">
           <h1 className="text-2xl font-bold">{getPageTitle()}</h1>
         </div>

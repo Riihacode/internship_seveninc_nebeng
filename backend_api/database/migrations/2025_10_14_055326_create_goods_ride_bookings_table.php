@@ -43,6 +43,8 @@ return new class extends Migration
             // Status booking
             $table->enum('status', ['pending', 'diterima', 'ditolak'])
                   ->default('pending');
+            $table->enum('reject_status', ['proses', 'selesai', 'batal'])
+                  ->default(null)->nullable();
 
             $table->timestamps();
         });
