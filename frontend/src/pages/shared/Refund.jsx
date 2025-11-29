@@ -22,8 +22,10 @@ export default function Refund() {
     { label: "Batal", value: "batal" },
   ];
 
-  const formatTanggal = (tanggal) =>
-    tanggal ? dayjs(tanggal).format("DD MMMM YYYY") : "-";
+  const formatTanggal = useCallback(
+    (tanggal) => (tanggal ? dayjs(tanggal).format("DD MMMM YYYY") : "-"),
+    []
+  );
 
   const filteredRefunds = useMemo(() => {
     return refunds.filter((row) => {
@@ -50,7 +52,7 @@ export default function Refund() {
   const renderAction = useCallback(
     (row) => (
       <button
-        onClick={() => navigate(`/refunds/${row.refund_type}/${row.id}`)}
+        onClick={() => navigate(`/refund/${row.refund_type}/${row.id}`)}
         className="text-green-600 hover:text-blue-green dark:text-green-400 dark:hover:text-green-300 font-semibold bg-green-200 rounded-2xl px-2 py-1 text-xs"
       >
         Detail

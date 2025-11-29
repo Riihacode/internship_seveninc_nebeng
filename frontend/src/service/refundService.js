@@ -34,6 +34,7 @@ const refundService = {
   getById: async (type, id) => {
     try {
       const res = await api.get(`/api/admin/refunds/${type}/${id}`);
+      console.log("Data refund dari service", res);
       return res.data;
     } catch (error) {
       handleError(error);

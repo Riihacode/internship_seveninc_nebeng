@@ -61,7 +61,9 @@ export function useRefunds({ search = "", status = "" } = {}) {
     setError(null);
     try {
       const data = await refundService.getById(type, bookingId);
+      console.log("Data refund dari hook:", data);
       setRefunds(data || null);
+      return data;
     } catch (error) {
       handleError(error);
     } finally {
