@@ -9,7 +9,7 @@ import javax.inject.Inject
 class GetAllPassengerRideUseCase @Inject constructor(
     private val repository: PassengerRideRepository
 ) {
-    suspend operator fun invoke(token: String): Result<List<PassengerRideSummary>> {
+    suspend operator fun invoke(token: String): Flow<Result<List<PassengerRideSummary>>> {
         return repository.getAllPassengerRidesSummary(token)
     }
 }

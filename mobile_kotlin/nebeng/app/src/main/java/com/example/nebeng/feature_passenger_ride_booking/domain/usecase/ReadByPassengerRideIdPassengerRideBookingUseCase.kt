@@ -1,5 +1,6 @@
 package com.example.nebeng.feature_passenger_ride_booking.domain.usecase
 
+import com.example.nebeng.core.common.Result
 import com.example.nebeng.feature_passenger_ride_booking.data.repository.PassengerRideBookingRepository
 import com.example.nebeng.feature_passenger_ride_booking.domain.model.PassengerRideBooking
 import kotlinx.coroutines.flow.Flow
@@ -11,7 +12,7 @@ class ReadByPassengerRideIdPassengerRideBookingUseCase @Inject constructor(
     suspend operator fun invoke(
         token: String,
         passengerRideId: Int
-    ): Flow<List<PassengerRideBooking>> {
+    ): Flow<Result<List<PassengerRideBooking>>> {
         return repository.readByPassengerRideId(token, passengerRideId)
     }
 }

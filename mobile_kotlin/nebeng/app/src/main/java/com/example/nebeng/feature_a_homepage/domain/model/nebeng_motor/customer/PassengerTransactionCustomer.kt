@@ -6,5 +6,19 @@ data class PassengerTransactionCustomer(
     // Tabel Passenger Transaction
     val idPassengerTransaction: Int,
     val transactionDate: String,
-    val paymentStatus: PaymentStatus
+    val transactionCode: String,
+    val midtransTransactionId: String,
+    val paymentStatus: PaymentStatus,
+    val createdAt: String,
+    val paymentProofImg: String,
+    val creditUsed: Int,
+    val paymentMethodId: Int,
+    val paymentType: String,
+    val updatedAt: String,
+    val totalAmount: Int,
+    val midtransOrderId: String,
+    val paymentExpiredAt: String,
+    val passengerRideBookingId: Int,
+    val vaNumber: String,
+    val customerId: Int,
 )

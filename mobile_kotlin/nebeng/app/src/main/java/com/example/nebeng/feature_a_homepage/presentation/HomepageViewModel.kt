@@ -77,23 +77,4 @@ class HomepageViewModel @Inject constructor(
             it.copy(points = (it.points + 5).coerceAtMost(9999)) // contoh dummy reward
         }
     }
-
-//    fun loadTerminals(token: String) {
-//        viewModelScope.launch {
-//            historyOrderUseCases.getTerminal(token)
-//                .catch { e ->
-//                    _uiState.update {
-//                        it.copy(errorMessage = e.message ?: "Gagal memuat terminal")
-//                    }
-//                }
-//                .collect { terminalList ->
-//                    _uiState.update {
-//                        it.copy(
-//                            terminals = terminalList,
-//                            errorMessage = null
-//                        )
-//                    }
-//                }
-//        }
-//    }
 }

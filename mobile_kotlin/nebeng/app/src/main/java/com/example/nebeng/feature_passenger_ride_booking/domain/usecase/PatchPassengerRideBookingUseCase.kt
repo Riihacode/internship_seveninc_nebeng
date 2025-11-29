@@ -5,6 +5,7 @@ import com.example.nebeng.feature_passenger_ride_booking.data.repository.Passeng
 import com.example.nebeng.feature_passenger_ride_booking.domain.model.PassengerRideBooking
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
+import com.example.nebeng.core.common.Result
 
 class PatchPassengerRideBookingUseCase @Inject constructor(
     private val repository: PassengerRideBookingRepository
@@ -13,7 +14,7 @@ class PatchPassengerRideBookingUseCase @Inject constructor(
         token: String,
         id: Int,
         request: PatchPassengerRideBookingRequest
-    ): Flow<PassengerRideBooking> {
+    ): Flow<Result<PassengerRideBooking>> {
         return repository.patchPassengerRideBooking(token, id, request)
     }
 }

@@ -6,6 +6,7 @@ import com.example.nebeng.core.utils.RideStatus
 import com.example.nebeng.core.utils.VehicleType
 import com.example.nebeng.feature_a_homepage.domain.model.nebeng_motor.customer.CustomerCurrentCustomer
 import com.example.nebeng.feature_a_homepage.domain.model.nebeng_motor.customer.DriverCustomer
+import com.example.nebeng.feature_a_homepage.domain.model.nebeng_motor.customer.PassengerPricingCustomer
 import com.example.nebeng.feature_a_homepage.domain.model.nebeng_motor.customer.PassengerRideBookingCustomer
 import com.example.nebeng.feature_a_homepage.domain.model.nebeng_motor.customer.PassengerRideCustomer
 import com.example.nebeng.feature_a_homepage.domain.model.nebeng_motor.customer.PassengerTransactionCustomer
@@ -14,11 +15,14 @@ import com.example.nebeng.feature_a_homepage.domain.model.nebeng_motor.customer.
 import com.example.nebeng.feature_a_homepage.domain.model.nebeng_motor.customer.TerminalDepartureCustomer
 import com.example.nebeng.feature_customer.domain.model.CustomerSummary
 import com.example.nebeng.feature_driver.domain.model.DriverSummary
+import com.example.nebeng.feature_passenger_pricing.domain.model.PassengerPricingSummary
 import com.example.nebeng.feature_passenger_ride.domain.model.PassengerRideSummary
 import com.example.nebeng.feature_passenger_ride_booking.domain.model.feature_a_history_order.PassengerRideBookingSummary
 import com.example.nebeng.feature_passenger_transaction.domain.model.PassengerTransactionSummary
+import com.example.nebeng.feature_passenger_transaction.domain.model.updated.PassengerTransaction
 import com.example.nebeng.feature_payment_method.domain.model.PaymentMethodSummary
 import com.example.nebeng.feature_terminal.domain.model.TerminalSummary
+import kotlin.String
 
 fun PassengerRideBookingSummary.toPassengerRideBookingCustomer(): PassengerRideBookingCustomer {
     return PassengerRideBookingCustomer(
@@ -31,26 +35,26 @@ fun PassengerRideBookingSummary.toPassengerRideBookingCustomer(): PassengerRideB
         bookingStatus           = BookingStatus.fromString(status),
         seatsReservedBooking    = ride.seatsReserved,
 
-        idCustomer              = customer.id,
-        customerName            = customer.fullName,
-        customerTelephone       = customer.telephone,
-
-        idPassengerRide         = ride.id,
-        driverId                = driver.id,
-        departureTerminalId     = ride.departureTerminalId,
-        arrivalTerminalId       = ride.arrivalTerminalId,
-        rideStatus              = RideStatus.fromString(ride.rideStatus),
-        seatsReservedRide       = ride.seatsReserved,
-        departureTime           = ride.departureTime,
-        pricePerSeat            = ride.pricePerSeat.toString(),
-        vehicleType             = VehicleType.fromString(ride.vehicleType),
-        driverIdRide            = driver.id,
-
-        idDepartureTerminal     = ride.departureTerminalId,
-        idArrivalTerminal       = ride.arrivalTerminalId,
-
-        idDriver                = driver.id,
-        fullNameDriver          = driver.fullName
+//        idCustomer              = customer.id,
+//        customerName            = customer.fullName,
+//        customerTelephone       = customer.telephone,
+//
+//        idPassengerRide         = ride.id,
+//        driverId                = driver.id,
+//        departureTerminalId     = ride.departureTerminalId,
+//        arrivalTerminalId       = ride.arrivalTerminalId,
+//        rideStatus              = RideStatus.fromString(ride.rideStatus),
+//        seatsReservedRide       = ride.seatsReserved,
+//        departureTime           = ride.departureTime,
+//        pricePerSeat            = ride.pricePerSeat.toString(),
+//        vehicleType             = VehicleType.fromString(ride.vehicleType),
+//        driverIdRide            = driver.id,
+//
+//        idDepartureTerminal     = ride.departureTerminalId,
+//        idArrivalTerminal       = ride.arrivalTerminalId,
+//
+//        idDriver                = driver.id,
+//        fullNameDriver          = driver.fullName
     )
 }
 
@@ -78,13 +82,52 @@ fun PassengerRideSummary.toPassengerRideCustomer(): PassengerRideCustomer {
     )
 }
 
-fun PassengerTransactionSummary.toPassengerTransactionCustomer(): PassengerTransactionCustomer{
+fun PassengerTransaction.toPassengerTransactionCustomer(): PassengerTransactionCustomer{
     return PassengerTransactionCustomer(
         idPassengerTransaction  = id,
         transactionDate         = transactionDate,
-        paymentStatus           = paymentStatus ?: PaymentStatus.PENDING
+        paymentStatus           = PaymentStatus.fromString(paymentStatus),
+        transactionCode = transactionCode,
+        midtransTransactionId = midtransTransactionId,
+        createdAt = createdAt,
+        paymentProofImg = paymentProofImg,
+        creditUsed = creditUsed,
+        paymentMethodId = paymentMethodId,
+        paymentType = paymentType,
+        updatedAt = updatedAt,
+        totalAmount = totalAmount,
+        midtransOrderId = midtransOrderId,
+        paymentExpiredAt = paymentExpiredAt,
+        passengerRideBookingId = passengerRideBookingId,
+        vaNumber = vaNumber,
+        customerId = customerId,
     )
 }
+
+
+data class PassengerTransactionCustomer(
+    // Tabel Passenger Transaction
+//    val idPassengerTransaction: Int,
+//    val transactionDate: String,
+//    val paymentStatus: PaymentStatus
+    val idPassengerTransaction: Int,
+    val transactionDate: String,
+    val transactionCode: String,
+    val midtransTransactionId: String,
+    val paymentStatus: PaymentStatus,
+    val createdAt: String,
+    val paymentProofImg: String,
+    val creditUsed: Int,
+    val paymentMethodId: Int,
+    val paymentType: String,
+    val updatedAt: String,
+    val totalAmount: Int,
+    val midtransOrderId: String,
+    val paymentExpiredAt: String,
+    val passengerRideBookingId: Int,
+    val vaNumber: String,
+    val customerId: Int,
+)
 
 fun PaymentMethodSummary.toPaymentMethoCustomer(): PaymentMethodCustomer {
     return PaymentMethodCustomer(
@@ -127,5 +170,18 @@ fun DriverSummary.toDriverCustomer(): DriverCustomer {
         fullNameDriver      = fullName,
         telephoneDriver     = telephone,
         profileImgDriver    = profileImg.orEmpty()
+    )
+}
+
+fun PassengerPricingSummary.toPassengerPricingCustomer(): PassengerPricingCustomer {
+    return PassengerPricingCustomer(
+        id                  = id,
+        vehicleType         = vehicleType,
+        departureTerminalId = departureTerminalId ,
+        arrivalTerminalId   = arrivalTerminalId,
+        pricePerSeat        = pricePerSeat,
+        commissionPercentage= commissionPercentage,
+        createdAt           = createdAt,
+        updatedAt           = updatedAt
     )
 }

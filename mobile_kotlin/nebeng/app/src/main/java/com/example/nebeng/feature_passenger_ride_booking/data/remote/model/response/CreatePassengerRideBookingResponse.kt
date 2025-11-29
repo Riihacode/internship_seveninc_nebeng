@@ -4,7 +4,6 @@ import com.example.nebeng.feature_passenger_ride_booking.data.remote.model.dto.D
 import com.google.gson.annotations.SerializedName
 
 data class CreatePassengerRideBookingResponse(
-//	@field:SerializedName("data") val data: Data
 	@field:SerializedName("data") val dataDto: DataDto
 )
 //{

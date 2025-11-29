@@ -1,8 +1,11 @@
 package com.example.nebeng.feature_passenger_transaction.di
 
 import com.example.nebeng.feature_passenger_transaction.data.remote.api.PassengerTransactionApi
+import com.example.nebeng.feature_passenger_transaction.data.remote.api.updated.PassengerTransactionUpdatedApi
 import com.example.nebeng.feature_passenger_transaction.data.repository.PassengerTransactionRepository
 import com.example.nebeng.feature_passenger_transaction.data.repository.PassengerTransactionRepositoryImpl
+import com.example.nebeng.feature_passenger_transaction.data.repository.updated.PassengerTransactionUpdatedRepository
+import com.example.nebeng.feature_passenger_transaction.data.repository.updated.PassengerTransactionUpdatedRepositoryImpl
 import com.example.nebeng.feature_passenger_transaction.domain.usecase.CreatePassengerTransactionUseCase
 import com.example.nebeng.feature_passenger_transaction.domain.usecase.DeletePassengerTransactionUseCase
 import com.example.nebeng.feature_passenger_transaction.domain.usecase.PassengerTransactionUseCases
@@ -21,6 +24,19 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object PassengerTransactionModule {
+    @Provides
+    @Singleton
+    fun providePassengerTransactionUpdatedApi(
+        retrofit: Retrofit
+    ): PassengerTransactionUpdatedApi = retrofit.create(PassengerTransactionUpdatedApi::class.java)
+
+    @Provides
+    @Singleton
+    fun providePassengerTransactionUpdatedRepository(
+        api: PassengerTransactionUpdatedApi
+    ): PassengerTransactionUpdatedRepository = PassengerTransactionUpdatedRepositoryImpl(api)
+
+
     @Provides
     @Singleton
     fun providePassengerTransactionApi(

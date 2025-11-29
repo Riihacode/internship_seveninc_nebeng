@@ -1,5 +1,6 @@
 package com.example.nebeng.feature_passenger_ride_booking.domain.usecase
 
+import com.example.nebeng.core.common.Result
 import com.example.nebeng.feature_passenger_ride_booking.data.remote.model.request.CreatePassengerRideBookingRequest
 import com.example.nebeng.feature_passenger_ride_booking.data.repository.PassengerRideBookingRepository
 import com.example.nebeng.feature_passenger_ride_booking.domain.model.PassengerRideBooking
@@ -12,7 +13,7 @@ class  CreatePassengerRideBookingUseCase @Inject constructor(
     suspend operator fun invoke(
         token: String,
         request: CreatePassengerRideBookingRequest
-    ): Flow<PassengerRideBooking> {
+    ): Flow<Result<PassengerRideBooking>> {
         return repository.createPassengerRideBooking(token, request)
     }
 }

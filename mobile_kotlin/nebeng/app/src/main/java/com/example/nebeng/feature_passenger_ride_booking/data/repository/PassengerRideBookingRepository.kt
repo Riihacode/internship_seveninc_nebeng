@@ -10,59 +10,26 @@ import kotlinx.coroutines.flow.Flow
 import com.example.nebeng.core.common.Result
 
 interface PassengerRideBookingRepository {
-    suspend fun readAll(
-        token: String
-    ): Flow<List<PassengerRideBooking>>
 
-//    suspend fun readAllFull(token: String): Flow<List<PassengerRideBookingFull>> // ✅ nested version
+    suspend fun readAll(token: String): Flow<Result<List<PassengerRideBooking>>>
 
+    suspend fun readById(token: String, id: Int): Flow<Result<PassengerRideBooking>>
 
-    suspend fun readById(
-        token: String,
-        id: Int
-    ): Flow<PassengerRideBooking>
+    suspend fun readByPassengerRideId(token: String, passengerRideId: Int): Flow<Result<List<PassengerRideBooking>>>
 
-    suspend fun readByPassengerRideId(
-        token: String,
-        passengerRideId: Int
-    ): Flow<List<PassengerRideBooking>>
+    suspend fun readByCustomerId(token: String, customerId: Int): Flow<Result<List<PassengerRideBooking>>>
 
-    suspend fun readByCustomerId(
-        token: String,
-        customerId: Int
-    ): Flow<List<PassengerRideBooking>>
+    suspend fun createPassengerRideBooking(token: String, request: CreatePassengerRideBookingRequest): Flow<Result<PassengerRideBooking>>
 
-    suspend fun createPassengerRideBooking(
-        token: String,
-        request: CreatePassengerRideBookingRequest
-    ): Flow<PassengerRideBooking>
+    suspend fun updatePassengerRideBooking(token: String, id: Int, request: UpdatePassengerRideBookingRequest): Flow<Result<PassengerRideBooking>>
 
-    suspend fun updatePassengerRideBooking(
-        token: String,
-        id: Int,
-        request: UpdatePassengerRideBookingRequest
-    ): Flow<PassengerRideBooking>
+    suspend fun patchPassengerRideBooking(token: String, id: Int, request: PatchPassengerRideBookingRequest): Flow<Result<PassengerRideBooking>>
 
-    suspend fun patchPassengerRideBooking(
-        token: String,
-        id: Int,
-        request: PatchPassengerRideBookingRequest
-    ): Flow<PassengerRideBooking>
+    suspend fun deletePassengerRideBooking(token: String, id: Int): Flow<Result<Boolean>>
 
-    suspend fun deletePassengerRideBooking(
-        token: String,
-        id: Int
-    ): Flow<Boolean>
+    suspend fun readHistorySummaryByCustomerId(token: String, customerId: Int): Flow<Result<List<PassengerRideBookingSummary>>>
 
-    // Aggregator cross feature di feature_a_history_order
-//    suspend fun getPassengerRideBookingSummary(token: String): Flow<Result<List<>>>
-    suspend fun readHistorySummaryByCustomerId(
-        token: String,
-        customerId: Int
-    ): Flow<Result<List<PassengerRideBookingSummary>>>
+    suspend fun readByIdPassengerRideBookingSummary(token: String, id: Int): Flow<Result<PassengerRideBookingSummary>>
 
-    suspend fun readByIdPassengerRideBookingSummary(
-        token: String,
-        id: Int
-    ): Flow<Result<PassengerRideBookingSummary>>
+    suspend fun createPassengerRideBookingSummary(token: String, request: CreatePassengerRideBookingRequest): Flow<Result<PassengerRideBookingSummary>>
 }
