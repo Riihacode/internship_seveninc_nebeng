@@ -1,23 +1,25 @@
 package com.example.nebeng.feature_a_homepage.presentation.screen_role.customer.nebeng_motor
 
+import android.os.Build
+import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nebeng.feature_a_homepage.domain.session.customer.nebeng_motor.BookingSession
-import com.example.nebeng.feature_a_homepage.domain.usecase.NebengMotorUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import com.example.nebeng.core.common.Result
-import com.example.nebeng.feature_a_homepage.domain.aggregator.customer.page_02.PassengerRideAggregator
 import com.example.nebeng.feature_a_homepage.domain.interactor.customer.nebeng_motor.NebengMotorBookingInteractor
 import com.example.nebeng.feature_a_homepage.domain.model.nebeng_motor.customer.PassengerRideCustomer
-import com.example.nebeng.feature_a_homepage.domain.model.nebeng_motor.customer.PassengerTransactionCustomer
 import com.example.nebeng.feature_a_homepage.domain.model.nebeng_motor.customer.PaymentMethodCustomer
+import com.example.nebeng.feature_a_homepage.domain.model.nebeng_motor.customer.TerminalCustomer
+import com.example.nebeng.feature_a_homepage.presentation.screen_role.customer.nebeng_motor.page_01.bottom_sheet.LocationUiModel
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-
+import java.time.LocalDate
 
 @HiltViewModel
 class NebengMotorBookingViewModel @Inject constructor(
@@ -25,17 +27,33 @@ class NebengMotorBookingViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _session = MutableStateFlow(BookingSession())
-    val session = _session.asStateFlow()
+    val session: StateFlow<BookingSession> = _session.asStateFlow()
 
     private val _loading = MutableStateFlow(false)
-    val loading = _loading.asStateFlow()
+    val loading: StateFlow<Boolean> = _loading.asStateFlow()
 
     private val _error = MutableStateFlow<String?>(null)
-    val error = _error.asStateFlow()
+    val error: StateFlow<String?> = _error.asStateFlow()
 
     private var token: String = ""
     private var customerId: Int = -1
 
+    fun loadTerminalsIfNeeded() {
+        if (session.value.listTerminals.isNotEmpty()) return  // sudah pernah load
+
+        viewModelScope.launch {
+            _loading.value = true
+
+            when (val res = interactor.loadTerminals(token)) {
+                is Result.Success -> _session.update {
+                    it.copy(listTerminals = res.data)
+                }
+                is Result.Error -> _error.value = res.message
+                else -> Unit
+            }
+            _loading.value = false
+        }
+    }
 
     /** 📌 dipanggil pertama kali saat halaman NebengMotor dibuka */
     fun start(token: String, customerId: Int) {
@@ -44,15 +62,33 @@ class NebengMotorBookingViewModel @Inject constructor(
 
         viewModelScope.launch {
             _loading.value = true
+
             when (val res = interactor.loadInitial(token, customerId)) {
-                is Result.Error -> _error.value = res.message
                 is Result.Success -> _session.value = res.data
-                else -> {}
+                is Result.Error -> _error.value = res.message
+                else -> Unit
             }
+
             _loading.value = false
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun applyRideFilter() {
+        Log.d("FILTER", "applyRideFilter() called")
+        Log.d("FILTER", "Current session dep=${_session.value.selectedDepartureTerminal?.id} arr=${_session.value.selectedArrivalTerminal?.id} date=${_session.value.selectedDate}")
+
+        Log.d("FILTER PAGE 2", "Total rides before filter: ${_session.value.listPassengerRides.size}")
+        _session.value.listPassengerRides.forEach {
+            Log.d("FILTER PAGE 2", "Ride ${it.idPassengerRide} dep=${it.departureTerminalId} arr=${it.arrivalTerminalId}")
+        }
+
+        _session.update { old ->
+            interactor.filterRides(old)
+        }
+
+        Log.d("FILTER_RESULT", "After filter: found=${_session.value.filteredPassengerRides.size}")
+    }
 
     /** 📌 user klik card ride */
     fun selectRide(ride: PassengerRideCustomer) {
@@ -81,6 +117,7 @@ class NebengMotorBookingViewModel @Inject constructor(
     fun confirmBooking() {
         viewModelScope.launch {
             _loading.value = true
+
             interactor.confirmBooking(
                 token = token,
                 session = _session.value,
@@ -91,7 +128,6 @@ class NebengMotorBookingViewModel @Inject constructor(
             _loading.value = false
         }
     }
-
 
     /** 📌 mulai polling pembayaran */
     fun startMonitorTransaction() {
@@ -116,11 +152,60 @@ class NebengMotorBookingViewModel @Inject constructor(
         }
     }
 
-
     /** 📌 reset setelah selesai (berhasil / gagal) */
     fun reset() {
         _session.value = BookingSession()
         _error.value = null
         _loading.value = false
+    }
+
+
+    /** ---------------------------------------------------------------------
+     *  SETTER UNTUK TERMINAL (domain TerminalCustomer)
+     * ---------------------------------------------------------------------- */
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun setDeparture(terminal: TerminalCustomer) {
+        _session.update { it.copy(selectedDepartureTerminal = terminal) }
+        applyRideFilter()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun setArrival(terminal: TerminalCustomer) {
+        _session.update { it.copy(selectedArrivalTerminal = terminal) }
+        applyRideFilter()
+    }
+
+    /** ---------------------------------------------------------------------
+     *  SET SELECTED DATE
+     * ---------------------------------------------------------------------- */
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun setDepartureDate(date: LocalDate) {
+        _session.update { it.copy(selectedDate = date) }
+        applyRideFilter()
+    }
+
+    /** ---------------------------------------------------------------------
+     *  SET SELECTED DATE
+     * ---------------------------------------------------------------------- */
+    fun onSelectDate(date: LocalDate) {
+        _session.update { it.copy(selectedDate = date) }
+    }
+
+    /** ---------------------------------------------------------------------
+     *  FROM UI → DOMAIN MAPPING
+     * ---------------------------------------------------------------------- */
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun setStartLocation(ui: LocationUiModel) {
+        ui.rawTerminal?.let {
+            Log.d("SELECT_DEP", "User pilih departure id=${ui.rawTerminal?.id} name=${ui.rawTerminal?.name}")
+            setDeparture(it)
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun setEndLocation(ui: LocationUiModel) {
+            Log.d("SELECT_ARR", "User pilih arrival id=${ui.rawTerminal?.id} name=${ui.rawTerminal?.name}")
+            ui.rawTerminal?.let { setArrival(it)
+        }
     }
 }

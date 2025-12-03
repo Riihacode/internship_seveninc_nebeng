@@ -6,14 +6,14 @@ import com.example.nebeng.feature_a_homepage.domain.usecase.GetAllPassengerPrici
 import com.example.nebeng.feature_a_homepage.domain.usecase.GetAllPassengerRideUseCase
 import com.example.nebeng.feature_a_homepage.domain.usecase.GetAllPaymentMethodUseCase
 import com.example.nebeng.feature_a_homepage.domain.usecase.GetAllTerminalUseCase
-import com.example.nebeng.feature_a_homepage.domain.usecase.GetArrivalTerminalUseCase
+//import com.example.nebeng.feature_a_homepage.domain.usecase.GetArrivalTerminalUseCase
 import com.example.nebeng.feature_a_homepage.domain.usecase.GetByIdCustomerUseCase
 import com.example.nebeng.feature_a_homepage.domain.usecase.GetByIdDriverUseCase
 import com.example.nebeng.feature_a_homepage.domain.usecase.GetByIdPassengerPricingUseCase
 import com.example.nebeng.feature_a_homepage.domain.usecase.GetByIdPassengerRideBookingUseCase
 import com.example.nebeng.feature_a_homepage.domain.usecase.GetByIdPassengerTransactionUseCase
 import com.example.nebeng.feature_a_homepage.domain.usecase.GetByIdPaymentMethod
-import com.example.nebeng.feature_a_homepage.domain.usecase.GetDepartureTerminalUseCase
+//import com.example.nebeng.feature_a_homepage.domain.usecase.GetDepartureTerminalUseCase
 import com.example.nebeng.feature_a_homepage.domain.usecase.NebengMotorUseCases
 import com.example.nebeng.feature_customer.data.repository.CustomerRepository
 import com.example.nebeng.feature_driver.data.repository.DriverRepository
@@ -49,8 +49,8 @@ object HomepageModule {
             getAllPaymentMethod         = GetAllPaymentMethodUseCase(paymentMethodRepository),
             getALlPassengerPricing      = GetAllPassengerPricingUseCase(passengerPricingRepository),
             getAllTerminal              = GetAllTerminalUseCase(terminalRepository),
-            getArrivalTerminal          = GetArrivalTerminalUseCase(terminalRepository),
-            getDepartureTerminal        = GetDepartureTerminalUseCase(terminalRepository),
+//            getArrivalTerminal          = GetArrivalTerminalUseCase(terminalRepository),
+//            getDepartureTerminal        = GetDepartureTerminalUseCase(terminalRepository),
             getByIdCustomer             = GetByIdCustomerUseCase(customerRepository),
             getByIdDriver               = GetByIdDriverUseCase(driverRepository),
             getByIdPaymentMethod        = GetByIdPaymentMethod(paymentMethodRepository),

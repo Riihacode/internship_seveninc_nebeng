@@ -22,4 +22,3 @@ data class NebengMotorBookingUiState(
     // apakah transaksi sudah selesai
     val transactionSuccess: Boolean = false
 )
-

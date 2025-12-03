@@ -1,8 +1,10 @@
 package com.example.nebeng.feature_a_homepage.domain.interactor.customer.nebeng_motor
 
+import android.os.Build
+import android.util.Log
+import androidx.annotation.RequiresApi
 import com.example.nebeng.feature_a_homepage.domain.session.customer.nebeng_motor.BookingSession
 import com.example.nebeng.feature_a_homepage.domain.usecase.NebengMotorUseCases
-import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 import com.example.nebeng.core.common.Result
 import com.example.nebeng.core.utils.BookingStatus
@@ -10,18 +12,33 @@ import com.example.nebeng.core.utils.PaymentStatus
 import com.example.nebeng.feature_a_homepage.domain.mapper.*
 import com.example.nebeng.feature_a_homepage.domain.model.nebeng_motor.customer.PassengerRideCustomer
 import com.example.nebeng.feature_a_homepage.domain.model.nebeng_motor.customer.PaymentMethodCustomer
-import com.example.nebeng.feature_a_homepage.domain.model.nebeng_motor.customer.TerminalArrivalCustomer
-import com.example.nebeng.feature_a_homepage.domain.model.nebeng_motor.customer.TerminalDepartureCustomer
+//import com.example.nebeng.feature_a_homepage.domain.model.nebeng_motor.customer.TerminalArrivalCustomer
+import com.example.nebeng.feature_a_homepage.domain.model.nebeng_motor.customer.TerminalCustomer
+//import com.example.nebeng.feature_a_homepage.domain.model.nebeng_motor.customer.TerminalDepartureCustomer
 import com.example.nebeng.feature_a_homepage.domain.session.customer.nebeng_motor.BookingStep
 import com.example.nebeng.feature_passenger_ride_booking.data.remote.model.request.CreatePassengerRideBookingRequest
 import com.example.nebeng.feature_passenger_transaction.data.remote.model.request.CreatePassengerTransactionRequest
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.last
+import java.time.LocalDate
+import java.time.OffsetDateTime
 
-@HiltViewModel
 class NebengMotorBookingInteractor @Inject constructor(
     val useCases: NebengMotorUseCases
 ) {
+    suspend fun loadTerminals(token: String): Result<List<TerminalCustomer>> {
+        return try {
+            val res = useCases.getAllTerminal(token).last()
+            if (res is Result.Success) {
+                Result.Success(res.data.map { it.toTerminalCustomer() })
+            } else {
+                Result.Error("Gagal memuat terminal")
+            }
+        } catch (e: Exception) {
+            Result.Error(e.message, e)
+        }
+    }
+
     /**
      * LOAD INITIAL (Step pertama)
      * Mengambil semua data statis yang dibutuhkan sebelum user memilih ride.
@@ -31,35 +48,87 @@ class NebengMotorBookingInteractor @Inject constructor(
         customerId: Int
     ): Result<BookingSession> {
         return try {
-            // parallel tapi sequential dulu (biar mudah debugging)
-            val customerResult      = useCases.getByIdCustomer(token, customerId).first()
-            val ridesResult         = useCases.getAllPassengerRide(token).first()
-            val terminalsResult     = useCases.getAllTerminal(token).first()
-            val paymentMethodResult = useCases.getAllPaymentMethod(token).first()
-            val pricingResult       = useCases.getALlPassengerPricing(token).first()
+            val customerResult      = useCases.getByIdCustomer(token, customerId).last()
+            val ridesResult         = useCases.getAllPassengerRide(token).last()
+            val terminalsResult     = useCases.getAllTerminal(token).last()
+            val paymentMethodResult = useCases.getAllPaymentMethod(token).last()
+            val pricingResult       = useCases.getALlPassengerPricing(token).last()
 
-            if (
-                customerResult is Result.Success &&
-                ridesResult is Result.Success &&
-                terminalsResult is Result.Success &&
-                paymentMethodResult is Result.Success &&
-                pricingResult is Result.Success
-            ) {
-                Result.Success(
-                    BookingSession(
-                        listPassengerRides      = ridesResult.data.map { it.toPassengerRideCustomer() },
-                        listTerminals           = terminalsResult.data.map { it.toTerminalDepartureCustomer() },
-                        listPaymentMethods      = paymentMethodResult.data.map { it.toPaymentMethoCustomer() },
-                        listPassengerPricing    = pricingResult.data.map { it.toPassengerPricingCustomer() },
-                        customer                = customerResult.data.toCustomerCurrentCustomer()
-                    )
-                )
-            } else {
-                Result.Error("Gagal memuat data awal Nebeng Motor")
+            // --- UNWRAP SATU2, JANGAN DI-"SEMUA HARUS SUKSES" ---
+            val customer = when (customerResult) {
+                is Result.Success -> customerResult.data.toCustomerCurrentCustomer()
+                is Result.Error   -> null   // atau langsung return Error kalau kamu mau hard-fail
+                else              -> null
             }
+
+            val rides = when (ridesResult) {
+                is Result.Success -> ridesResult.data.map { it.toPassengerRideCustomer() }
+                else              -> emptyList()
+            }
+
+            val terminals = when (terminalsResult) {
+                is Result.Success -> terminalsResult.data.map { it.toTerminalCustomer() }
+                else              -> emptyList()
+            }
+
+            val paymentMethods = when (paymentMethodResult) {
+                is Result.Success -> paymentMethodResult.data.map { it.toPaymentMethoCustomer() }
+                else              -> emptyList()
+            }
+
+            val pricings = when (pricingResult) {
+                is Result.Success -> pricingResult.data.map { it.toPassengerPricingCustomer() }
+                else              -> emptyList()
+            }
+
+            // Kalau kamu mau: kalau customer null → gagal total
+            if (customer == null) {
+                return Result.Error("Gagal memuat data customer")
+            }
+
+            Result.Success(
+                BookingSession(
+                    customer             = customer,
+                    listPassengerRides   = rides,
+                    listTerminals        = terminals,           // ← terisi kalau endpoint terminal sukses
+                    listPaymentMethods   = paymentMethods,
+                    listPassengerPricing = pricings
+                )
+            )
+
         } catch (e: Exception) {
-            Result.Error("Terjadi kesalahan loadInitial(): ${e.message}", e)
+            Result.Error("LoadInitial error: ${e.message}", e)
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun filterRides(
+        session: BookingSession
+    ): BookingSession {
+        val departure = session.selectedDepartureTerminal?.id
+        val arrival = session.selectedArrivalTerminal?.id
+        val date = session.selectedDate
+
+        if (departure == null || arrival == null || date == null) {
+            return session.copy(filteredPassengerRides = emptyList())
+        }
+
+        Log.d("FILTER", "User dep=$departure arr=$arrival date=$date")
+        session.listPassengerRides.forEach {
+            Log.d("FILTER", "Ride ${it.idPassengerRide} | dep=${it.departureTerminalId} arr=${it.arrivalTerminalId}")
+        }
+
+        val filtered = session.listPassengerRides.filter { ride ->
+            Log.d("FILTER", "Ride ${ride.idPassengerRide} | dep=${ride.departureTerminalId} arr=${ride.arrivalTerminalId} time=${ride.departureTime}")
+            Log.d("FILTER", "Compare dep=${session.selectedDepartureTerminal.id}, arr=${session.selectedArrivalTerminal.id}, date=${session.selectedDate}")
+            Log.d("FILTER PAGE 2", "Check ride ${ride.idPassengerRide}: dep=${ride.departureTerminalId}, arr=${ride.arrivalTerminalId}, date=${ride.departureTime}")
+
+            ride.departureTerminalId == departure &&
+                    ride.arrivalTerminalId == arrival &&
+                    OffsetDateTime.parse(ride.departureTime).toLocalDate() == date
+        }
+
+        return session.copy(filteredPassengerRides = filtered)
     }
 
     suspend fun selectRide(
@@ -73,25 +142,12 @@ class NebengMotorBookingInteractor @Inject constructor(
 
         // 2. Cari terminal departure & arrival dari session.listTerminals
         val departureTerminal = session.listTerminals
-            .find { it.idDepartureTerminal == ride.departureTerminalId }
-            ?: TerminalDepartureCustomer.empty()
+            .find { it.id == ride.departureTerminalId }
+            ?: TerminalCustomer.empty()
 
         val arrivalTerminal = session.listTerminals
-            .find { it.idDepartureTerminal == ride.arrivalTerminalId } // masih pakai departure ID karena session hanya menyimpan satu jenis mapping
-            ?.let {
-                // Convert TerminalDeparture → TerminalArrival
-                TerminalArrivalCustomer(
-                    idArrivalTerminal = it.idDepartureTerminal,
-                    arrivalTerminalName = it.departureTerminalName,
-                    terminalFullAddress = it.terminalFullAddress,
-                    terminalRegencyId = it.terminalRegencyId,
-                    terminalLongitude = it.terminalLongitude,
-                    terminalLatitude = it.terminalLatitude,
-                    publicTerminalSubtype = it.publicTerminalSubtype,
-                    terminalType = it.terminalType
-                )
-            }
-            ?: TerminalArrivalCustomer.empty()
+            .find { it.id == ride.arrivalTerminalId }
+            ?: TerminalCustomer.empty()
 
         updated = updated.copy(
             selectedDepartureTerminal = departureTerminal,
