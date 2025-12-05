@@ -57,8 +57,6 @@ import com.example.nebeng.core.utils.PublicTerminalSubtype
 import com.example.nebeng.core.utils.TerminalType
 import com.example.nebeng.feature_a_homepage.domain.mapper.toLocationUi
 import com.example.nebeng.feature_a_homepage.domain.model.nebeng_motor.customer.TerminalCustomer
-//import com.example.nebeng.feature_a_homepage.domain.mapper.toLocationUi
-//import com.example.nebeng.feature_a_homepage.domain.model.nebeng_motor.customer.TerminalDepartureCustomer
 import com.example.nebeng.feature_a_homepage.domain.session.customer.nebeng_motor.BookingSession
 import com.example.nebeng.feature_a_homepage.presentation.screen_role.customer.nebeng_motor.page_01.bottom_sheet.LocationUiModel
 import com.example.nebeng.feature_a_homepage.presentation.screen_role.customer.nebeng_motor.page_01.bottom_sheet.SelectLocationBottomSheet
@@ -146,8 +144,10 @@ fun PassengerRideMotorScreen(
                     .fillMaxWidth()
                     .padding(horizontal = 20.dp)
                     .offset(y = 40.dp),
+                startRegency = session.selectedDepartureTerminal?.regencyName ?: "Kota Awal",
                 startDisplay = session.selectedDepartureTerminal?.name ?: "Lokasi Awal",
                 startDetail = session.selectedDepartureTerminal?.terminalFullAddress ?: "Pilih Lokasi Awal",
+                endRegency = session.selectedArrivalTerminal?.regencyName ?: "Kota Tujuan",
                 endDisplay = session.selectedArrivalTerminal?.name ?: "Pilih Lokasi Tujuan",
                 endDetail = session.selectedArrivalTerminal?.terminalFullAddress ?: "Pilih Lokasi Tujuan",
                 dateDisplay = session.selectedDate?.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) ?: "Tanggal Keberangkatan",
@@ -252,8 +252,10 @@ private fun PassengerRouteCard(
     onStartClick: () -> Unit,
     onEndClick: () -> Unit,
     onDateClick: () -> Unit,
+    startRegency: String,
     startDisplay: String,
     startDetail: String,
+    endRegency: String,
     endDisplay: String,
     endDetail: String,
     dateDisplay: String
@@ -315,7 +317,7 @@ private fun PassengerRouteCard(
                         Column(modifier = Modifier.weight(1f)) {
 
                             // Lokasi Awal
-                            Text(startDisplay, fontWeight = FontWeight.SemiBold, fontSize = 13.sp)
+                            Text(text = "$startRegency * $startDisplay", fontWeight = FontWeight.SemiBold, fontSize = 13.sp)
                             LocationBox(startDetail, onStartClick)
 
                             Divider(
@@ -326,7 +328,7 @@ private fun PassengerRouteCard(
                             )
 
                             // Lokasi Tujuan
-                            Text(endDisplay, fontWeight = FontWeight.SemiBold, fontSize = 13.sp)
+                            Text(text =  "$endRegency * $endDisplay", fontWeight = FontWeight.SemiBold, fontSize = 13.sp)
                             LocationBox(endDetail, onEndClick)
                         }
                     }

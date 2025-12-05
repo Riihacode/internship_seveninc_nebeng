@@ -97,7 +97,12 @@ class NebengMotorBookingViewModel @Inject constructor(
                 token = token,
                 session = _session.value,
                 ride = ride,
-                onUpdated = { updated -> _session.value = updated }
+                onUpdated = { updated ->
+                    Log.d("UI_PAGE3", "Session updated → selectedRide=${updated.selectedRide?.idPassengerRide}")
+                    Log.d("UI_PAGE3", "Pricing terpilih: ${updated.selectedPricing?.pricePerSeat}")
+                    Log.d("UI_PAGE3", "Total Price: ${updated.totalPrice}")
+                    _session.value = updated
+                }
             )
         }
     }

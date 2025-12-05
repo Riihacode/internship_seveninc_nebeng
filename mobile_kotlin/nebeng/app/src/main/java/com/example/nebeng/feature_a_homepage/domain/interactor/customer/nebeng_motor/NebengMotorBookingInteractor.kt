@@ -12,20 +12,20 @@ import com.example.nebeng.core.utils.PaymentStatus
 import com.example.nebeng.feature_a_homepage.domain.mapper.*
 import com.example.nebeng.feature_a_homepage.domain.model.nebeng_motor.customer.PassengerRideCustomer
 import com.example.nebeng.feature_a_homepage.domain.model.nebeng_motor.customer.PaymentMethodCustomer
-//import com.example.nebeng.feature_a_homepage.domain.model.nebeng_motor.customer.TerminalArrivalCustomer
 import com.example.nebeng.feature_a_homepage.domain.model.nebeng_motor.customer.TerminalCustomer
-//import com.example.nebeng.feature_a_homepage.domain.model.nebeng_motor.customer.TerminalDepartureCustomer
 import com.example.nebeng.feature_a_homepage.domain.session.customer.nebeng_motor.BookingStep
 import com.example.nebeng.feature_passenger_ride_booking.data.remote.model.request.CreatePassengerRideBookingRequest
 import com.example.nebeng.feature_passenger_transaction.data.remote.model.request.CreatePassengerTransactionRequest
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.last
-import java.time.LocalDate
 import java.time.OffsetDateTime
 
 class NebengMotorBookingInteractor @Inject constructor(
     val useCases: NebengMotorUseCases
 ) {
+    /**
+     * Mengambil semua terminal (list tempat keberangkatan & kedatangan).
+     */
     suspend fun loadTerminals(token: String): Result<List<TerminalCustomer>> {
         return try {
             val res = useCases.getAllTerminal(token).last()
@@ -101,6 +101,10 @@ class NebengMotorBookingInteractor @Inject constructor(
         }
     }
 
+    /**
+     * SHOW FILTERED PASSENGER RIDE SCHEDULE
+     * Filtered by departureTerminal, arrivalTerminal, and departureTime
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     fun filterRides(
         session: BookingSession
@@ -131,12 +135,17 @@ class NebengMotorBookingInteractor @Inject constructor(
         return session.copy(filteredPassengerRides = filtered)
     }
 
-    suspend fun selectRide(
+    /**
+     * user pilih jadwal (belum booking)
+     */
+    fun selectRide(
         token: String,
         session: BookingSession,
         ride: PassengerRideCustomer,
         onUpdated: (BookingSession) -> Unit
     ) {
+        Log.d("UI_PAGE3", "Interactor.selectRide() → rideId=${ride.idPassengerRide}")
+
         // 1. Save selected ride
         var updated = session.copy(selectedRide = ride)
 
@@ -149,6 +158,8 @@ class NebengMotorBookingInteractor @Inject constructor(
             .find { it.id == ride.arrivalTerminalId }
             ?: TerminalCustomer.empty()
 
+        Log.d("UI_PAGE3", "Cari terminal dep=${departureTerminal.name}, arr=${arrivalTerminal.name}")
+
         updated = updated.copy(
             selectedDepartureTerminal = departureTerminal,
             selectedArrivalTerminal = arrivalTerminal
@@ -160,10 +171,14 @@ class NebengMotorBookingInteractor @Inject constructor(
                     it.arrivalTerminalId == ride.arrivalTerminalId
         }
 
+        Log.d("UI_PAGE3", "Pricing ditemukan: id=${pricing?.id} | price=${pricing?.pricePerSeat}")
+
         updated = updated.copy(
             selectedPricing = pricing,
             totalPrice = pricing?.pricePerSeat ?: 0
         )
+
+        Log.d("UI_PAGE3", "TotalPrice diset menjadi ${updated.totalPrice}")
 
         // 4. Change step
         updated = updated.copy(step = BookingStep.CONFIRM_PRICE)
@@ -171,6 +186,9 @@ class NebengMotorBookingInteractor @Inject constructor(
         onUpdated(updated)
     }
 
+    /**
+     * user pilih payment
+     */
     fun selectPaymentMethod(
         session: BookingSession,
         paymentMethod: PaymentMethodCustomer,
@@ -184,6 +202,9 @@ class NebengMotorBookingInteractor @Inject constructor(
         onUpdated(updated)
     }
 
+    /**
+     * CREATE BOOKING ke backend
+     */
     suspend fun confirmBooking(
         token: String,
         session: BookingSession,
@@ -233,6 +254,9 @@ class NebengMotorBookingInteractor @Inject constructor(
         }
     }
 
+    /**
+     * CREATE TRANSACTION ke backend
+     */
     private suspend fun createTransactionAfterBooking(
         token: String,
         session: BookingSession,
@@ -364,6 +388,9 @@ class NebengMotorBookingInteractor @Inject constructor(
         }
     }
 
+    /**
+     * polling sampai driver accept
+     */
     suspend fun observeRideProgress(
         token: String,
         session: BookingSession,

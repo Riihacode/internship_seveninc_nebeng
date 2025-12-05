@@ -12,8 +12,6 @@ import com.example.nebeng.feature_a_homepage.domain.model.nebeng_motor.customer.
 import com.example.nebeng.feature_a_homepage.domain.model.nebeng_motor.customer.PassengerTransactionCustomer
 import com.example.nebeng.feature_a_homepage.domain.model.nebeng_motor.customer.PaymentMethodCustomer
 import com.example.nebeng.feature_a_homepage.domain.model.nebeng_motor.customer.TerminalCustomer
-//import com.example.nebeng.feature_a_homepage.domain.model.nebeng_motor.customer.TerminalArrivalCustomer
-//import com.example.nebeng.feature_a_homepage.domain.model.nebeng_motor.customer.TerminalDepartureCustomer
 import com.example.nebeng.feature_customer.domain.model.CustomerSummary
 import com.example.nebeng.feature_driver.domain.model.DriverSummary
 import com.example.nebeng.feature_passenger_pricing.domain.model.PassengerPricingSummary

@@ -1,5 +1,7 @@
 package com.example.nebeng.feature_a_homepage.presentation.screen_role.customer.nebeng_motor.page_03
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -44,13 +46,47 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.nebeng.R
+import com.example.nebeng.core.utils.PublicTerminalSubtype
+import com.example.nebeng.core.utils.RideStatus
+import com.example.nebeng.core.utils.TerminalType
+import com.example.nebeng.core.utils.VehicleType
+import com.example.nebeng.feature_a_homepage.domain.model.nebeng_motor.customer.CustomerCurrentCustomer
+import com.example.nebeng.feature_a_homepage.domain.model.nebeng_motor.customer.PassengerPricingCustomer
+import com.example.nebeng.feature_a_homepage.domain.model.nebeng_motor.customer.PassengerRideCustomer
+import com.example.nebeng.feature_a_homepage.domain.model.nebeng_motor.customer.TerminalCustomer
+import com.example.nebeng.feature_a_homepage.domain.session.customer.nebeng_motor.BookingSession
+import com.example.nebeng.feature_a_homepage.presentation.screen_role.customer.nebeng_motor.page_02.PassengerRideMotorScheduleScreen
+import java.time.LocalDate
+import java.time.OffsetDateTime
+import java.time.format.DateTimeFormatter
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PassengerRideMotorScheduleDetailScreen(
+    session: BookingSession,
     onBack: () -> Unit = {},
     onPay: () -> Unit = {}
 ) {
+    val customer = session.customer
+    val ride = session.selectedRide
+    val dep  = session.selectedDepartureTerminal
+    val arr  = session.selectedArrivalTerminal
+    val pricing  = session.selectedPricing
+
+    if (customer == null || ride == null || dep == null || arr == null) {
+        Text("Data tidak lengkap", modifier = Modifier.padding(20.dp))
+        return
+    }
+
+//    val odt = OffsetDateTime.parse(ride.departureTime)
+//    val dateText = odt.toLocalDate().format(DateTimeFormatter.ofPattern("dd MMMM yyyy"))
+//    val timeText = odt.toLocalDate().format(DateTimeFormatter.ofPattern("HH:mm"))
+    val odt = OffsetDateTime.parse(ride.departureTime)
+    val dateText = odt.toLocalDate().format(DateTimeFormatter.ofPattern("dd MMMM yyyy"))
+    val timeText = odt.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm"))
+    val bookingIdText = "FR-${ride.idPassengerRide}"
+
     var isAgreeChecked by remember { mutableStateOf(false) }
 
     Column(
@@ -90,13 +126,20 @@ fun PassengerRideMotorScheduleDetailScreen(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text("No Pesanan:", fontWeight = FontWeight.SemiBold)
-            Text("FR-2345678997543234", fontWeight = FontWeight.SemiBold)
+            Text(bookingIdText, fontWeight = FontWeight.SemiBold)
         }
 
         Spacer(Modifier.height(16.dp))
 
         // =============== CARD DETAIL PERJALANAN ==================
-        OrderDetailCard()
+//        OrderDetailCard()
+        OrderDetailCard(
+            dateText = dateText,
+            timeText = timeText,
+            dep = dep,
+            arr = arr,
+            totalPrice = session.totalPrice
+        )
 
         Spacer(Modifier.height(26.dp))
 
@@ -111,12 +154,17 @@ fun PassengerRideMotorScheduleDetailScreen(
         Spacer(Modifier.height(12.dp))
 
         // =============== CARD PENUMPANG ==================
-        PassengerInfoCard()
+//        PassengerInfoCard()
+        PassengerInfoCard(
+            customerName = customer.customerName,
+            customerTelephone = customer.customerTelephone
+        )
 
         Spacer(Modifier.height(26.dp))
 
         // =============== CARD TOTAL PEMBAYARAN ==================
-        TotalPaymentCard()
+//        TotalPaymentCard()
+        TotalPaymentCard(totalPrice = session.totalPrice)
 
         Spacer(Modifier.height(18.dp))
 
@@ -177,7 +225,13 @@ fun PassengerRideMotorScheduleDetailScreen(
 }
 
 @Composable
-private fun OrderDetailCard() {
+private fun OrderDetailCard(
+    dateText: String,
+    timeText: String,
+    dep: TerminalCustomer,
+    arr: TerminalCustomer,
+    totalPrice: Int
+) {
     Card(
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(Color.White),
@@ -188,15 +242,15 @@ private fun OrderDetailCard() {
     ) {
         Column(Modifier.padding(18.dp)) {
 
-            Text("04 Januari 2025 | 13.45 - 18.45", fontWeight = FontWeight.SemiBold)
+            Text("$dateText | $timeText WIB", fontWeight = FontWeight.SemiBold)
 
             Spacer(Modifier.height(16.dp))
 
             RouteRow(
-                startTitle = "Yogyakarta",
-                startDetail = "Patehan, Kecamatan Kraton, Kota Yogyakarta 55133",
-                endTitle = "Purwokerto",
-                endDetail = "Alun-alun Purwokerto"
+                startTitle = dep.name,
+                startDetail = dep.terminalFullAddress,
+                endTitle = arr.name,
+                endDetail = arr.terminalFullAddress
             )
 
             Spacer(Modifier.height(12.dp))
@@ -207,7 +261,7 @@ private fun OrderDetailCard() {
             ) {
                 Text("Biaya", fontWeight = FontWeight.Medium)
                 Text(
-                    "Rp 50.000,00",
+                    "Rp $totalPrice",
                     fontWeight = FontWeight.Bold,
                     color = Color(0xFF0F3D82),
                     fontSize = 18.sp
@@ -218,7 +272,10 @@ private fun OrderDetailCard() {
 }
 
 @Composable
-private fun PassengerInfoCard() {
+private fun PassengerInfoCard(
+    customerName: String,
+    customerTelephone: String
+) {
     Card(
         shape = RoundedCornerShape(14.dp),
         colors = CardDefaults.cardColors(Color(0xFFF3F5F9)),
@@ -227,9 +284,9 @@ private fun PassengerInfoCard() {
             .padding(horizontal = 20.dp)
     ) {
         Column(Modifier.padding(16.dp)) {
-            InfoRow("Nama Penumpang:", "Ailsa Naswya")
+            InfoRow("Nama Penumpang:", customerName)
             Spacer(Modifier.height(6.dp))
-            InfoRow("No. Tlp:", "0829-9273-0984")
+            InfoRow("No. Tlp:", customerTelephone)
         }
     }
 }
@@ -246,7 +303,9 @@ private fun InfoRow(label: String, value: String) {
 }
 
 @Composable
-private fun TotalPaymentCard() {
+private fun TotalPaymentCard(
+    totalPrice: Int
+) {
     Card(
         shape = RoundedCornerShape(14.dp),
         colors = CardDefaults.cardColors(Color.White),
@@ -260,7 +319,7 @@ private fun TotalPaymentCard() {
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text("Total Pembayaran", fontWeight = FontWeight.SemiBold)
-            Text("Rp 50.000,00", fontWeight = FontWeight.Bold, color = Color(0xFF0F3D82))
+            Text("Rp $totalPrice", fontWeight = FontWeight.Bold, color = Color(0xFF0F3D82))
         }
     }
 }
@@ -319,8 +378,78 @@ private fun RouteRow(
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 private fun PreviewPassengerRideMotorDetailScreen() {
-    PassengerRideMotorScheduleDetailScreen()
+
+    val dummyCustomer = CustomerCurrentCustomer(
+        idCustomer = 1,
+        customerName = "Ailsa Naswya",
+        customerTelephone = "0829-9273-0984",
+    )
+
+    val dummyDep = TerminalCustomer(
+        id = 4,
+        name = "Terminal Giwangan",
+        terminalFullAddress = "Jl. Imogiri Timur, Umbulharjo, Yogyakarta",
+        terminalRegencyId = 3402,
+        terminalLongitude = 110.3899,
+        terminalLatitude = -7.8298,
+        publicTerminalSubtype = PublicTerminalSubtype.TERMINAL_BIS,
+        terminalType = TerminalType.PUBLIC,
+        regencyName = "Kota Yogyakarta"
+    )
+
+    val dummyArr = TerminalCustomer(
+        id = 5,
+        name = "Terminal Jombor",
+        terminalFullAddress = "Jl. Magelang KM 8, Sleman",
+        terminalRegencyId = 3404,
+        terminalLongitude = 110.3102,
+        terminalLatitude = -7.7309,
+        publicTerminalSubtype = PublicTerminalSubtype.TERMINAL_BIS,
+        terminalType = TerminalType.PUBLIC,
+        regencyName = "Sleman"
+    )
+
+    val dummyRide = PassengerRideCustomer(
+        idPassengerRide = 101,
+        driverId = 1,
+        departureTerminalId = 4,
+        arrivalTerminalId = 5,
+        rideStatus = RideStatus.DIBATALKAN,
+        seatsReservedRide = 0,
+        seatsAvailableRide = 4,
+        departureTime = "2025-12-02T06:00:00.000000Z",
+        pricePerSeat = "20000",
+        vehicleType = VehicleType.MOTOR,
+        driverIdRide = 1
+    )
+
+    val dummyPricing = PassengerPricingCustomer(
+        id = 99,
+        departureTerminalId = 4,
+        arrivalTerminalId = 5,
+        pricePerSeat = 20000,
+        commissionPercentage = 10,
+        vehicleType = VehicleType.MOTOR,
+        createdAt = "",
+        updatedAt = ""
+    )
+
+    val dummySession = BookingSession(
+        customer = dummyCustomer,
+        selectedRide = dummyRide,
+        selectedDepartureTerminal = dummyDep,
+        selectedArrivalTerminal = dummyArr,
+        selectedPricing = dummyPricing,
+        totalPrice = 20000
+    )
+
+    PassengerRideMotorScheduleDetailScreen(
+        session = dummySession,
+        onBack = {},
+        onPay = {}
+    )
 }

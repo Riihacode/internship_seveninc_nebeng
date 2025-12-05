@@ -394,13 +394,28 @@ fun HomepageNavHost(
                 onDetailClick = { rideId ->
                     // nanti kalau sudah ada selectRide(ride) bisa kirim id / object
                     navController.navigate(NEBENG_MOTOR_RIDE_SCHEDULE_DETAIL)
+                },
+                onSelectRide = { ride ->
+                    bookingViewModel.selectRide(ride)
                 }
             )
         }
 
         // PAGE 03
         composable(NEBENG_MOTOR_RIDE_SCHEDULE_DETAIL) {
+            val session = bookingViewModel.session.collectAsStateWithLifecycle().value
+
+            // ========= MEDIUM LOG PAGE 3 ===========
+            Log.d("UI_PAGE3", "=== MASUK PAGE 3 ===")
+            Log.d("UI_PAGE3", "Selected Ride: ${session.selectedRide?.idPassengerRide}")
+            Log.d("UI_PAGE3", "Departure Terminal: ${session.selectedDepartureTerminal?.id} | ${session.selectedDepartureTerminal?.name}")
+            Log.d("UI_PAGE3", "Arrival Terminal: ${session.selectedArrivalTerminal?.id} | ${session.selectedArrivalTerminal?.name}")
+            Log.d("UI_PAGE3", "Customer: ${session.customer?.customerName} (${session.customer?.idCustomer})")
+            Log.d("UI_PAGE3", "Pricing: ${session.selectedPricing?.id} | Rp.${session.selectedPricing?.pricePerSeat}")
+            Log.d("UI_PAGE3", "Total Price: ${session.totalPrice}")
+
             PassengerRideMotorScheduleDetailScreen(
+                session = session,
                 onBack = { navController.popBackStack() },
                 onPay = { navController.navigate(NEBENG_MOTOR_PAYMENT_METHOD) }
             )

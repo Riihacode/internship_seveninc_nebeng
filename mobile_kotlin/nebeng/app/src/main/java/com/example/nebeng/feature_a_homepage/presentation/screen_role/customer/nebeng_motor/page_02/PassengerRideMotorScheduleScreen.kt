@@ -1,6 +1,7 @@
 package com.example.nebeng.feature_a_homepage.presentation.screen_role.customer.nebeng_motor.page_02
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -37,7 +38,8 @@ fun PassengerRideMotorScheduleScreen(
     session: BookingSession,
     rides: List<PassengerRideCustomer>,
     onBack: () -> Unit = {},
-    onDetailClick: (Int) -> Unit = {}   // index order sementara
+    onDetailClick: (Int) -> Unit = {},   // index order sementara
+    onSelectRide: (PassengerRideCustomer) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -49,7 +51,7 @@ fun PassengerRideMotorScheduleScreen(
         TopAppBar(
             title = {
                 Text(
-                    text = "Yogyakarta → Purwokerto",
+                    text = "${session.selectedDepartureTerminal?.regencyName} → ${session.selectedArrivalTerminal?.regencyName}",
                     color = Color(0xFF0F3D82),
                     fontWeight = FontWeight.SemiBold
                 )
@@ -79,7 +81,11 @@ fun PassengerRideMotorScheduleScreen(
                     ride = ride,
                     startTerminal = session.selectedDepartureTerminal,
                     endTerminal = session.selectedArrivalTerminal,
-                    onDetailClick = { onDetailClick(ride.idPassengerRide) }
+                    onDetailClick = {
+                        Log.d("UI_PAGE3", "UI PAGE2 → User klik ride ${ride.idPassengerRide}")
+                        onSelectRide(ride)
+                        onDetailClick(ride.idPassengerRide)
+                    }
                 )
                 Spacer(Modifier.height(18.dp))
             }
@@ -294,6 +300,7 @@ private fun PreviewPassengerRideMotorScheduleScreen() {
         session = dummySession,
         rides = dummyRides,
         onBack = {},
-        onDetailClick = {}
+        onDetailClick = {},
+        onSelectRide = {}
     )
 }
